@@ -182,6 +182,166 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2020/06/18/2020-2/31.%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99%20Clang%20%E6%8F%92%E4%BB%B6/" target="_self">
+          libffi：如何编写 Clang 插件
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/06/18/2020-2/31.%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99%20Clang%20%E6%8F%92%E4%BB%B6/" target="_self">
+          
+          
+            
+          
+          如何编写 Clang 插件
+
+Clang 使用的是模块化设计，可以将自身功能以库的方式来供上层应用来调用。比如，编码规范检查、IDE 中的语法高亮、语法检查等上层应用，都是使用 Clang 库的接口开发出来的。Clang 库对接上层应用有三个接口库，分别是 LibClang、Clang 插件、LibTooling。其中，LibClang 为了兼容更多 Clang 版本，相比Clang少了很多功能；
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-06-18 23:08" pubdate>
+              2020-06-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/iOS%E8%BF%9B%E9%98%B6/">iOS进阶</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS/">iOS</a>
+            
+              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/06/12/2020-2/30.iOS%20%E6%98%AF%E6%80%8E%E4%B9%88%E7%AE%A1%E7%90%86%E5%86%85%E5%AD%98%E7%9A%84/" target="_self">
+          libffi：iOS 是怎么管理内存的
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/06/12/2020-2/30.iOS%20%E6%98%AF%E6%80%8E%E4%B9%88%E7%AE%A1%E7%90%86%E5%86%85%E5%AD%98%E7%9A%84/" target="_self">
+          
+          
+            
+          
+          iOS 是怎么管理内存的
+今天，聊聊 iOS 是怎么管理内存的。不同的系统版本对 App 运行时占用内存的限制不同，你可以利用我在第14篇文章中提到的方法，去查看不同版本系统对App占用内存的具体限制是多少。另外，系统版本的升级也会增加占用的内存，同时App功能的增多也会要求越来越多的内存。然而，移动设备的内存资源是有限的，当App运行时占用的内存大小超过了限制后，就会被强杀掉，从而导致用户体验被
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-06-12 00:18" pubdate>
+              2020-06-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/iOS%E8%BF%9B%E9%98%B6/">iOS进阶</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS/">iOS</a>
+            
+              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/06/03/2020-2/29.libffi%EF%BC%9A%E5%8A%A8%E6%80%81%E8%B0%83%E7%94%A8%E5%92%8C%E5%AE%9A%E4%B9%89%20C%20%E5%87%BD%E6%95%B0/" target="_self">
+          libffi：动态调用和定义 C 函数
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/06/03/2020-2/29.libffi%EF%BC%9A%E5%8A%A8%E6%80%81%E8%B0%83%E7%94%A8%E5%92%8C%E5%AE%9A%E4%B9%89%20C%20%E5%87%BD%E6%95%B0/" target="_self">
+          
+          
+            
+          
+          libffi：动态调用和定义 C 函数
+在 iOS 开发中，我们可以使用 Runtime 接口动态地调用 Objective-C 方法，但是却无法动态调用 C 的函数。那么，我们怎么才能动态地调用 C 语言函数呢？C 语言编译后，在可执行文件里会有原函数名信息，我们可以通过函数名字符串来找到函数的地址。现在，我们只要能够通过函数名找到函数地址，就能够实现动态地去调用C 语言函数。而在动态链接器中，
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-06-03 00:11" pubdate>
+              2020-06-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/iOS%E8%BF%9B%E9%98%B6/">iOS进阶</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS/">iOS</a>
+            
+              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2020/05/26/2020-2/28.iOS%20%E9%BB%91%E9%AD%94%E6%B3%95%20Runtime%20Method%20Swizzling%20%E8%83%8C%E5%90%8E%E7%9A%84%E5%8E%9F%E7%90%86/" target="_self">
           iOS 黑魔法 Runtime Method Swizzling 背后的原理
         </a>
@@ -208,6 +368,22 @@
           </div>
         
         
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/iOS%E8%BF%9B%E9%98%B6/">iOS进阶</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS/">iOS</a>
+            
+              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
+            
+          </div>
         
       </div>
     </article>
@@ -247,6 +423,22 @@ iOS 系统架构iOS 系统是基于 ARM 架构的，大致可以分为四层：�
           </div>
         
         
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/iOS%E8%BF%9B%E9%98%B6/">iOS进阶</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS/">iOS</a>
+            
+              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
+            
+          </div>
         
       </div>
     </article>
@@ -285,6 +477,22 @@ iOS 系统架构iOS 系统是基于 ARM 架构的，大致可以分为四层：�
           </div>
         
         
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/OC/">OC</a>
+            
+              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
+            
+          </div>
         
       </div>
     </article>
@@ -322,6 +530,22 @@ iOS 系统架构iOS 系统是基于 ARM 架构的，大致可以分为四层：�
           </div>
         
         
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/iOS%E8%BF%9B%E9%98%B6/">iOS进阶</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS/">iOS</a>
+            
+              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
+            
+          </div>
         
       </div>
     </article>
@@ -360,6 +584,22 @@ iOS 系统架构iOS 系统是基于 ARM 架构的，大致可以分为四层：�
           </div>
         
         
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/iOS%E8%BF%9B%E9%98%B6/">iOS进阶</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS/">iOS</a>
+            
+              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
+            
+          </div>
         
       </div>
     </article>
@@ -397,6 +637,22 @@ iOS 系统架构iOS 系统是基于 ARM 架构的，大致可以分为四层：�
           </div>
         
         
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/iOS%E8%BF%9B%E9%98%B6/">iOS进阶</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS/">iOS</a>
+            
+              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
+            
+          </div>
         
       </div>
     </article>
@@ -435,119 +691,22 @@ iOS 系统架构iOS 系统是基于 ARM 架构的，大致可以分为四层：�
           </div>
         
         
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/02/23/2020-2/22.A%E3%80%81B%20%E6%B5%8B%E8%AF%95%EF%BC%9A%E9%AA%8C%E8%AF%81%E5%86%B3%E7%AD%96%E6%95%88%E6%9E%9C%E7%9A%84%E5%88%A9%E5%99%A8/" target="_self">
-          A/B 测试：验证决策效果的利器
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/02/23/2020-2/22.A%E3%80%81B%20%E6%B5%8B%E8%AF%95%EF%BC%9A%E9%AA%8C%E8%AF%81%E5%86%B3%E7%AD%96%E6%95%88%E6%9E%9C%E7%9A%84%E5%88%A9%E5%99%A8/" target="_self">
-          
-          
-            
-          
-          A/B 测试：验证决策效果的利器
-
-现在App Store中的应用，就像商场中的商品一样琳琅满目，可以解决用户各个方面的需求。这时，你要想创新，或者做出比竞品更优秀的功能，是越来越不容易。所以，很多公司都必须去做一些实验，看看有哪些功能可以增强自己App的竞争力，又有哪些功能可以废弃掉。而进行这样的实验的主要方法，就是A/B 测试。A/B测试，也叫桶测试或分流测试，指的是针对一个变量的两个版本 A
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
           <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-02-23 21:38" pubdate>
-              2020-02-23
-            </time>
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/iOS%E8%BF%9B%E9%98%B6/">iOS进阶</a>
+            
           </div>
         
         
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/01/19/2020-2/21.%E5%A6%82%E4%BD%95%E6%9E%84%E9%80%A0%E9%85%B7%E7%82%AB%E7%9A%84%E7%89%A9%E7%90%86%E6%95%88%E6%9E%9C%E5%92%8C%E8%BF%87%E5%9C%BA%E5%8A%A8%E7%94%BB%E6%95%88%E6%9E%9C/" target="_self">
-          如何构造酷炫的物理效果和过场动画效果
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/01/19/2020-2/21.%E5%A6%82%E4%BD%95%E6%9E%84%E9%80%A0%E9%85%B7%E7%82%AB%E7%9A%84%E7%89%A9%E7%90%86%E6%95%88%E6%9E%9C%E5%92%8C%E8%BF%87%E5%9C%BA%E5%8A%A8%E7%94%BB%E6%95%88%E6%9E%9C/" target="_self">
-          
-          
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
             
-          
-          如何构造酷炫的物理效果和过场动画效果
-
-不论是iOS开发，还是Android开发，现在的动画库差不多都需要手动去编写动画代码。这样的话，iOS 和 Android 开发者就需要分别去编写适合自己系统的代码。而且，手动编写动画的代码也非常复杂，不容易维护，很多动画细节的调整还需要和动画设计师不断沟通打磨，尤其是千行以上的动画代码编写、维护、沟通的成本巨大。手动编写动画代码，除了会影响到开发者外，动画
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-01-19 23:59" pubdate>
-              2020-01-19
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/12/23/2020-2/20.%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98%20JSON%20%E8%A7%A3%E6%9E%90%E7%9A%84%E6%80%A7%E8%83%BD/" target="_self">
-          如何提高 JSON 解析的性能
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/12/23/2020-2/20.%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98%20JSON%20%E8%A7%A3%E6%9E%90%E7%9A%84%E6%80%A7%E8%83%BD/" target="_self">
-          
-          
+              <a href="/tags/iOS/">iOS</a>
             
-          
-          如何提高 JSON 解析的性能
-在iOS 开发中，我们都会碰到这样的问题：不同团队开发的库需要进行数据通信，而通信数据规范通常很难确定。今天，我们就来聊聊如何高效地解决这个问题吧。同一个编程语言之间的数据通信非常简单，因为数据的规范都是相同的，所以输入和输出不需要做任何转换。但是，在不同编程语言之间进行数据通信，就会比较麻烦了。比如，一种语言按照自身的标准规范输出了一份数据，另一门语言接收到时需要
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-12-23 23:44" pubdate>
-              2019-12-23
-            </time>
+              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
+            
           </div>
-        
-        
         
       </div>
     </article>
@@ -557,7 +716,7 @@ iOS 系统架构iOS 系统是基于 ARM 架构的，大致可以分为四层：�
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/#board">11</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#board">12</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

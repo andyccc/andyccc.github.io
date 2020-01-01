@@ -1,0 +1,445 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>关于Redis中16个默认数据库 - andyccc</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>andyccc</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="关于Redis中16个默认数据库">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-07-25 20:56" pubdate>
+        2020年7月25日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      12
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">关于Redis中16个默认数据库</h1>
+            
+            <div class="markdown-body">
+              <p>Redis 是一个字典结构的存储服务器，一个 Redis 实例提供了多个用来存储数据的字典，客户端可以指定将数据存储在哪个字典中。<br><a target="_blank" rel="noopener" href="https://s2.51cto.com/oss/201910/28/b6fda5baa77c96dc103763a74a8ee495.jpg-wh_651x-s_64210391.jpg"><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/10365980/1611119722714-1adde1e5-945c-4cf3-9231-f8cd6c7c24fe.jpeg#align=left&display=inline&height=400&margin=%5Bobject%20Object%5D&originHeight=400&originWidth=600&size=0&status=done&style=none&width=600" srcset="/img/loading.gif" lazyload></a></p>
+<p>在实际项目中 Redis 常被应用于做缓存，分布式锁、消息队列等。但是在搭建配置好 Redis 服务器后很多朋友应该会发现和有这样的疑问，为什么 Redis 默认建立了 16 个数据库，如下图所示。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/10365980/1611119722423-54912a11-4b17-4f4d-888b-8e5024afa3f3.jpeg#align=left&display=inline&height=312&margin=%5Bobject%20Object%5D&originHeight=312&originWidth=283&size=0&status=done&style=none&width=283" srcset="/img/loading.gif" lazyload></p>
+<h4 id="一、16-个数据库的由来"><a href="#一、16-个数据库的由来" class="headerlink" title="一、16 个数据库的由来"></a>一、16 个数据库的由来</h4><p>Redis 是一个字典结构的存储服务器，一个 Redis 实例提供了多个用来存储数据的字典，客户端可以指定将数据存储在哪个字典中。这与在一个关系数据库实例中可以创建多个数据库类似 (如下图所示)，所以可以将其中的每个字典都理解成一个独立的数据库。</p>
+<p>以 MySQL 实例为例<br>Redis 默认支持 16 个数据库，可以通过调整 Redis 的配置文件 redis/redis.conf 中的 databases 来修改这一个值，设置完毕后重启 Redis 便完成配置。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/10365980/1611119722430-fb99521a-93c8-4877-9dc1-f47669852e2d.jpeg#align=left&display=inline&height=96&margin=%5Bobject%20Object%5D&originHeight=96&originWidth=642&size=0&status=done&style=none&width=642" srcset="/img/loading.gif" lazyload></p>
+<p>客户端与 Redis 建立连接后会默认选择 0 号数据库，不过可以随时使用 SELECT 命令更换数据库。</p>
+<h1 id="切库-redis-gt-SELECT-1-默认-0-号-db，切换为-1-号-dbOKredis-1-gt-GET-username-从-1-号库中获取-username-nil"><a href="#切库-redis-gt-SELECT-1-默认-0-号-db，切换为-1-号-dbOKredis-1-gt-GET-username-从-1-号库中获取-username-nil" class="headerlink" title="切库 redis&gt; SELECT 1 # 默认 0 号 db，切换为 1 号 dbOKredis [1] &gt; GET username # 从 1 号库中获取 username (nil)"></a>切库 redis&gt; SELECT 1 # 默认 0 号 db，切换为 1 号 dbOKredis [1] &gt; GET username # 从 1 号库中获取 username (nil)</h1><p>在实际项目中则可以通过以 Redis 配置文件的形式指定数据库，如下图所示</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/10365980/1611119722424-d4db02ef-48ba-4041-a4e4-a83cc42d473d.jpeg#align=left&display=inline&height=302&margin=%5Bobject%20Object%5D&originHeight=302&originWidth=452&size=0&status=done&style=none&width=452" srcset="/img/loading.gif" lazyload></p>
+<h4 id="二、正确理解-Redis-的-“数据库”-概念"><a href="#二、正确理解-Redis-的-“数据库”-概念" class="headerlink" title="二、正确理解 Redis 的 “数据库” 概念"></a>二、正确理解 Redis 的 “数据库” 概念</h4><p>由于 Redis 不支持自定义数据库的名字，所以每个数据库都以编号命名。开发者则需要自己记录存储的数据与数据库的对应关系。另外 Redis 也不支持为每个数据库设置不同的访问密码，所以一个客户端要么可以访问全部数据库，要么全部数据库都没有权限访问。但是，要正确地理解 Redis 的 “数据库” 概念这里不得不提到一个命令：</p>
+<h1 id="清空一个-Redis-实例中所有数据库中的数据-redis-127-0-0-1-6379-gt-FLUSHALL"><a href="#清空一个-Redis-实例中所有数据库中的数据-redis-127-0-0-1-6379-gt-FLUSHALL" class="headerlink" title="清空一个 Redis 实例中所有数据库中的数据 redis 127.0.0.1:6379&gt; FLUSHALL"></a>清空一个 Redis 实例中所有数据库中的数据 redis 127.0.0.1:6379&gt; FLUSHALL</h1><p>该命令可以清空实例下的所有数据库数据，这与我们所熟知的关系型数据库所不同。关系型数据库多个库常用于存储不同应用程序的数据 ，且没有方式可以同时清空实例下的所有库数据。所以对于 Redis 来说这些 db 更像是一种命名空间，且不适宜存储不同应用程序的数据。比如可以使用 0 号数据库存储某个应用生产环境中的数据，使用 1 号数据库存储测试环境中的数据，但不适宜使用 0 号数据库存储 A 应用的数据而使用 1 号数据库 B 应用的数据，不同的应用应该使用不同的 Redis 实例存储数据。Redis 非常轻量级，一个空 Redis 实例占用的内在只有 1M 左右，所以不用担心多个 Redis 实例会额外占用很多内存。</p>
+<h4 id="三、集群情况下是否支持一个实例多个-db"><a href="#三、集群情况下是否支持一个实例多个-db" class="headerlink" title="三、集群情况下是否支持一个实例多个 db?"></a>三、集群情况下是否支持一个实例多个 db?</h4><p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/10365980/1611119722431-9f680754-28c8-4b09-9b62-0e04ec3f3e91.jpeg#align=left&display=inline&height=255&margin=%5Bobject%20Object%5D&originHeight=255&originWidth=286&size=0&status=done&style=none&width=286" srcset="/img/loading.gif" lazyload></p>
+<p>要注意以上所说的都是基于单体 Redis 的情况。而在集群的情况下不支持使用 select 命令来切换 db，因为 Redis 集群模式下只有一个 db0。再扩展一些集群与单机 Reids 的区别，感兴趣的朋友可以去查阅相关的资料深入理解，这里就不做讨论了。<br>key 批量操作支持有限：例如 mget、mset 必须在一个 slot<br>Key 事务和 Lua 支持有限：操作的 key 必须在一个节点<br>key 是数据分区的最小粒度：不支持 bigkey 分区<br>不支持多个数据库：集群模式下只有一个 db0<br>复制只支持一层：不支持树形复制结构</p>
+<h4 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h4><p>Redis 实例默认建立了 16 个 db，由于不支持自主进行数据库命名所以以 dbX 的方式命名。默认数据库数量可以修改配置文件的 database 值来设定。对于 db 正确的理解应为 “命名空间”，多个应用程序不应使用同一个 Redis 不同库，而应一个应用程序对应一个 Redis 实例，不同的数据库可用于存储不同环境的数据。最后要注意，Redis 集群下只有 db0，不支持多 db。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/redis/">redis</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/07/25/2020-2/35.%E5%8E%9F%E7%94%9F%E5%B8%83%E5%B1%80%E8%BD%AC%E5%88%B0%E5%89%8D%E7%AB%AF%E5%B8%83%E5%B1%80%EF%BC%8C%E5%BC%80%E5%8F%91%E6%80%9D%E8%B7%AF%E6%9C%89%E5%93%AA%E4%BA%9B%E8%BD%AC%E5%8F%98/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">原生布局转到前端布局，开发思路有哪些转变</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/07/03/2020-2/33.%E6%89%93%E9%80%9A%E5%89%8D%E7%AB%AF%E4%B8%8E%E5%8E%9F%E7%94%9F%E7%9A%84%E6%A1%A5%E6%A2%81%EF%BC%9AJavaScriptCore%20%E8%83%BD%E5%B9%B2%E5%93%AA%E4%BA%9B%E4%BA%8B%E6%83%85/">
+                        <span class="hidden-mobile">打通前端与原生的桥梁：JavaScriptCore 能干哪些事情</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

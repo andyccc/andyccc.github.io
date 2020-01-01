@@ -182,6 +182,197 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2018/01/02/2018-2/ARC%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E4%BB%A5%E5%8F%8A%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8/" target="_self">
+          ARC内存管理以及循环引用
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/01/02/2018-2/ARC%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E4%BB%A5%E5%8F%8A%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8/" target="_self">
+          
+          
+            
+          
+          ARC:”Automatic Reference Counting”，自动引用计数。Swift语言延续了OC的做法，也是利用ARC机制进行内存管理，和OC的ARC一样，当一些类的实例不在需要的时候，ARC会释放它们的内存。但是，在少数情况下，ARC需要知道你的代码之间的关系才能更好的为你管理内存，和OC一样，Swift中的ARC也存在循环引用导致内存泄露的情况。    
+一、ARC的工作机制每当我
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-01-02 16:25" pubdate>
+              2018-01-02
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">iOS 内存管理</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2018/01/02/2018-2/%E5%80%BC%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%9C%A8Swift%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8/" target="_self">
+          值类型和引用类型在Swift中的使用
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/01/02/2018-2/%E5%80%BC%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%9C%A8Swift%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8/" target="_self">
+          
+          
+            
+          
+          前言 值类型 vs 引用类型1、什么是值类型值类型就是值直接保存在变量中。例如：
+12int a = 10;a = 20; 
+
+值类型赋新值的时候会直接覆盖旧值。
+
+1234// 1int b = a;// 2b = 30;
+
+按注释：
+1.这段代码首先声明了一个int类型的变量b，然后将a中保存的值赋值给b。
+2.给b赋新值，不会影响a中保存的值。
+
+2、什么是引用类型引用类型，变量中保存的是地
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-01-02 14:22" pubdate>
+              2018-01-02
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">iOS 内存管理</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2018/01/02/2018-2/Swift%E9%9B%86%E5%90%88%E5%87%BD%E6%95%B0-Reduce%E3%80%81Map%E3%80%81FlatMap%E3%80%81Filter%E8%AF%A6%E8%A7%A3/" target="_self">
+          Swift集合函数:Reduce、Map、FlatMap、Filter详解
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/01/02/2018-2/Swift%E9%9B%86%E5%90%88%E5%87%BD%E6%95%B0-Reduce%E3%80%81Map%E3%80%81FlatMap%E3%80%81Filter%E8%AF%A6%E8%A7%A3/" target="_self">
+          
+          
+            
+          
+          Reduce声明
+1func reduce&lt;Result&gt;(_ initialResult: Result, _ nextPartialResult: (Result, Element) throws -&gt; Result) rethrows -&gt; Result
+
+Returns the result of combining the elements of the sequ
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-01-02 11:20" pubdate>
+              2018-01-02
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS-API-%E8%AF%A6%E8%A7%A3/">iOS API 详解</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2017/08/30/2017/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3copy%E5%85%B3%E9%94%AE%E5%AD%97/" target="_self">
+          深入理解copy关键字
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2017/08/30/2017/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3copy%E5%85%B3%E9%94%AE%E5%AD%97/" target="_self">
+          
+          
+            
+          
+          我们在声明 NSString、NSArray 等具有可变子类的属性时，一般都会用 copy 关键字来指定它的特质。
+为什么要用 copy
+copy 关键字的解释是：此特质所表达的所属关系与 strong（为属性设置新值时，先保留新值，并释放旧值，然后再将新值设置上去）类似。不同的是，设置新值时，不保留新值，而是将其“拷贝”。
+
+看上去并没有什么大不了的，拷贝与否好像和设置成功不成功的关系不大！但是
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-08-30 10:26" pubdate>
+              2017-08-30
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">iOS 内存管理</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2016/12/26/2016/iOS10%20%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-Xcode8/" target="_self">
           iOS10 适配问题
         </a>
@@ -216,6 +407,20 @@
           </div>
         
         
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS/">iOS</a>
+            
+          </div>
         
       </div>
     </article>
@@ -255,6 +460,20 @@
           </div>
         
         
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS/">iOS</a>
+            
+          </div>
         
       </div>
     </article>
@@ -297,6 +516,20 @@
           </div>
         
         
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS/">iOS</a>
+            
+          </div>
         
       </div>
     </article>
@@ -336,6 +569,20 @@
           </div>
         
         
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS/">iOS</a>
+            
+          </div>
         
       </div>
     </article>
@@ -384,6 +631,20 @@
           </div>
         
         
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS/">iOS</a>
+            
+          </div>
         
       </div>
     </article>
@@ -421,166 +682,20 @@
           </div>
         
         
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2015/09/03/2015/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20Linked%20List/" target="_self">
-          数据结构 Linked List
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2015/09/03/2015/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20Linked%20List/" target="_self">
-          
-          
-            
-          
-          
-Linked List 这里主要使用 Swift 实现链表及其一些基本特性. 12345678910111213141516171819202122232425262728293031323334353637……
-
-Linked List这里主要使用 Swift 实现链表及其一些基本特性.
-12345678910111213141516171819202122232425262728293031
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
           <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2015-09-03 22:11" pubdate>
-              2015-09-03
-            </time>
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/iOS%E5%BC%80%E5%8F%91/">iOS开发</a>
+            
           </div>
         
         
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2015/08/22/2015/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20Binary%20Tree/" target="_self">
-          数据结构 Binary Tree
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2015/08/22/2015/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20Binary%20Tree/" target="_self">
-          
-          
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
             
-          
-          
-二叉树没什么可介绍的, 这里主要用 Swift 来实现二叉树的一系列相关函数. 实现这些函数的关键在于 遍历与递归的使用. Binary Tree 二叉树的基本结构如下: 1234567891011121314……
-
-二叉树没什么可介绍的, 这里主要用 Swift 来实现二叉树的一系列相关函数.实现这些函数的关键在于 遍历与递归的使用.
-Binary Tree二叉树的基本结构如下:
-123456
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2015-08-22 21:19" pubdate>
-              2015-08-22
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2015/08/21/2015-2/NSURLSession/" target="_self">
-          NSURLSession
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2015/08/21/2015-2/NSURLSession/" target="_self">
-          
-          
+              <a href="/tags/iOS/">iOS</a>
             
-          
-          本文翻译自 https://www.raywenderlich.com/110458/nsurlsession-tutorial-getting-started   
-原作者：Ken Toh    
-译者：andyccc       
-
-当一个app从服务端获取用户数据更新社交媒体信息和下载远程的文件到磁盘的时候，就会用到移动应用的核心技术：HTTP网络请求。为了帮助开发者处理大量的网络请求，Ap
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2015-08-21 17:19" pubdate>
-              2015-08-21
-            </time>
           </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2015/08/11/2015/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20Stack%20%E4%B8%8E%20Queue/" target="_self">
-          数据结构 Stack 与 Queue
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2015/08/11/2015/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20Stack%20%E4%B8%8E%20Queue/" target="_self">
-          
-          
-            
-          
-          
-StackStack 是一个后进先出的数据结构, LIFO(Last In First Out). 其内部可以使用 Array 来实现. push/pop 操作分别从 Array 的尾部添加 / 删除元素, 时间复杂度均……
-
-StackStack 是一个后进先出的数据结构, LIFO(Last In First Out). 其内部可以使用 Array 来实现.push/pop 操作分别从 Ar
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2015-08-11 21:20" pubdate>
-              2015-08-11
-            </time>
-          </div>
-        
-        
         
       </div>
     </article>
@@ -590,7 +705,7 @@ StackStack 是一个后进先出的数据结构, LIFO(Last In First Out). 其内
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/9/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/#board">8</a><a class="page-number" href="/page/9/#board">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/#board">11</a><a class="extend next" rel="next" href="/page/11/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/9/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/#board">8</a><a class="page-number" href="/page/9/#board">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/#board">11</a><a class="page-number" href="/page/12/#board">12</a><a class="extend next" rel="next" href="/page/11/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
