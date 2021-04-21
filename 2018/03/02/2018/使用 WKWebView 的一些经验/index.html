@@ -1,0 +1,493 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>使用 WKWebView 的一些经验 - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="使用 WKWebView 的一些经验">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2018-03-02 10:14" pubdate>
+        2018年3月2日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      20
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">使用 WKWebView 的一些经验</h1>
+            
+            <div class="markdown-body">
+              <blockquote>
+<p>白屏问题 UIWebView 上当内存占用过大时，App 会 crash；WKWebView 上当内存占用过大时，WebContent process 会 crash，导致白屏。</p>
+</blockquote>
+<h2 id="白屏问题"><a href="#白屏问题" class="headerlink" title="白屏问题"></a><a href="#%E7%99%BD%E5%B1%8F%E9%97%AE%E9%A2%98" title="白屏问题"></a>白屏问题</h2><p>UIWebView 上当内存占用过大时，App 会 crash；<br>WKWebView 上当内存占用过大时，WebContent process 会 crash，导致白屏。<br>此时，wkWebView 的 url 变为 nil，reload 操作已无效。</p>
+<p>所以，白屏的根本原因是由内存占用过大引发的 App crash 问题，转换成了 WebContent process 的 crash 问题。</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a><a href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95" title="解决方法"></a>解决方法</h3><h4 id="WKNavigationDelegate-的回调方法-webViewWebContentProcessDidTerminate"><a href="#WKNavigationDelegate-的回调方法-webViewWebContentProcessDidTerminate" class="headerlink" title="WKNavigationDelegate 的回调方法 webViewWebContentProcessDidTerminate"></a><a href="#WKNavigationDelegate%E7%9A%84%E5%9B%9E%E8%B0%83%E6%96%B9%E6%B3%95webViewWebContentProcessDidTerminate" title="WKNavigationDelegate的回调方法webViewWebContentProcessDidTerminate"></a>WKNavigationDelegate 的回调方法 webViewWebContentProcessDidTerminate</h4><p>在 webViewWebContentProcessDidTerminate 回调中执行 webView 的 reload 操作。<br>当 WebContent process 即将白屏时会触发该回调。<br>此时，wkWebView 的 url 尚未变成 nil，所以 reload 可以生效。<br>而在高内存消耗的界面可能会频繁 reload。</p>
+<p>添加一个 web content process 崩溃的标记位<br>在崩溃的时候 webViewWebContentProcessDidTerminate 设置该标记位，在 viewWillAppear 中根据该标记位来判断，然后 reload 操作。</p>
+<h4 id="通过-webView-url-来判断"><a href="#通过-webView-url-来判断" class="headerlink" title="通过 webView.url 来判断"></a><a href="#%E9%80%9A%E8%BF%87webView-url%E6%9D%A5%E5%88%A4%E6%96%AD" title="通过webView.url来判断"></a>通过 webView.url 来判断</h4><p>在 viewWillAppear 的时候对 url 进行判断，若为空，则 reload。</p>
+<p>同时使用 KVO 来监听 URL 为空的情况，</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-keyword">if</span> ([<span class="hljs-keyword">self</span>.webView.scrollView.superview isKindOfClass:[<span class="hljs-built_in">WKWebView</span> <span class="hljs-keyword">class</span>]]) &#123;<br>    <span class="hljs-built_in">WKWebView</span> *wkWebView = (<span class="hljs-built_in">WKWebView</span> *)(<span class="hljs-keyword">self</span>.webView.scrollView.superview);<br>    [wkWebView addObserver:<span class="hljs-keyword">self</span> forKeyPath:<span class="hljs-string">@&quot;URL&quot;</span> options:<span class="hljs-built_in">NSKeyValueObservingOptionNew</span> | <span class="hljs-built_in">NSKeyValueObservingOptionOld</span> context:<span class="hljs-literal">nil</span>];<br>&#125;<br><br>- (<span class="hljs-keyword">void</span>)observeValueForKeyPath:(<span class="hljs-built_in">NSString</span> *)keyPath ofObject:(<span class="hljs-keyword">id</span>)object change:(<span class="hljs-built_in">NSDictionary</span> *)change context:(<span class="hljs-keyword">void</span> *)context<br>&#123;<br>    <span class="hljs-keyword">if</span> ([keyPath isEqualToString:<span class="hljs-string">@&quot;URL&quot;</span>]) &#123;<br>        <span class="hljs-built_in">NSURL</span> *newUrl = change[<span class="hljs-string">@&quot;new&quot;</span>];<br>        <span class="hljs-built_in">NSURL</span> *oldUrl = change[<span class="hljs-string">@&quot;old&quot;</span>];<br>        <span class="hljs-keyword">if</span> ([newUrl isEqual:[<span class="hljs-built_in">NSNull</span> null]] &amp;&amp; ![oldUrl isEqual:[<span class="hljs-built_in">NSNull</span> null]]) &#123;<br>            [<span class="hljs-keyword">self</span>.webView reload];<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="通过-webView-title-来判断"><a href="#通过-webView-title-来判断" class="headerlink" title="通过 webView.title 来判断"></a><a href="#%E9%80%9A%E8%BF%87webView-title%E6%9D%A5%E5%88%A4%E6%96%AD" title="通过webView.title来判断"></a>通过 webView.title 来判断</h4><p>在 viewWillAppear 的时候对 title 进行判断，若为空，则 reload。</p>
+<p>并非所有白屏的情况都会调用上边的回调方法。<br>如在 H5 界面 present 出来一个相机拍照，导致 web content 挂掉，则返回 H5 界面的时候，wkwebview 的 title 会为空。<br>若拍照耗了太多内存，导致内存紧张，WebContent process 挂掉，<br>但上边的回调方法 webViewWebContentProcessDidTerminate 并未被调用。<br>白屏时 webView 的 title 会被置空，所以可以在 viewWillAppear 中检测 webView.title 是否为空来 reload 界面。<br>不懂？</p>
+<h4 id="通过-innerHTML-来判断"><a href="#通过-innerHTML-来判断" class="headerlink" title="通过 innerHTML 来判断"></a><a href="#%E9%80%9A%E8%BF%87innerHTML%E6%9D%A5%E5%88%A4%E6%96%AD" title="通过innerHTML来判断"></a>通过 innerHTML 来判断</h4><p>在 viewWillAppear 的时候对 innerHTML 进行判断，若为空，则 reload。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">- (<span class="hljs-keyword">void</span>)viewDidAppear:(<span class="hljs-built_in">BOOL</span>)animated &#123;<br>    [<span class="hljs-keyword">super</span> viewDidAppear:animated];<br>    __<span class="hljs-keyword">weak</span> <span class="hljs-keyword">typeof</span>(<span class="hljs-keyword">self</span>) weakSelf = <span class="hljs-keyword">self</span>;<br>    [<span class="hljs-keyword">self</span>.webView evaluateJavaScript:<span class="hljs-string">@&quot;document.querySelector(&#x27;body&#x27;).innerHTML&quot;</span> completionHandler:^(<span class="hljs-keyword">id</span> result, <span class="hljs-built_in">NSError</span> *error) &#123;<br>        __<span class="hljs-keyword">strong</span> __<span class="hljs-keyword">typeof</span>(weakSelf) strongSelf = weakSelf;<br>        <span class="hljs-keyword">if</span> (!result || ([result isKindOfClass:[<span class="hljs-built_in">NSString</span> <span class="hljs-keyword">class</span>]] &amp;&amp; [((<span class="hljs-built_in">NSString</span> *)result) length] == <span class="hljs-number">0</span>)) &#123;<br>            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;--- H5页面加载异常，重新加载中 -----&quot;</span>);<br>            <span class="hljs-comment">// reload your page</span><br>            [strongSelf.webView reload];<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;--- H5页面加载正常 -----&quot;</span>);<br>        &#125;<br>    &#125;];<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Cookie-问题"><a href="#Cookie-问题" class="headerlink" title="Cookie 问题"></a><a href="#Cookie%E9%97%AE%E9%A2%98" title="Cookie问题"></a>Cookie 问题</h2><p>问题在于：</p>
+<p>WKWebView 发起的请求不会自动带上存储于 NSHTTPCookieStorage 中的 cookie。<br>而 UIWebView 会自动带上。</p>
+<p>Cookie 格式：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">name</span>=Nicholas;value=test;domain=y.qq.com;expires=Sat, <span class="hljs-number">02</span> May <span class="hljs-number">2019</span> <span class="hljs-number">23</span>:<span class="hljs-number">38</span>:<span class="hljs-number">25</span> GMT;<br></code></pre></td></tr></table></figure>
+
+<h3 id="UIWebView-设置-cookie"><a href="#UIWebView-设置-cookie" class="headerlink" title="UIWebView 设置 cookie"></a><a href="#UIWebView%E8%AE%BE%E7%BD%AEcookie" title="UIWebView设置cookie"></a>UIWebView 设置 cookie</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">var props = Dictionary&lt;HTTPCookiePropertyKey, Any&gt;<span class="hljs-literal">()</span><br>props<span class="hljs-literal">[HTTPC<span class="hljs-identifier">ookiePropertyKey</span>.<span class="hljs-identifier">name</span>]</span> = <span class="hljs-string">&quot;tigerobocookie&quot;</span><br>props<span class="hljs-literal">[HTTPC<span class="hljs-identifier">ookiePropertyKey</span>.<span class="hljs-identifier">value</span>]</span> = cookieValue <span class="hljs-comment">// 一串key-value，以;间隔。</span><br>props<span class="hljs-literal">[HTTPC<span class="hljs-identifier">ookiePropertyKey</span>.<span class="hljs-identifier">path</span>]</span> = <span class="hljs-string">&quot;/&quot;</span><br>props<span class="hljs-literal">[HTTPC<span class="hljs-identifier">ookiePropertyKey</span>.<span class="hljs-identifier">domain</span>]</span> = <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">API</span>.</span></span>tigerResearchWebDomain <span class="hljs-comment">// 必须设置souyanbao.tigerobo.com</span><br><br><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> cookie = <span class="hljs-constructor">HTTPCookie(<span class="hljs-params">properties</span>: <span class="hljs-params">props</span>)</span> &#123;<br>  <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">NSHTTPCookieStorage</span>.</span></span>shared.set<span class="hljs-constructor">Cookie(<span class="hljs-params">cookie</span>)</span><br>&#125;<br><br>xxx<br><span class="hljs-keyword">let</span> request = <span class="hljs-constructor">URLRequest(<span class="hljs-params">url</span>: <span class="hljs-params">url</span>)</span><br>webView.load<span class="hljs-constructor">Request(<span class="hljs-params">request</span>)</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="WKWebView-设置-cookie"><a href="#WKWebView-设置-cookie" class="headerlink" title="WKWebView 设置 cookie"></a><a href="#WKWebView%E8%AE%BE%E7%BD%AEcookie" title="WKWebView设置cookie"></a>WKWebView 设置 cookie</h3><p>而 WKWebView 使用 NSHTTPCookieStorage 则不行。</p>
+<h4 id="使用-WKWebView-configuration-websiteDataStore-httpCookieStore"><a href="#使用-WKWebView-configuration-websiteDataStore-httpCookieStore" class="headerlink" title="使用 WKWebView.configuration.websiteDataStore.httpCookieStore"></a><a href="#%E4%BD%BF%E7%94%A8WKWebView-configuration-websiteDataStore-httpCookieStore" title="使用WKWebView.configuration.websiteDataStore.httpCookieStore"></a>使用 WKWebView.configuration.websiteDataStore.httpCookieStore</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">guard <span class="hljs-keyword">let</span> cookies = <span class="hljs-constructor">HTTPCookie(<span class="hljs-params">properties</span>: <span class="hljs-params">props</span>)</span> <span class="hljs-keyword">else</span> &#123; return &#125;<br><span class="hljs-keyword">let</span> httpCookieStore = wkWebView.configuration.websiteDataStore.httpCookieStore<br>httpCookieStore.set<span class="hljs-constructor">Cookie(<span class="hljs-params">cookie</span>)</span> &#123;<br>  <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">DispatchQueue</span>.</span></span>main.async &#123;<br>    self.wkWebView.load(request)<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>但是 httpCookieStore 只在 iOS 11 之后才能用。</p>
+<h4 id="在-loadRequest-之前，在-request-header-中设置-cookie，解决首个-cookie-带不上的问题"><a href="#在-loadRequest-之前，在-request-header-中设置-cookie，解决首个-cookie-带不上的问题" class="headerlink" title="在 loadRequest 之前，在 request header 中设置 cookie，解决首个 cookie 带不上的问题"></a><a href="#%E5%9C%A8loadRequest%E4%B9%8B%E5%89%8D%EF%BC%8C%E5%9C%A8request-header%E4%B8%AD%E8%AE%BE%E7%BD%AEcookie%EF%BC%8C%E8%A7%A3%E5%86%B3%E9%A6%96%E4%B8%AAcookie%E5%B8%A6%E4%B8%8D%E4%B8%8A%E7%9A%84%E9%97%AE%E9%A2%98" title="在loadRequest之前，在request header中设置cookie，解决首个cookie带不上的问题"></a>在 loadRequest 之前，在 request header 中设置 cookie，解决首个 cookie 带不上的问题</h4><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-built_in">NSURL</span> *url = [<span class="hljs-built_in">NSURL</span> URLWithString:<span class="hljs-string">@&quot;http://github.com&quot;</span>];<br><span class="hljs-built_in">NSMutableURLRequest</span> *request = [<span class="hljs-built_in">NSMutableURLRequest</span> requestWithURL:url];<br>[request addValue:<span class="hljs-string">@&quot;skey=skeyValue&quot;</span> forHTTPHeaderField:<span class="hljs-string">@&quot;Cookie&quot;</span>];<br><br><span class="hljs-built_in">WKWebView</span> *webView = [<span class="hljs-built_in">WKWebView</span> new];<br>[webView loadRequest:request];<br></code></pre></td></tr></table></figure>
+
+<h4 id="通过-document-cookie-设置-cookie-解决后续页面（同域）Ajax，iframe-请求的-cookie-问题"><a href="#通过-document-cookie-设置-cookie-解决后续页面（同域）Ajax，iframe-请求的-cookie-问题" class="headerlink" title="通过 document.cookie 设置 cookie 解决后续页面（同域）Ajax，iframe 请求的 cookie 问题"></a><a href="#%E9%80%9A%E8%BF%87document-cookie%E8%AE%BE%E7%BD%AEcookie%E8%A7%A3%E5%86%B3%E5%90%8E%E7%BB%AD%E9%A1%B5%E9%9D%A2%EF%BC%88%E5%90%8C%E5%9F%9F%EF%BC%89Ajax%EF%BC%8Ciframe%E8%AF%B7%E6%B1%82%E7%9A%84cookie%E9%97%AE%E9%A2%98" title="通过document.cookie设置cookie解决后续页面（同域）Ajax，iframe请求的cookie问题"></a>通过 document.cookie 设置 cookie 解决后续页面（同域）Ajax，iframe 请求的 cookie 问题</h4><p>注意：document.cookie() 无法跨域设置 cookie。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-built_in">WKUserContentController</span> *userContentController = [<span class="hljs-built_in">WKUserContentController</span> new];<br><span class="hljs-built_in">WKUserScript</span> *cookieScript = [[<span class="hljs-built_in">WKUserScript</span> alloc] initWithSource:<span class="hljs-string">@&quot;document.cookie=&#x27;skey=skeyValue&#x27;;&quot;</span> injectionTime:<span class="hljs-built_in">WKUserScriptInjectionTimeAtDocumentStart</span> forMainFrameOnly:<span class="hljs-literal">NO</span>];<br>[userContentController addUserScript:cookieScript];<br></code></pre></td></tr></table></figure>
+
+<p>无法解决 302 请求的 cookie 问题。<br>可以在 webView:decidePolicyForNavigationAction:decisionHandler: 回调方法中拦截 302 请求，copy request，<br>在 request header 中带上 cookie 并重新 loadRequest。不过依然解决不了页面 iframe 跨越请求的 cookie 问题。<br>因为 loadRequest 只适合加载 mainFrame 请求。</p>
+<h2 id="NSURLProtocol-可以用于中间人攻击"><a href="#NSURLProtocol-可以用于中间人攻击" class="headerlink" title="NSURLProtocol 可以用于中间人攻击"></a><a href="#NSURLProtocol%E5%8F%AF%E4%BB%A5%E7%94%A8%E4%BA%8E%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB" title="NSURLProtocol可以用于中间人攻击"></a>NSURLProtocol 可以用于中间人攻击</h2><p>WKWebView 独立于 app 之外的进程（webContent process）执行网络请求，请求数据不经过主进程。<br>所以 WKWebView 中无法直接使用 NSURLProtocol 来拦截请求，</p>
+<h2 id="loadRequest-问题"><a href="#loadRequest-问题" class="headerlink" title="loadRequest 问题"></a><a href="#loadRequest%E9%97%AE%E9%A2%98" title="loadRequest问题"></a>loadRequest 问题</h2><p>WKWebView 通过 loadRequest 发起的 post 请求 body 数据会丢失。<br>因为进程间通信性能问题，HTTPBody 字段被丢弃</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs clojure">[request setHTTPMethod:@<span class="hljs-string">&quot;POST&quot;</span>]<span class="hljs-comment">;</span><br>[request setHTTPBody:[@<span class="hljs-string">&quot;bodyData&quot;</span> dataUsingEncoding:NSUTF8StringEncoding]]<span class="hljs-comment">;</span><br>[wkWebView loadRequest:request]<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="由此想到的"><a href="#由此想到的" class="headerlink" title="由此想到的"></a><a href="#%E7%94%B1%E6%AD%A4%E6%83%B3%E5%88%B0%E7%9A%84" title="由此想到的"></a>由此想到的</h2><p>小程序开发中通过的性能优化关键在于 setData 方法的调用。为啥会这么影响性能呢？</p>
+<p>小程序的视图层目前使用 WebView 作为渲染载体，而逻辑层是由独立的 JavascriptCore 作为运行环境。在架构上，WebView 和 JavascriptCore 都是独立的模块，并不具备数据直接共享的通道。</p>
+<p>当前，视图层和逻辑层的数据传输，实际上通过两边提供的 evaluateJavascript 所实现。即用户传输的数据 (由视图层去往逻辑层)，需要将其转换为字符串形式传递，同时把转换后的数据内容拼接成一份 JS 脚本，再通过执行 JS 脚本的形式传递到两边独立环境。</p>
+<p>而 evaluateJavascript 的执行会受很多方面的影响，数据到达视图层并不是实时的。同一进程内的 WebView 实际上会共享一个 JS VM，如果 WebView 内 JS 线程正在执行渲染或其他逻辑，会影响 evaluateJavascript 脚本的实际执行时间，</p>
+<p>另外多个 WebView 也会抢占 JS VM 的执行权限；另外还有 JS 本身的编译执行耗时，都是影响数据传输速度的因素。</p>
+<p>常见的 setData 错误操作：</p>
+<ol>
+<li> 频繁的去执行 setData。 Android 下用户在滑动时会感觉到卡顿，操作反馈延迟严重；渲染有出现延时。</li>
+<li> 每次 setData 都传递大量新数据。</li>
+<li> 后台态页面进行 setData。</li>
+</ol>
+<p>为何一定要使用 setData 这种方式：</p>
+<p>因为 js 语言的限制, 不能检测到对象属性的添加或删除.<br>不能检测到单独对 data 做修改的操作.</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a><a href="#%E5%8F%82%E8%80%83" title="参考"></a>参考</h2><ul>
+<li>  <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/rhYKLIbXOsUJC_n6dt9UfA">WKWebView 那些坑</a></li>
+<li>  <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/evzDnTsHrAr2b9jcevwBzA">70% 以上业务由 H5 开发，手机 QQ Hybrid 的架构如何优化演进？</a></li>
+</ul>
+<p>坚持原创技术分享，您的支持将鼓励我继续创作！ So，来杯咖啡？</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/webview/">webview</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/webview/">webview</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/03/10/2018/%E5%85%B3%E4%BA%8E%20iOS%20%E4%B8%AD%E7%9A%84%20WebView/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">关于 iOS 中的 WebView</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/02/09/2018-2/%E7%B1%BB%E5%92%8C%E5%85%83%E7%B1%BB/">
+                        <span class="hidden-mobile">类和元类</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

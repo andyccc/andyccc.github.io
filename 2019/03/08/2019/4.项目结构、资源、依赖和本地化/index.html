@@ -1,0 +1,520 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>项目结构、资源、依赖和本地化 - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="项目结构、资源、依赖和本地化">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-03-08 23:55" pubdate>
+        2019年3月8日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      19
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">项目结构、资源、依赖和本地化</h1>
+            
+            <div class="markdown-body">
+              <h3 id="项目结构、资源、依赖和本地化"><a href="#项目结构、资源、依赖和本地化" class="headerlink" title="项目结构、资源、依赖和本地化"></a>项目结构、资源、依赖和本地化</h3><p>声明：Flutter专栏文档均来自慕课网<br><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://coding.imooc.com/class/321.html">https://coding.imooc.com/class/321.html</a></p>
+<h4 id="【文档讲解】项目结构、资源、依赖和本地化"><a href="#【文档讲解】项目结构、资源、依赖和本地化" class="headerlink" title="【文档讲解】项目结构、资源、依赖和本地化"></a>【文档讲解】项目结构、资源、依赖和本地化</h4><ul>
+<li>  项目文件结构是怎样子的？</li>
+<li>  在哪里归档图片资源以及如何处理不同分辨率？</li>
+<li>  如何归档strings资源，以及如何处理不同语言？</li>
+<li>  如何添加Flutter项目所需的依赖？</li>
+</ul>
+<h4 id="项目文件结构是怎样子的？"><a href="#项目文件结构是怎样子的？" class="headerlink" title="项目文件结构是怎样子的？"></a>项目文件结构是怎样子的？</h4><p>一个Flutter项目的通常文件结构是这样子的：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">┬<br>└ projectname<br>  ┬<br>  ├ <span class="hljs-keyword">android </span>     - <span class="hljs-keyword">Android部分的工程文件</span><br><span class="hljs-keyword"></span>  ├ <span class="hljs-keyword">build </span>       - 项目的构建输出目录<br>  ├ ios          - iOS部分的工程文件<br>  ├ lib          - 项目中的Dart源文件<br>    ┬<br>    └ src        - 包含其他源文件<br>    └ main.dart  - 自动生成的项目入口文件，类似RN的index.<span class="hljs-keyword">js文件</span><br><span class="hljs-keyword"></span>  ├ test         - 测试相关文件<br>  └ pubspec.yaml - 项目依赖配置文件类似于RN的 package.<span class="hljs-keyword">json </span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>当然大家也可以根据需要进行调整。</p>
+</blockquote>
+<h4 id="在哪里归档图片资源以及如何处理不同分辨率？"><a href="#在哪里归档图片资源以及如何处理不同分辨率？" class="headerlink" title="在哪里归档图片资源以及如何处理不同分辨率？"></a>在哪里归档图片资源以及如何处理不同分辨率？</h4><ul>
+<li>  虽然Android将resources 和 assets 区别对待，但在Flutter中它们都会被作为assets处理， 所有存在于Android上res / drawable- *文件夹中的资源都放在Flutter的assets文件夹中。</li>
+<li>  与Android类似，iOS 同样将 images 和 assets 作为不同的东西，而 Flutter 中只有 assets。被放到 iOS 中 Images.xcasset 文件夹下的资源在 Flutter 中被放到了 assets 文件夹中。</li>
+</ul>
+<p>在Flutter中<code>assets</code>可以是任意类型的文件，而不仅仅是图片。例如，你可以把 json 文件放置到 my-assets 文件夹中。</p>
+<p><code>my-assets/data.json</code></p>
+<p>记得在 pubspec.yaml 文件中声明 assets：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs haskell"><span class="hljs-title">assets</span>:<br> - my-assets/<span class="hljs-class"><span class="hljs-keyword">data</span>.json </span><br></code></pre></td></tr></table></figure>
+
+<p>然后在代码中我们可以通过 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/services/AssetBundle-class.html">AssetBundle</a> 来访问它：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;dart:async&#x27;</span> <span class="hljs-keyword">show</span> Future;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/services.dart&#x27;</span> <span class="hljs-keyword">show</span> rootBundle;<br><br>Future&lt;<span class="hljs-built_in">String</span>&gt; loadAsset() <span class="hljs-keyword">async</span> &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> rootBundle.loadString(<span class="hljs-string">&#x27;my-assets/data.json&#x27;</span>);<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>对于图片，Flutter 像 iOS 一样，遵循了一个简单的基于像素密度的格式。Image assets 可能是 1.0x 2.0x 3.0x 或是其他的任何倍数。这个 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/dart-ui/Window/devicePixelRatio.html">devicePixelRatio</a> 表示了物理像素到单个逻辑像素的比率。</p>
+<p><strong>Android</strong>不同像素密度的图片和<strong>Flutter</strong>的像素比率的对应关系</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ldpi</span>    <span class="hljs-number">0</span>.<span class="hljs-number">75</span>x<br><span class="hljs-attribute">mdpi</span>    <span class="hljs-number">1</span>.<span class="hljs-number">0</span>x<br><span class="hljs-attribute">hdpi</span>    <span class="hljs-number">1</span>.<span class="hljs-number">5</span>x<br><span class="hljs-attribute">xhdpi</span>   <span class="hljs-number">2</span>.<span class="hljs-number">0</span>x<br><span class="hljs-attribute">xxhdpi</span>  <span class="hljs-number">3</span>.<span class="hljs-number">0</span>x<br><span class="hljs-attribute">xxxhdpi</span> <span class="hljs-number">4</span>.<span class="hljs-number">0</span>x <br></code></pre></td></tr></table></figure>
+
+<p>Assets 可以被放置到任何属性文件夹中——Flutter 并没有预先定义的文件结构。我们需要在 pubspec.yaml 文件中声明 assets 的位置，然后 Flutter 会把他们识别出来。</p>
+<p>举个例子，要把一个名为<code>my_icon.png</code> 的图片放到 Flutter 工程中，你可能想要把它放到images文件夹中。把图片（1.0x）放置到 images 文件夹中，并把其它分辨率的图片放在对应的子文件夹中，并接上合适的比例系数，就像这样：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">images</span>/my_icon.png       // Base: <span class="hljs-number">1</span>.<span class="hljs-number">0</span>x image<br><span class="hljs-attribute">images</span>/<span class="hljs-number">2</span>.<span class="hljs-number">0</span>x/my_icon.png  // <span class="hljs-number">2</span>.<span class="hljs-number">0</span>x image<br><span class="hljs-attribute">images</span>/<span class="hljs-number">3</span>.<span class="hljs-number">0</span>x/my_icon.png  // <span class="hljs-number">3</span>.<span class="hljs-number">0</span>x image <br></code></pre></td></tr></table></figure>
+
+<p>接下来就可以在pubspec.yaml文件中这样声明这个图片资源：</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs avrasm"><span class="hljs-symbol">assets:</span><br> - images/my_icon.png <br></code></pre></td></tr></table></figure>
+
+<p>现在，我们就可以借助<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/painting/AssetImage-class.html">AssetImage</a>来访问它了。</p>
+<p><code>return AssetImage(&quot;images/a_dot_burr.jpeg&quot;);</code></p>
+<p>也可通过 Image widget 直接使用：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@override</span><br>Wid<span class="hljs-keyword">get</span> <span class="hljs-title">build</span>(<span class="hljs-params">BuildContext context</span>) &#123;<br>  <span class="hljs-keyword">return</span> Image.asset(<span class="hljs-string">&quot;images/my_image.png&quot;</span>);<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>更多内容，可参考<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://flutter.io/docs/development/ui/assets-and-images">在Flutter中添加assets 和 images</a>。</p>
+</blockquote>
+<p>如何归档<strong>strings</strong>资源，以及如何处理不同语言？</p>
+<p>不像 iOS 拥有一个 <code>Localizable.strings</code> 文件，Flutter目前没有专门的字符串资源系统。 目前，最佳做法是将strings资源作为静态字段保存在类中。 例如：</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs haxe"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Strings</span> </span>&#123;<br>  <span class="hljs-keyword">static</span> <span class="hljs-keyword">String</span> welcomeMessage = <span class="hljs-string">&quot;Welcome To Flutter&quot;</span>;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>然后像如下方式来访问它：</p>
+<p><code>Text(Strings.welcomeMessage)</code></p>
+<p>默认情况下，Flutter 只支持美式英语字符串。如果你要支持其他语言，请引入 flutter_localizations 包。你可能也要引入 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://pub.dartlang.org/packages/intl">intl</a> 包来支持其他的 i10n 机制，比如日期/时间格式化。</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">dependencies:</span><br>  <span class="hljs-meta"># ...</span><br><span class="hljs-symbol">  flutter_localizations:</span><br><span class="hljs-symbol">    sdk:</span> flutter<br><span class="hljs-symbol">  intl:</span> <span class="hljs-string">&quot;^0.15.6&quot;</span> <br></code></pre></td></tr></table></figure>
+
+<p>要使用 <code>flutter_localization</code>s 包，还需要在 app widget 中指定 <code>localizationsDelegates</code> 和 <code>supportedLocales</code>。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs awk">import <span class="hljs-string">&#x27;package:flutter_localizations/flutter_localizations.dart&#x27;</span>;<br><br>MaterialApp(<br> localizationsDelegates: [<br>   <span class="hljs-regexp">//</span> Add app-specific localization delegate[s] here<br>   GlobalMaterialLocalizations.delegate,<br>   GlobalWidgetsLocalizations.delegate,<br> ],<br><br> supportedLocales: [<br>    const Locale(<span class="hljs-string">&#x27;en&#x27;</span>, <span class="hljs-string">&#x27;US&#x27;</span>), <span class="hljs-regexp">//</span> English<br>    const Locale(<span class="hljs-string">&#x27;he&#x27;</span>, <span class="hljs-string">&#x27;IL&#x27;</span>), <span class="hljs-regexp">//</span> Hebrew<br>    <span class="hljs-regexp">//</span> ... other locales the app supports<br>  ],<br>  <span class="hljs-regexp">//</span> ...<br>) <br></code></pre></td></tr></table></figure>
+
+<p>这些代理包括了实际的本地化值，并且 <code>supportedLocales</code> 定义了 App 支持哪些地区。上面的例子使用了一个 <code>MaterialApp</code> ，所以它既有 <code>GlobalWidgetsLocalizations</code> 用于基础 widgets，也有 <code>MaterialWidgetsLocalizations</code> 用于 <code>Material wigets</code> 的本地化。如果你使用 <code>WidgetsApp</code> ，则无需包括后者。注意，这两个代理虽然包括了“默认”值，但如果你想让你的 App 本地化，你仍需要提供一或多个代理作为你的 App 本地化副本。</p>
+<p>当初始化时，<code>WidgetsApp</code> 或 <code>MaterialApp</code> 会使用你指定的代理为你创建一个 <code>Localizations</code> widget。<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/widgets/Localizations-class.html">Localizations</a> widget 可以随时从当前上下文中访问设备的地点，或者使用 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/dart-ui/Window/locale.html">Window.locale</a>。</p>
+<p>要访问本地化文件，使用 <code>Localizations.of()</code> 方法来访问提供代理的特定本地化类。如需翻译，使用 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://pub.dartlang.org/packages/intl_translation">intl_translation</a> 包来取出翻译副本到 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://github.com/googlei18n/app-resource-bundle">arb</a> 文件中。把它们引入 App 中，并用 intl 来使用它们。</p>
+<p>更多 Flutter 中国际化和本地化的细节，请访问 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://flutter.io/docs/development/accessibility-and-localization/internationalization">internationalization guide</a> ，里面有不使用 intl 包的示例代码。</p>
+<blockquote>
+<p>注意，在 Flutter 1.0 beta 2 之前，在 Flutter 中定义的 assets 不能在原生一侧被访问。原生定义的资源在 Flutter 中也不可用，因为它们在独立的文件夹中。</p>
+</blockquote>
+<h4 id="如何添加Flutter项目所需的依赖？"><a href="#如何添加Flutter项目所需的依赖？" class="headerlink" title="如何添加Flutter项目所需的依赖？"></a>如何添加<strong>Flutter</strong>项目所需的依赖？</h4><ul>
+<li>  在Android中，你可以在Gradle文件来添加依赖项；</li>
+<li>  在 iOS 中，通常把依赖添加到 Podfile 中；</li>
+<li>  在RN中，通常是由package.json来管理项目依赖；</li>
+</ul>
+<p>Flutter 使用 Dart 构建系统和 Pub 包管理器来处理依赖。这些工具将Android 和 iOS native 包装应用程序的构建委派给相应的构建系统。</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">dependencies:</span><br><span class="hljs-symbol">  flutter:</span><br><span class="hljs-symbol">    sdk:</span> flutter<br><span class="hljs-symbol">  google_sign_in:</span> ^<span class="hljs-number">3.0</span><span class="hljs-number">.3</span> <br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在Flutter中，虽然在Flutter项目中的Android文件夹下有Gradle文件，但只有在添加平台相关所需的依赖关系时才使用这些文件。 否则，应该使用pubspec.yaml来声明用于Flutter的外部依赖项。</p>
+</blockquote>
+<blockquote>
+<p>iOS也是一样，如果你的 Flutter 工程中的 iOS 文件夹中有 Podfile，请仅在添加iOS平台相关的依赖时使用它。否则，应该使用pubspec.yaml来声明用于Flutter的外部依赖项。</p>
+</blockquote>
+<p>推荐一个用于查找Flutter插件的网站：<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://pub.dartlang.org/flutter/packages">Pub site</a>。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Flutter%E5%AD%A6%E4%B9%A0/">Flutter学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Dart/">Dart</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Flutter/">Flutter</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91/">混合开发</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/10/2019/6.%E5%B8%83%E5%B1%80%E4%B8%8E%E5%88%97%E8%A1%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">布局与列表</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/06/2019/3.Flutter%E5%85%A5%E9%97%A8%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+                        <span class="hidden-mobile">Flutter入门基础知识</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

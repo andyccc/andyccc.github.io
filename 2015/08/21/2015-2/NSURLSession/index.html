@@ -1,0 +1,592 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>NSURLSession - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="NSURLSession">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2015-08-21 17:19" pubdate>
+        2015年8月21日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      61
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">NSURLSession</h1>
+            
+            <div class="markdown-body">
+              <p>本文翻译自 <a target="_blank" rel="noopener" href="https://www.raywenderlich.com/110458/nsurlsession-tutorial-getting-started">https://www.raywenderlich.com/110458/nsurlsession-tutorial-getting-started</a>   </p>
+<p>原作者：<a target="_blank" rel="noopener" href="https://www.raywenderlich.com/u/kentoh">Ken Toh</a>    </p>
+<p>译者：andyccc       </p>
+<hr>
+<p>当一个app从服务端获取用户数据更新社交媒体信息和下载远程的文件到磁盘的时候，就会用到移动应用的核心技术：HTTP网络请求。为了帮助开发者处理大量的网络请求，Apple提供了<code>NSURLSession</code>，这是一套通过HTTP请求来完成上传和下载的完整的API。  </p>
+<p>在本教程中，你将学会怎样去用<code>NSURLSession</code>来创建一个Half Tunes应用，这个应用的作用是接入<a target="_blank" rel="noopener" href="https://www.apple.com/itunes/affiliates/resources/documentation/itunes-store-web-service-search-api.html">iTunes Search API</a>，搜索API提供的30s的预览音乐，并且下载你选择的音乐。完成后的app将提供后台传输，让用户暂停、继续、取消正在下载的音乐等功能。   </p>
+<h2 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h2><p><a target="_blank" rel="noopener" href="http://www.raywenderlich.com/wp-content/uploads/2016/01/HalfTunes-Starter.zip">点击此处下载项目</a>  </p>
+<p>项目包含搜索歌曲、播放歌曲的用户界面，和一些解析JSON、播放路径的帮助方法，可以让你专心的去实现app的网络部分。  </p>
+<p>运行你下载的项目，将会看到如下的界面： </p>
+<p><img src="https://cdn2.raywenderlich.com/wp-content/uploads/2015/08/Simulator-Screen-Shot-12-Aug-2015-11.10.57-pm-281x500.png" srcset="/img/loading.gif" lazyload> </p>
+<p>在搜索框输入一个想搜索的内容，点击搜索按钮。仍然是空的界面，不要方，你将通过<code>NSURLSession</code>的调用来完善他的功能。  </p>
+<h2 id="NSURLSession概述"><a href="#NSURLSession概述" class="headerlink" title="NSURLSession概述"></a>NSURLSession概述</h2><p>在开始之前，让我们先了解一下<code>NSURLSession</code>和他的组成类。   </p>
+<p><code>NSURLSession</code>既使用一个类，又使用一整套类去完成基于HTTP/HTTPS的请求   </p>
+<p><img src="https://cdn1.raywenderlich.com/wp-content/uploads/2015/08/Screen-Shot-2015-08-20-at-12.27.21-am.png" srcset="/img/loading.gif" lazyload>  </p>
+<p><code>NSURLSession</code>是响应发送和接收HTTP请求的关键对象，使用<code>NSURLSessionConfiguration</code>来创建它。三种配置：    </p>
+<ul>
+<li><code>defaultSessionConfiguration</code>:创建一个默认配置的session对象，可以访问永久的全部的磁盘缓存、证书和保存的cookie对象。    </li>
+<li><code>ephemeralSessionConfiguration</code>:除了只能在内存中保存和这个session有关的数据之外，其他的和默认配置相同，可以理解为“私有的”session。    </li>
+<li><code>backgroundSessionConfiguration</code>:用这个配置创建的session对象，可以在后台进行下载和上传操作，即使app暂停或者终止。 </li>
+</ul>
+<p>你也可以使用<code>NSURLSessionConfiguration</code>配置session的其他属性，比如：超时、缓存策略、附加的HTTP头部等。<a target="_blank" rel="noopener" href="https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSessionConfiguration_class/index.html#//apple_ref/occ/cl/NSURLSessionConfiguration">所有的配置选项</a>  </p>
+<p><code>NSURLSessionTask</code>是一个抽象类，session用来生成task去做实际的工作，比如：获取数据、下载和上传文件等。   </p>
+<p>Apple提供了三种task：  </p>
+<ul>
+<li><code>NSURLSessionDataTask</code>:通过HTTP GET方法，从服务端获取数据。</li>
+<li><code>NSURLSessionUploadTask</code>:顾名思义，用来向web服务器上传文件，一般使用HTTP POST和PUT方法。</li>
+<li><code>NSURLSessionDownloadTask</code>:从远程服务器下载文件到一个临时的本地路径。</li>
+</ul>
+<p><img src="http://www.raywenderlich.com/wp-content/uploads/2015/08/Screen-Shot-2015-08-20-at-12.27.27-am.png" srcset="/img/loading.gif" lazyload>   </p>
+<p>你可以随时暂停、继续、取消任务。<code>NSURLSessionDownloadTask</code>支持断点续传。  </p>
+<p>一般来说，<code>NSURLSession</code>可以通过两种方式（完成block和代理）进行任务完成成功或者报错的回调。</p>
+<p>现在，你已经了解了<code>NSURLSession</code>的主要功能，可以进行理论与实践相结合了。  </p>
+<h2 id="查询跟踪"><a href="#查询跟踪" class="headerlink" title="查询跟踪"></a>查询跟踪</h2><p>你将在之前下载的项目内添加一些代码，当用户搜索一些内容的时候，查询iTunes Search API。  </p>
+<p>在<code>SearchViewController.swift</code>类的顶部添加下面的代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-comment">// 1</span><br><span class="hljs-keyword">let</span> defaultSession <span class="hljs-operator">=</span> <span class="hljs-type">NSURLSession</span>(configuration: <span class="hljs-type">NSURLSessionConfiguration</span>.defaultSessionConfiguration())<br><span class="hljs-comment">// 2</span><br><span class="hljs-keyword">var</span> dataTask: <span class="hljs-type">NSURLSessionDataTask</span>?<br></code></pre></td></tr></table></figure>
+
+<p>这两行代码的作用是：</p>
+<p>&emsp;1.创建了<code>NSURLSession</code>，并且使用默认的配置初始化。<br>&emsp;2.声明了一个<code>NSURLSessionDataTask</code>变量，将用它来向iTunes Search web服务器进行HTTP GET请求实现用户的搜索。当用户每次重新输入内容搜索的时候，这个task都会被重新初始化并且利用。    </p>
+<p>现在，用下面的代码替换<code>searchBarSearchButtonClicked(_:) </code>这个方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">searchBarSearchButtonClicked</span>(<span class="hljs-params">searchBar</span>: <span class="hljs-type">UISearchBar</span>)</span> &#123;<br>  dismissKeyboard()<br> <br>  <span class="hljs-keyword">if</span> <span class="hljs-operator">!</span>searchBar.text<span class="hljs-operator">!</span>.isEmpty &#123;<br>    <span class="hljs-comment">// 1</span><br>    <span class="hljs-keyword">if</span> dataTask <span class="hljs-operator">!=</span> <span class="hljs-literal">nil</span> &#123;<br>      dataTask<span class="hljs-operator">?</span>.cancel()<br>    &#125;<br>    <span class="hljs-comment">// 2</span><br>    <span class="hljs-type">UIApplication</span>.sharedApplication().networkActivityIndicatorVisible <span class="hljs-operator">=</span> <span class="hljs-literal">true</span><br>    <span class="hljs-comment">// 3</span><br>    <span class="hljs-keyword">let</span> expectedCharSet <span class="hljs-operator">=</span> <span class="hljs-type">NSCharacterSet</span>.<span class="hljs-type">URLQueryAllowedCharacterSet</span>()<br>    <span class="hljs-keyword">let</span> searchTerm <span class="hljs-operator">=</span> searchBar.text<span class="hljs-operator">!</span>.stringByAddingPercentEncodingWithAllowedCharacters(expectedCharSet)<span class="hljs-operator">!</span><br>    <span class="hljs-comment">// 4</span><br>    <span class="hljs-keyword">let</span> url <span class="hljs-operator">=</span> <span class="hljs-type">NSURL</span>(string: <span class="hljs-string">&quot;https://itunes.apple.com/search?media=music&amp;entity=song&amp;term=<span class="hljs-subst">\(searchTerm)</span>&quot;</span>)<br>    <span class="hljs-comment">// 5</span><br>    dataTask <span class="hljs-operator">=</span> defaultSession.dataTaskWithURL(url<span class="hljs-operator">!</span>) &#123;<br>      data, response, error <span class="hljs-keyword">in</span><br>      <span class="hljs-comment">// 6</span><br>      dispatch_async(dispatch_get_main_queue()) &#123;<br>        <span class="hljs-type">UIApplication</span>.sharedApplication().networkActivityIndicatorVisible <span class="hljs-operator">=</span> <span class="hljs-literal">false</span><br>      &#125;<br>      <span class="hljs-comment">// 7</span><br>      <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> error <span class="hljs-operator">=</span> error &#123;<br>        <span class="hljs-built_in">print</span>(error.localizedDescription)<br>      &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> httpResponse <span class="hljs-operator">=</span> response <span class="hljs-keyword">as?</span> <span class="hljs-type">NSHTTPURLResponse</span> &#123;<br>        <span class="hljs-keyword">if</span> httpResponse.statusCode <span class="hljs-operator">==</span> <span class="hljs-number">200</span> &#123;<br>          <span class="hljs-keyword">self</span>.updateSearchResults(data)<br>        &#125;<br>      &#125;<br>    &#125;<br>    <span class="hljs-comment">// 8</span><br>    dataTask<span class="hljs-operator">?</span>.resume()<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>按照注释数字的顺序看：     </p>
+<p>&emsp;1.每当用户点击搜索的时候，检查data task是不是已经初始化，如果是，取消这个task，因为我们在重用同一个task，取消的task是上次搜索的task。<br>&emsp;2.开启状态栏的网络活动指示，告诉用户已经在搜索。<br>&emsp;3.在把用户的输入字符串作为参数进行请求之前，对字符串调用<code>stringByAddingPercentEncodingWithAllowedCharacters(_:) </code>方法，确保是正确的字符格式。<br>&emsp;4.使用转化格式后的字符拼接字符串构造了一个<code>NSURL</code>，作为请求的url。<br>&emsp;5.通过之前创建的<code>defaultSession</code>实例化一个<code>NSURLSessionDataTask</code>，去执行HTTP GET请求。这个方法传入了之前构造的<code>url</code>和一个完成回调block。<br>&emsp;6.在task的完成回调中，回到主线程隐藏网络活动知识器。<br>&emsp;7.如果请求成功，调用<code>updateSearchResults(_:)</code>将响应的NSData数据解析成<code>track</code>(model)。<br>&emsp;8.调用<code>resume()</code>，开始task。   </p>
+<p>运行你的app，搜索一些歌曲，你将看到表视图显示了和搜索内容相关的结果。如下所示：     </p>
+<p><img src="https://cdn2.raywenderlich.com/wp-content/uploads/2015/08/Simulator-Screen-Shot-12-Aug-2015-11.02.34-pm-281x500.png" srcset="/img/loading.gif" lazyload>    </p>
+<p>因为添加了一些magic <code>NSURLSession</code>代码，Half Tunes现在总算是有点功能了。    </p>
+<h2 id="下载搜索结果"><a href="#下载搜索结果" class="headerlink" title="下载搜索结果"></a>下载搜索结果</h2><p>可以看到歌曲的搜索结果是很nice，但是如果可以点击下载的话，是不是会更加nice，这是我们接下来该做的事。   </p>
+<p>为了轻轻松松的执行多个下载，首先要创建一个类，去控制下载任务的状态。   </p>
+<p>创建一个新的文件，命名为<code>Download.swift</code>在<code>Data Objects</code>文件夹中。   </p>
+<p>打开<code>Download.swift</code>添加下面的实现：   </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Download</span>: <span class="hljs-title">NSObject</span> </span>&#123;<br> <br>  <span class="hljs-keyword">var</span> url: <span class="hljs-type">String</span><br>  <span class="hljs-keyword">var</span> isDownloading <span class="hljs-operator">=</span> <span class="hljs-literal">false</span><br>  <span class="hljs-keyword">var</span> progress: <span class="hljs-type">Float</span> <span class="hljs-operator">=</span> <span class="hljs-number">0.0</span><br> <br>  <span class="hljs-keyword">var</span> downloadTask: <span class="hljs-type">NSURLSessionDownloadTask</span>?<br>  <span class="hljs-keyword">var</span> resumeData: <span class="hljs-type">NSData</span>?<br> <br>  <span class="hljs-function"><span class="hljs-keyword">init</span>(<span class="hljs-params">url</span>: <span class="hljs-type">String</span>)</span> &#123;<br>    <span class="hljs-keyword">self</span>.url <span class="hljs-operator">=</span> url<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>下面是<code>Download</code>这个类的属性的解释：   </p>
+<ul>
+<li><code>url</code>:被下载文件的URL，这也是不同的<code>Download</code>的唯一标识符。    </li>
+<li><code>isDownloading</code>:是否正在下载。</li>
+<li><code>progress</code>:下载进度，float类型，0.0 - 1.0。</li>
+<li><code>downloadTask</code>:<code>NSURLSessionDownloadTask</code>用来下载任务。</li>
+<li><code>resumeData</code>:在暂停下载的时候，保存已经下载的数据。用来实现断点续传。   </li>
+</ul>
+<p>切换到<code>SearchViewController.swift </code>，在类的顶部添加如下代码：   </p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">var</span> activeDownloads = [<span class="hljs-built_in">String</span>: Download]()<br></code></pre></td></tr></table></figure>
+
+<p>这样就可以很简单的通过一个字典来标识<code>url</code>对应的下载任务    </p>
+<h2 id="创建一个下载任务"><a href="#创建一个下载任务" class="headerlink" title="创建一个下载任务"></a>创建一个下载任务</h2><p>根据我们的任务清单，现在要做的是实现文件的下载功能，首先，要创建一个专用的session去处理下载任务。    </p>
+<p>在<code>SearchViewController.swift</code>文件中，<code>viewDidLoad():</code>方法之前的合适的位置添加下面的代码：     </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">lazy</span> <span class="hljs-keyword">var</span> downloadsSession: <span class="hljs-type">NSURLSession</span> <span class="hljs-operator">=</span> &#123;<br>  <span class="hljs-keyword">let</span> configuration <span class="hljs-operator">=</span> <span class="hljs-type">NSURLSessionConfiguration</span>.defaultSessionConfiguration()<br>  <span class="hljs-keyword">let</span> session <span class="hljs-operator">=</span> <span class="hljs-type">NSURLSession</span>(configuration: configuration, delegate: <span class="hljs-keyword">self</span>, delegateQueue: <span class="hljs-literal">nil</span>)<br>  <span class="hljs-keyword">return</span> session<br>&#125;()<br></code></pre></td></tr></table></figure>
+<p>我们使用默认的<code>defaultSessionConfiguration</code>创建了一个单独的session来处理所有的下载任务。同时指定一个<code>delegate</code>，用来接收<code>NSURLSession</code>的回调，比如：完成回调，下载进度回调等。    </p>
+<p><code>delegateQueue</code>设置为<code>nil</code>，会为我们创建一个默认的串行队列执行所有的代理回调和完成block的回调。   </p>
+<p>注意，懒加载<code>downloadsSession:</code>会让我们在需要的时候再创建session，更值得注意的是，我们将传<code>self</code>作为代理的参数初始化session，即使<code>self</code>没有被初始化。   </p>
+<p>在<code>SearchViewController.swift</code>文件中，添加<code> NSURLSessionDownloadDelegate</code>扩展：   </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">SearchViewController</span>: <span class="hljs-title">NSURLSessionDownloadDelegate</span> </span>&#123;<br>  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">URLSession</span>(<span class="hljs-params">session</span>: <span class="hljs-type">NSURLSession</span>, <span class="hljs-params">downloadTask</span>: <span class="hljs-type">NSURLSessionDownloadTask</span>, <span class="hljs-params">didFinishDownloadingToURL</span> <span class="hljs-params">location</span>: <span class="hljs-type">NSURL</span>)</span> &#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Finished downloading.&quot;</span>)<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><code>NSURLSessionDownloadDelegate</code>定义了当你使用<code>NSURLSessionDownloadTask</code>的时候要实现的代理方法，唯一的必须实现的方法为：<code>URLSession(_:downloadTask:didFinishDownloadingToURL:)</code>，每当下载完成的时候回调用它，每当下载完成的时候，你可以实现这个方法来打印一些简单的信息。   </p>
+<p>完成session和代理的配置，接下来我们要准备创建一个下载任务，当用户点击下载的时候。   </p>
+<p>在<code>SearchViewController.swift</code>文件中,用下面的代码替换<code>startDownload(_:) </code>的实现代码：    </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">startDownload</span>(<span class="hljs-params">track</span>: <span class="hljs-type">Track</span>)</span> &#123;<br>  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> urlString <span class="hljs-operator">=</span> track.previewUrl, url <span class="hljs-operator">=</span>  <span class="hljs-type">NSURL</span>(string: urlString) &#123;<br>    <span class="hljs-comment">// 1</span><br>    <span class="hljs-keyword">let</span> download <span class="hljs-operator">=</span> <span class="hljs-type">Download</span>(url: urlString)<br>    <span class="hljs-comment">// 2</span><br>    download.downloadTask <span class="hljs-operator">=</span> downloadsSession.downloadTaskWithURL(url)<br>    <span class="hljs-comment">// 3</span><br>    download.downloadTask<span class="hljs-operator">!</span>.resume()<br>    <span class="hljs-comment">// 4</span><br>    download.isDownloading <span class="hljs-operator">=</span> <span class="hljs-literal">true</span><br>    <span class="hljs-comment">// 5</span><br>    activeDownloads[download.url] <span class="hljs-operator">=</span> download<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>当用户点击下载按钮的时候，就会调用上面的方法，下载相应的内容，按照代码中的数字标记来看：</p>
+<p>&emsp;1.首先使用<code>track</code>的<code>previewURL</code>实例化一个<code>Download</code>对象。<br>&emsp;2.然后用刚才懒加载的session创建一个<code>NSURLSessionDownloadTask</code>，并将它赋值给<code>Download</code>的<code>downloadTask</code>属性。<br>&emsp;3.调用<code>resume()</code>方法开始下载任务。<br>&emsp;4.将<code>isDownloading</code>设置为<code>true</code>标记正在下载。<br>&emsp;5.以<code>url</code>为键，<code>download</code>为值，存入<code>activeDownloads</code>字典中。      </p>
+<p>运行你的app，输入一个关键字搜索，然后点击<code>cell</code>上面的<code>Download</code>按钮，过一会就会看到控制台上打印的信息：<code>Finished downloading.</code>，代表下载完成了。    </p>
+<h2 id="保存并且播放"><a href="#保存并且播放" class="headerlink" title="保存并且播放"></a>保存并且播放</h2><p>当一个下载任务完成的时候，<code> URLSession(_:downloadTask:didFinishDownloadingToURL:)</code>代理方法会提供一个临时的路径保存下载的数据，我们的工作是把它移动带app的沙盒中的不变位置，并且把这个下载任务从<code>activeDownloads</code>字典中移除。   </p>
+<p>我们需要添加一些帮助方法让事情更轻松一些，在<code>SearchViewController.swift</code>类中，添加如下方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">trackIndexForDownloadTask</span>(<span class="hljs-params">downloadTask</span>: <span class="hljs-type">NSURLSessionDownloadTask</span>)</span> -&gt; <span class="hljs-type">Int</span>? &#123;<br>  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> url <span class="hljs-operator">=</span> downloadTask.originalRequest<span class="hljs-operator">?</span>.<span class="hljs-type">URL</span>?.absoluteString &#123;<br>    <span class="hljs-keyword">for</span> (index, track) <span class="hljs-keyword">in</span> searchResults.enumerate() &#123;<br>      <span class="hljs-keyword">if</span> url <span class="hljs-operator">==</span> track.previewUrl<span class="hljs-operator">!</span> &#123;<br>        <span class="hljs-keyword">return</span> index<br>      &#125;<br>    &#125;<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>每一个<code>track</code>都有一个唯一的<code>url</code>标识，这个方法仅仅返回了给定的<code>url</code>标记的<code>track</code>在<code>searchResults</code>数组中的<code>index</code>。   </p>
+<p>然后，用下面的代码代替<code>URLSession(_:downloadTask:didFinishDownloadingToURL:) </code>方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">URLSession</span>(<span class="hljs-params">session</span>: <span class="hljs-type">NSURLSession</span>, <span class="hljs-params">downloadTask</span>: <span class="hljs-type">NSURLSessionDownloadTask</span>, <span class="hljs-params">didFinishDownloadingToURL</span> <span class="hljs-params">location</span>: <span class="hljs-type">NSURL</span>)</span> &#123;<br>  <span class="hljs-comment">// 1</span><br>  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> originalURL <span class="hljs-operator">=</span> downloadTask.originalRequest<span class="hljs-operator">?</span>.<span class="hljs-type">URL</span>?.absoluteString,<br>    destinationURL <span class="hljs-operator">=</span> localFilePathForUrl(originalURL) &#123;<br> <br>    <span class="hljs-built_in">print</span>(destinationURL)<br> <br>    <span class="hljs-comment">// 2</span><br>    <span class="hljs-keyword">let</span> fileManager <span class="hljs-operator">=</span> <span class="hljs-type">NSFileManager</span>.defaultManager()<br>    <span class="hljs-keyword">do</span> &#123;<br>      <span class="hljs-keyword">try</span> fileManager.removeItemAtURL(destinationURL)<br>    &#125; <span class="hljs-keyword">catch</span> &#123;<br>      <span class="hljs-comment">// Non-fatal: file probably doesn&#x27;t exist</span><br>    &#125;<br>    <span class="hljs-keyword">do</span> &#123;<br>      <span class="hljs-keyword">try</span> fileManager.copyItemAtURL(location, toURL: destinationURL)<br>    &#125; <span class="hljs-keyword">catch</span> <span class="hljs-keyword">let</span> error <span class="hljs-keyword">as</span> <span class="hljs-type">NSError</span> &#123;<br>      <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Could not copy file to disk: <span class="hljs-subst">\(error.localizedDescription)</span>&quot;</span>)<br>    &#125;<br>  &#125;<br> <br>  <span class="hljs-comment">// 3</span><br>  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> url <span class="hljs-operator">=</span> downloadTask.originalRequest<span class="hljs-operator">?</span>.<span class="hljs-type">URL</span>?.absoluteString &#123;<br>    activeDownloads[url] <span class="hljs-operator">=</span> <span class="hljs-literal">nil</span><br>    <span class="hljs-comment">// 4</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> trackIndex <span class="hljs-operator">=</span> trackIndexForDownloadTask(downloadTask) &#123;<br>      dispatch_async(dispatch_get_main_queue(), &#123;<br>        <span class="hljs-keyword">self</span>.tableView.reloadRowsAtIndexPaths([<span class="hljs-type">NSIndexPath</span>(forRow: trackIndex, inSection: <span class="hljs-number">0</span>)], withRowAnimation: .<span class="hljs-type">None</span>)<br>      &#125;)<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>关键步骤：    </p>
+<p>&emsp;1.获取<code>task</code>的<code>url</code>，并且把它作为<code>localFilePathForUrl(_:)</code>的参数。<code>localFilePathForUrl(_:)</code>把传入的<code>url</code>作为文件名拼接到沙盒的<code>Documents</code>路径。<br>&emsp;2.在把数据从临时路径拷贝到期望的目标路径之前，使用<code>NSFileManager</code>把目标路径中已经存在的缓存删除掉。<br>&emsp;3.在完成拷贝之后，找到字典中相应的task，把它设置为<code>nil</code>。<br>&emsp;4.找到表视图中的显示这首歌曲的<code>cell</code>，更新它。   </p>
+<p>运行你的app，搜索一些内容并且下载它，你将会在控制台看到打印的路径信息。  </p>
+<p><code>Download</code>按钮也会隐藏，这首歌曲现在在你的设备中，点击<code>cell</code>，就可以跳转到<code>MPMoviePlayerViewController</code>播放，如下所示：   </p>
+<p><img src="https://cdn2.raywenderlich.com/wp-content/uploads/2015/08/Simulator-Screen-Shot-17-Aug-2015-1.45.28-am-281x500.png" srcset="/img/loading.gif" lazyload><br>##监听下载进度<br>到目前为止，我们没有做任何事监听下载进度，为了提高用户体验，我们将做一些事监听下载进度，并且显示到<code>cell</code>上。<br>打开<code>SearchViewController.swift</code>找到<code>NSURLSessionDownloadDelegate</code>的扩展，实现下面的代理方法：   </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">URLSession</span>(<span class="hljs-params">session</span>: <span class="hljs-type">NSURLSession</span>, <span class="hljs-params">downloadTask</span>: <span class="hljs-type">NSURLSessionDownloadTask</span>, <span class="hljs-params">didWriteData</span> <span class="hljs-params">bytesWritten</span>: <span class="hljs-type">Int64</span>, <span class="hljs-params">totalBytesWritten</span>: <span class="hljs-type">Int64</span>, <span class="hljs-params">totalBytesExpectedToWrite</span>: <span class="hljs-type">Int64</span>)</span> &#123;<br> <br>    <span class="hljs-comment">// 1</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> downloadUrl <span class="hljs-operator">=</span> downloadTask.originalRequest<span class="hljs-operator">?</span>.<span class="hljs-type">URL</span>?.absoluteString,<br>      download <span class="hljs-operator">=</span> activeDownloads[downloadUrl] &#123;<br>      <span class="hljs-comment">// 2</span><br>      download.progress <span class="hljs-operator">=</span> <span class="hljs-type">Float</span>(totalBytesWritten)<span class="hljs-operator">/</span><span class="hljs-type">Float</span>(totalBytesExpectedToWrite)<br>      <span class="hljs-comment">// 3</span><br>      <span class="hljs-keyword">let</span> totalSize <span class="hljs-operator">=</span> <span class="hljs-type">NSByteCountFormatter</span>.stringFromByteCount(totalBytesExpectedToWrite, countStyle: <span class="hljs-type">NSByteCountFormatterCountStyle</span>.<span class="hljs-type">Binary</span>)<br>      <span class="hljs-comment">// 4</span><br>      <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> trackIndex <span class="hljs-operator">=</span> trackIndexForDownloadTask(downloadTask), <span class="hljs-keyword">let</span> trackCell <span class="hljs-operator">=</span> tableView.cellForRowAtIndexPath(<span class="hljs-type">NSIndexPath</span>(forRow: trackIndex, inSection: <span class="hljs-number">0</span>)) <span class="hljs-keyword">as?</span> <span class="hljs-type">TrackCell</span> &#123;<br>        dispatch_async(dispatch_get_main_queue(), &#123;<br>          trackCell.progressView.progress <span class="hljs-operator">=</span> download.progress<br>          trackCell.progressLabel.text <span class="hljs-operator">=</span>  <span class="hljs-type">String</span>(format: <span class="hljs-string">&quot;%.1f%% of %@&quot;</span>,  download.progress <span class="hljs-operator">*</span> <span class="hljs-number">100</span>, totalSize)<br>        &#125;)<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>一步一步的来看这个代理方法：   </p>
+<p>&emsp;1.用方法提供的<code>downloadTask</code>参数，获取它的<code>url</code>，利用<code>url</code>在<code>activeDownloads</code>字典中取出相应的<code>Download</code>。<br>&emsp;2.这个方法也会返回已经下载的字节数和文件的总字节数，我们将计算这两个数的比值，赋值给<code>Download</code>的<code>progress</code>属性，我们将用这个值来更新<code>cell</code>上的<code>progress view</code>。<br>&emsp;3.调用了<code>NSByteCountFormatter</code>的类方法将文件的内存大小从字节数转化为人类可读的字符串，在<code>progress label</code>上显示。<br>&emsp;4.最后，找到和这首歌曲对应的<code>cell</code>，回到主线程更新他的<code>progress view</code>和<code>progress label</code>。     </p>
+<p>然后，当下载进行中的时候，配置<code>cell</code>，显示相应的下载进度和状态。    </p>
+<p>在<code>tableView(_:cellForRowAtIndexPath:):</code>方法中，找到：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">let</span> downloaded <span class="hljs-operator">=</span> localFileExistsForTrack(track)<br></code></pre></td></tr></table></figure>
+<p>在这行代码的前面添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">var</span> showDownloadControls <span class="hljs-operator">=</span> <span class="hljs-literal">false</span><br><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> download <span class="hljs-operator">=</span> activeDownloads[track.previewUrl<span class="hljs-operator">!</span>] &#123;<br>  showDownloadControls <span class="hljs-operator">=</span> <span class="hljs-literal">true</span><br> <br>  cell.progressView.progress <span class="hljs-operator">=</span> download.progress<br>  cell.progressLabel.text <span class="hljs-operator">=</span> (download.isDownloading) <span class="hljs-operator">?</span> <span class="hljs-string">&quot;Downloading...&quot;</span> : <span class="hljs-string">&quot;Paused&quot;</span><br>&#125;<br>cell.progressView.hidden <span class="hljs-operator">=</span> <span class="hljs-operator">!</span>showDownloadControls<br>cell.progressLabel.hidden <span class="hljs-operator">=</span> <span class="hljs-operator">!</span>showDownloadControls<br></code></pre></td></tr></table></figure>
+<p>添加了一个布尔类型的变量<code>showDownloadControls</code>，作为标记来更新<code>progress view</code>和<code>progress label</code>的显示内容和是否隐藏。   </p>
+<p>当暂停下载的时候显示<code>Paused</code>，正在下载的时候显示<code>Downloading...</code>。    </p>
+<p>然后，把下面一行代码：    </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs swift">cell.downloadButton.hidden <span class="hljs-operator">=</span> downloaded<br></code></pre></td></tr></table></figure>
+<p>替换为：     </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs swift">cell.downloadButton.hidden <span class="hljs-operator">=</span> downloaded <span class="hljs-operator">||</span> showDownloadControls<br></code></pre></td></tr></table></figure>
+<p>当我们正在下载的时候，把<code>Download</code>按钮隐藏。    </p>
+<p>运行你的app，随便下载一首歌曲，就会看到我们已经完成了对下载进度的监听以及相关状态的改变。    </p>
+<h2 id="暂停、继续、取消下载"><a href="#暂停、继续、取消下载" class="headerlink" title="暂停、继续、取消下载"></a>暂停、继续、取消下载</h2><p>假如用户需要暂停或者取消下载会怎么样？在这一部分，我们将实现下载的暂停、继续和取消功能。    </p>
+<p>我们从允许用户取消正在下载的任务开始。    </p>
+<p>替换<code>cancelDownload(_:)</code>方法为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">cancelDownload</span>(<span class="hljs-params">track</span>: <span class="hljs-type">Track</span>)</span> &#123;<br>  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> urlString <span class="hljs-operator">=</span> track.previewUrl,<br>    download <span class="hljs-operator">=</span> activeDownloads[urlString] &#123;<br>      download.downloadTask<span class="hljs-operator">?</span>.cancel()<br>      activeDownloads[urlString] <span class="hljs-operator">=</span> <span class="hljs-literal">nil</span><br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>我们从<code>activeDownloads</code>字典中取出相应的<code>download</code>，然后调用<code>cancel()</code>方法，取消这个任务。然后把这个<code>download</code>从字典中移除。    </p>
+<p>暂停下载和取消下载在概念上是非常相似的，不同的地方是，暂停下载的会生成<code>resume data</code>，<code>resume data</code>包含接下来继续任务时的信息，需要服务端提供此功能。    </p>
+<p>用下面的代码替换<code>pauseDownload(_:) </code>方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">pauseDownload</span>(<span class="hljs-params">track</span>: <span class="hljs-type">Track</span>)</span> &#123;<br>  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> urlString <span class="hljs-operator">=</span> track.previewUrl,<br>    download <span class="hljs-operator">=</span> activeDownloads[urlString] &#123;<br>      <span class="hljs-keyword">if</span>(download.isDownloading) &#123;<br>        download.downloadTask<span class="hljs-operator">?</span>.cancelByProducingResumeData &#123; data <span class="hljs-keyword">in</span><br>          <span class="hljs-keyword">if</span> data <span class="hljs-operator">!=</span> <span class="hljs-literal">nil</span> &#123;<br>            download.resumeData <span class="hljs-operator">=</span> data<br>          &#125;<br>        &#125;<br>        download.isDownloading <span class="hljs-operator">=</span> <span class="hljs-literal">false</span><br>      &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>和取消方法的不同点是，这里调用了<code>cancelByProducingResumeData(_:) </code>方法，而不是<code>cancel()</code>。我们在暂停下载的时候，生成了<code>resume data</code>,并且取出赋值给<code>download</code>的<code>resumeData</code>属性。    </p>
+<p>同时设置<code>isDownloading</code>为<code>false</code>标记下载暂停。    </p>
+<p>接下来要做的是从暂停的地方继续下载任务。     </p>
+<p>用下面的代码代替<code>resumeDownload(_:)</code>方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">resumeDownload</span>(<span class="hljs-params">track</span>: <span class="hljs-type">Track</span>)</span> &#123;<br>  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> urlString <span class="hljs-operator">=</span> track.previewUrl,<br>    download <span class="hljs-operator">=</span> activeDownloads[urlString] &#123;<br>      <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> resumeData <span class="hljs-operator">=</span> download.resumeData &#123;<br>        download.downloadTask <span class="hljs-operator">=</span> downloadsSession.downloadTaskWithResumeData(resumeData)<br>        download.downloadTask<span class="hljs-operator">!</span>.resume()<br>        download.isDownloading <span class="hljs-operator">=</span> <span class="hljs-literal">true</span><br>      &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> url <span class="hljs-operator">=</span> <span class="hljs-type">NSURL</span>(string: download.url) &#123;<br>        download.downloadTask <span class="hljs-operator">=</span> downloadsSession.downloadTaskWithURL(url)<br>        download.downloadTask<span class="hljs-operator">!</span>.resume()<br>        download.isDownloading <span class="hljs-operator">=</span> <span class="hljs-literal">true</span><br>      &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>我们首先判断，要继续的任务的<code>resumeData</code>是否为<code>nil</code>，以便于决定是从断点处继续下载，还是从头开始下载。如果不为空，则调用<code>downloadTaskWithResumeData(_:)</code>方法、使用<code>resume data</code>创建一个新的任务，并且调用<code>resume()</code>执行任务。如果<code>resume data</code>为空，则创建一个新的任务，传入<code>url</code>，重新开始下载。    </p>
+<p>在这两种情况下，都要把<code>isDownloading</code>设置为<code>true</code>，标记为正在下载。    </p>
+<p>接下来还有一件事要去做，就是在合适的时间显示和隐藏<code>Pause</code>、<code>Cancel</code>和<code>Resume</code>按钮。    </p>
+<p>找到<code>tableView(_:cellForRowAtIndexPath:)</code>方法，找到下面的代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> download <span class="hljs-operator">=</span> activeDownloads[track.previewUrl<span class="hljs-operator">!</span>] &#123;<br></code></pre></td></tr></table></figure>
+<p>在条件语句的最后加入下面两行代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">let</span> title <span class="hljs-operator">=</span> (download.isDownloading) <span class="hljs-operator">?</span> <span class="hljs-string">&quot;Pause&quot;</span> : <span class="hljs-string">&quot;Resume&quot;</span><br>cell.pauseButton.setTitle(title, forState: <span class="hljs-type">UIControlState</span>.<span class="hljs-type">Normal</span>)<br></code></pre></td></tr></table></figure>
+<p>这两行代码的作用就是让按钮的<code>titleLabel</code>在正确的状态显示正确的标识(<code>Pause</code>or<code>Resume</code>)。    </p>
+<p>接下来，在<code>reture</code>之前加入下面的代码：   </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs swift">cell.pauseButton.hidden <span class="hljs-operator">=</span> <span class="hljs-operator">!</span>showDownloadControls<br>cell.cancelButton.hidden <span class="hljs-operator">=</span> <span class="hljs-operator">!</span>showDownloadControls<br></code></pre></td></tr></table></figure>
+<p>这两句就是实现了是否显示这两个按钮。   </p>
+<p>运行你的app，同时下载几首歌曲，你可以暂停、继续和取消他们，like this：<br><img src="https://cdn1.raywenderlich.com/wp-content/uploads/2015/08/Simulator-Screen-Shot-18-Aug-2015-10.14.38-pm-281x500.png" srcset="/img/loading.gif" lazyload>  </p>
+<h2 id="实现后台下载"><a href="#实现后台下载" class="headerlink" title="实现后台下载"></a>实现后台下载</h2><p>现在，我们的app已经初具雏形了，但是，我们还需要添加一些更优雅的东西使用户体验更好。如果因为一些原因app进入后台或者崩溃的时候，让正在下载的任务继续下载。   </p>
+<p>如果我们的app没有运行，怎么能继续下载工作呢？有一个单独的后台进程在app的外部运行，并且管理后台的传输任务。在app运行的时候，它会向app发送合适的代理信息。当app在运行的时候突然中止，任务会在后台继续进行。   </p>
+<p>当任务完成的时候，后台进程会在后台重新打开app。重新打开的app会重新链接和之前相同的会话、接收相关的完成代理信息和执行一些动作，比如：存储文件到本地磁盘。   </p>
+<p>仍然打开<code> SearchViewController.swift</code>，在<code>downloadsSession</code>的初始化中，找到下面的代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">let</span> configuration <span class="hljs-operator">=</span> <span class="hljs-type">NSURLSessionConfiguration</span>.defaultSessionConfiguration()<br></code></pre></td></tr></table></figure>
+<p>用下面的代码替换它：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">let</span> configuration <span class="hljs-operator">=</span> <span class="hljs-type">NSURLSessionConfiguration</span>.backgroundSessionConfigurationWithIdentifier(<span class="hljs-string">&quot;bgSessionConfiguration&quot;</span>)<br></code></pre></td></tr></table></figure>
+<p>将默认的session配置用特殊的<code>backgroundSessionConfiguration</code>替换，并且为它设置一个identifier，目的是为了实现上文中提到的重新连接会话。   </p>
+<p>然后在<code>viewDidLoad()</code>，添加下面代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">_</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">self</span>.downloadsSession<br></code></pre></td></tr></table></figure>
+<p>这行代码的作用是保证<code>SearchViewController</code>初始化的同时懒加载一个<code>downloadsSession</code>对象。   </p>
+<p>当后台的任务完成的时候，而app没有在运行，app将在后台重新启动，我们将在app delegate里面完成这个操作。   </p>
+<p>切换到<code>AppDelegate.swift</code>，在这个类的顶部添加下面代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">var</span> backgroundSessionCompletionHandler: (() -&gt; <span class="hljs-type">Void</span>)<span class="hljs-operator">?</span><br></code></pre></td></tr></table></figure>
+<p>然后添加下面的方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">application</span>(<span class="hljs-params">application</span>: <span class="hljs-type">UIApplication</span>, <span class="hljs-params">handleEventsForBackgroundURLSession</span> <span class="hljs-params">identifier</span>: <span class="hljs-type">String</span>, <span class="hljs-params">completionHandler</span>: () -&gt; <span class="hljs-type">Void</span>)</span> &#123;<br>  backgroundSessionCompletionHandler <span class="hljs-operator">=</span> completionHandler<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>现在，我们在app delegate中保存了一个<code>completionHandler</code>block变量，以便后面使用。    </p>
+<p><code>application(_:handleEventsForBackgroundURLSession:) </code>方法会唤醒app去处理完成的后台任务，我们需要在这个事件处理两个东西：<br>&emsp;1.首先，app需要通过代理方法提供的标识符(identifier)重新链接相关的后台会话，但是因为每次创建和使用后台会话的时候都要实例化<code>SearchViewController</code>，此时就已经重新链接了。<br>&emsp;2.我们需要捕获代理方法提供的完成回调block，调用完成回调block使系统把更新的UI快照显示在app切换器上，同时，告诉系统关于当前会话的所有后台活动都已经完成。   </p>
+<p>但是，我们什么时候调用这个完成处理block呢？   </p>
+<p><code>URLSessionDidFinishEventsForBackgroundURLSession(_:)</code>方法会是一个好的选择，它是<code>NSURLSessionDelegate</code>代理方法，当所有的后台会话完成的时候会被调用。    </p>
+<p>在<code>SearchViewController.swift</code>中实现这个方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">SearchViewController</span>: <span class="hljs-title">NSURLSessionDelegate</span> </span>&#123;<br> <br>  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">URLSessionDidFinishEventsForBackgroundURLSession</span>(<span class="hljs-params">session</span>: <span class="hljs-type">NSURLSession</span>)</span> &#123;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> appDelegate <span class="hljs-operator">=</span> <span class="hljs-type">UIApplication</span>.sharedApplication().delegate <span class="hljs-keyword">as?</span> <span class="hljs-type">AppDelegate</span> &#123;<br>      <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> completionHandler <span class="hljs-operator">=</span> appDelegate.backgroundSessionCompletionHandler &#123;<br>        appDelegate.backgroundSessionCompletionHandler <span class="hljs-operator">=</span> <span class="hljs-literal">nil</span><br>        dispatch_async(dispatch_get_main_queue(), &#123;<br>          completionHandler()<br>        &#125;)<br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码抓取了存在app delegate中的完成回调block，并且在主线程调用它。    </p>
+<p>运行你的app。同时开始几个下载任务，然后按下<code>Home</code>键，使app在后台运行，等到你认为下载任务完成的时候，双击<code>Home</code>键，显示app切换器。   </p>
+<p>下载任务应该已经完成了，并且可以在屏幕上看到新的关于下载完成的状态：<br><img src="https://cdn5.raywenderlich.com/wp-content/uploads/2015/08/Simulator-Screen-Shot-19-Aug-2015-1.06.24-am-281x500.png" srcset="/img/loading.gif" lazyload><br>现在，你拥有了一个完整功能的音乐流媒体app，移动的<code> Apple Music</code>！:]   </p>
+<h2 id="接下来该做什么"><a href="#接下来该做什么" class="headerlink" title="接下来该做什么"></a>接下来该做什么</h2><p>你可以在<a target="_blank" rel="noopener" href="http://www.raywenderlich.com/wp-content/uploads/2016/01/HalfTunes-Final.zip">这里</a>下载本教程完整的项目。   </p>
+<p>恭喜，你现在可以很好的处理你的app中一般网络请求，当然还有很多比本教程更详细的<code>NSURLSession</code>应用，比如，上传任务，设置会话的配置（超时，缓存策略等）。   </p>
+<p>通过如下资源学习更多的特性吧：<br>*Apple的<a target="_blank" rel="noopener" href="https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/">官方文档</a>包含了所有API提供的方法的详细信息。<br>*我们自己的书：<a target="_blank" rel="noopener" href="http://www.raywenderlich.com/store/ios-7-by-tutorials">iOS7教程</a>，其中包含了两个章节专门讲解<code>NSURLSession</code>，你也可以阅读我们的<a target="_blank" rel="noopener" href="http://www.raywenderlich.com/51127/nsurlsession-tutorial">NSURLSession教程</a>。<br>*<a target="_blank" rel="noopener" href="https://github.com/Alamofire/Alamofire">AlamoFire</a>也是非常流行的第三方网络库，我们在<a target="_blank" rel="noopener" href="http://www.raywenderlich.com/85080/beginning-alamofire-tutorial">Begining AlamoFire</a>教程中讲解了它的基础内容。   </p>
+<p>希望这篇教程能对你有用，参与下方讨论吧！    </p>
+<hr>
+<p>译者注：欢迎转载，但请一定要注明出处！谢谢！</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/iOS-API-%E8%AF%A6%E8%A7%A3/">iOS API 详解</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2015/08/22/2015/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20Binary%20Tree/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构 Binary Tree</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2015/08/11/2015/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20Stack%20%E4%B8%8E%20Queue/">
+                        <span class="hidden-mobile">数据结构 Stack 与 Queue</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

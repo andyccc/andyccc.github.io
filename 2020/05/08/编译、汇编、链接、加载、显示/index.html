@@ -1,0 +1,509 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>编译、汇编、链接、加载、显示 - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="编译、汇编、链接、加载、显示">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-05-08 10:11" pubdate>
+        2020年5月8日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      35
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">编译、汇编、链接、加载、显示</h1>
+            
+            <div class="markdown-body">
+              <p>之前写过关于链接的文章<a target="_blank" rel="noopener" href="https://andyccc.github.io/2018/07/01/dyld-%E5%92%8C%E9%93%BE%E6%8E%A5/">dyld 和链接</a>，链接对我们了解组件化和模块化具有重要的意义。</p>
+<p>我们写完的文本代码，点击了编译器上 run 按钮之后，是怎么在机器上运行的呢？另外以 iOS APP 为例的可视化应用，又是怎么将 UIView 实例在手机上显示的呢？</p>
+<h3 id="前言-计算机的思考方式和人脑的思考方式"><a href="#前言-计算机的思考方式和人脑的思考方式" class="headerlink" title="前言  计算机的思考方式和人脑的思考方式"></a>前言  计算机的思考方式和人脑的思考方式</h3><p>程序 = 数据结构 + 算法，这个公式是计算机界的定理，不管使用多么高级的语言，cpp 还是 php，不管是某个领域的开发专家，还是入门级菜鸟，写出来的程序都是数据结构和算法组成的，区别无非是算法的好坏，数据结构的合适与否，设计模式也是算法的一种体现。</p>
+<p>其实我们生活中充斥着各种各样的程序，比如：人吃饭（主谓宾！），人和饭即为某种数据结构，例如对象（对象在内存中的存储方式类似于结构体，一块连续的内存块），而吃的行为即是算法，算法合适与否的区别在于，用勺子吃面还是用筷子吃面。</p>
+<p>我们出生以来接触的最早的一个具有科学意义的程序可能就是 1 + 1 = 2 了吧，试想一下，当我们只会用数手指计数时，计算 1 + 1，会将 1 转换为 1 根手指，我们会将这个程序转换成这种可以理解的方式，同理计算机也是一样的，它看不懂文本代码，也听不懂任何语言，它只知道高低电平（二进制），因此它也会把代码转换成它可以理解的方式–机器码。而这个转换的任务就是编译器完成的。</p>
+<p>比如下面一段 c 代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// main.c</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;Sum.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> DEFINE 3 * 5</span><br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> * argv[])</span> </span>&#123;<br><br>    <span class="hljs-keyword">int</span> c = sum(<span class="hljs-number">3</span>, DEFINE);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>, c);<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">// Sum.h</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">sum</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b)</span></span>;<br><br><span class="hljs-comment">// Sum.c</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;Sum.h&quot;</span></span><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">sum</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b)</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> a + b;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>编译器通过编译、汇编、链接的步骤将它转化为机器码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c">main:<br><span class="hljs-function">Contents <span class="hljs-title">of</span> <span class="hljs-params">(__TEXT,__text)</span> section</span><br><span class="hljs-function">0000000100000f20	55 48 89 e5 48 83 ec 20 b8 03 00 00 00 b9 0f 00 </span><br><span class="hljs-function">0000000100000f30	00 00 c7 45 fc 00 00 00 00 89 7d f8 48 89 75 f0 </span><br><span class="hljs-function">0000000100000f40	89 c7 89 ce e8 27 00 00 00 48 8d 3d 56 00 00 00 </span><br><span class="hljs-function">0000000100000f50	89 45 ec 8b 75 ec b0 00 e8 27 00 00 00 31 c9 89 </span><br><span class="hljs-function">0000000100000f60	45 e8 89 c8 48 83 c4 20 5d c3 90 90 90 90 90 90 </span><br><span class="hljs-function">0000000100000f70	55 48 89 e5 89 7d fc 89 75 f8 8b 75 fc 03 75 f8 </span><br><span class="hljs-function">0000000100000f80	89 f0 5d c3 </span><br></code></pre></td></tr></table></figure>
+
+<p>可以看出编译器的发明为程序员界带来了多大的便利性。</p>
+<p>一个工程（源文件集合）是怎么转换成机器码的呢？</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/10/17/16681731a4b476f6?w=728&h=95&f=png&s=16376" srcset="/img/loading.gif" lazyload></p>
+<p>上图即为我们写的代码转换为机器代码的全过程，这个过程很像一个流水线的工作，前一步的输出是后一步的输入。</p>
+<h3 id="一、预处理"><a href="#一、预处理" class="headerlink" title="一、预处理"></a>一、预处理</h3><p>预处理的作用主要有两个：1、展开头文件；2、替换宏定义，如上述代码中的 <code>main.c</code>，经过预处理器预处理后的结果为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"># <span class="hljs-number">412</span> <span class="hljs-string">&quot;/usr/include/stdio.h&quot;</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span><br># <span class="hljs-number">10</span> <span class="hljs-string">&quot;main.c&quot;</span> <span class="hljs-number">2</span><br># <span class="hljs-number">1</span> <span class="hljs-string">&quot;./Sum.h&quot;</span> <span class="hljs-number">1</span><br># <span class="hljs-number">14</span> <span class="hljs-string">&quot;./Sum.h&quot;</span><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">sum</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b)</span></span>;<br># <span class="hljs-number">11</span> <span class="hljs-string">&quot;main.c&quot;</span> <span class="hljs-number">2</span><br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> * argv[])</span> </span>&#123;<br><br>    <span class="hljs-keyword">int</span> c = sum(<span class="hljs-number">3</span>, <span class="hljs-number">3</span> * <span class="hljs-number">5</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>, c);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>可以看到，展开了 <code>Sum.h</code>，替换了宏定义 <code>DEFINE</code>。（上述代码省略了展开的标准io库头文件）</p>
+<h3 id="二、编译"><a href="#二、编译" class="headerlink" title="二、编译"></a>二、编译</h3><p>预处理后的 <code>main.i</code> 文件作为输入文件输入到编译器编译，编译器有前后端之分：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/10/17/1668173568173b8b?w=466&h=67&f=png&s=4722" srcset="/img/loading.gif" lazyload></p>
+<p>编译的过程也是一种流水线的过程，前一步的输出作为后一步的输入，最后得到结果。<br>典型的例子就是 clang 和 llvm，编译器前端的作用是词法分析、语法分析等，保证代码没有错误，比如，变量未声明、标识符错误、漏写分隔符和括号等语法问题，而编译器后端的任务是通过复杂的寄存器分配算法，为代码中的变量和常量分配合适的寄存器，然后生成并优化汇编指令。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/10/17/16681741b3051f4d?w=543&h=178&f=png&s=19281" srcset="/img/loading.gif" lazyload></p>
+<p><code>*.i</code> 中存储的我们的代码是一种字符流的形式，词法分析器会将字符流转换为记号流，举个栗子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">if</span> (x &gt; <span class="hljs-number">5</span>)<br>    y = <span class="hljs-string">&quot;h&quot;</span>;<br><span class="hljs-keyword">else</span> <br>    z = <span class="hljs-number">1</span>;<br></code></pre></td></tr></table></figure>
+
+<p>经过词法分析器分析后得到的记号流为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-function">IF LPAREN <span class="hljs-title">IDENT</span><span class="hljs-params">(x)</span> GT <span class="hljs-title">INT</span><span class="hljs-params">(<span class="hljs-number">5</span>)</span> RPAREN</span><br><span class="hljs-function">    <span class="hljs-title">IDENT</span><span class="hljs-params">(y)</span> ASSIGN <span class="hljs-title">STRING</span><span class="hljs-params">(<span class="hljs-string">&quot;h&quot;</span>)</span> SEMICOLON</span><br><span class="hljs-function">ELSE</span><br><span class="hljs-function">    <span class="hljs-title">IDENT</span><span class="hljs-params">(z)</span> ASSIGN <span class="hljs-title">INT</span><span class="hljs-params">(<span class="hljs-number">1</span>)</span> SEMICOLON EOF </span><br></code></pre></td></tr></table></figure>
+
+<p>词法分析只是简单的将字符流转换为记号流，比如将标识符、关键字、括号、分隔符等转换成相应的记号，而判断我们程序是否有语法错误是语法分析器做的事，比如写代码的时候漏写了一个括号，词法分析器不会报错，只是在产生的记号流中，少了一个括号的记号，语法分析器会将报错信息反馈给我们，告诉我们，哪里应该有一个括号。语法错误我们平常写代码过程中经常遇到的问题。<br>语法分析器除了会帮我们分析语法是否符合规范之外，还有一个作用就是生成抽象语法树，比如上述例子中，语法分析器生成的抽象语法树为：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/10/17/1668177c71e5db2f?w=330&h=203&f=png&s=9680" srcset="/img/loading.gif" lazyload></p>
+<p>编译器后端会通过使用抽象语法树经过一系列的算法生成汇编指令，由于寄存器分配，指令优化等算法过于高深，此处不再分析。</p>
+<p>第一个例子中的 <code>main.c</code>，我们可以通过反汇编得到机器码对应的汇编指令为：</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs armasm"> <span class="hljs-number">0</span>: <span class="hljs-number">55</span>  	               pushq	%rbp<br> <span class="hljs-number">1</span>:	<span class="hljs-number">48</span> <span class="hljs-number">89</span> e5 	        movq	%rsp, %rbp<br> <span class="hljs-number">4</span>:	<span class="hljs-number">48</span> <span class="hljs-number">83</span> ec <span class="hljs-number">20</span>          	subq	<span class="hljs-number">$32</span>, %rsp<br> <span class="hljs-number">8</span>:	b8 <span class="hljs-number">03</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span>       	movl	<span class="hljs-number">$3</span>, %eax<br> d:	b9 <span class="hljs-number">0</span>f <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span>       	movl	<span class="hljs-number">$15</span>, %ecx<br><span class="hljs-number">12</span>:	<span class="hljs-built_in">c7</span> <span class="hljs-number">45</span> fc <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> 	movl	<span class="hljs-number">$0</span>, -<span class="hljs-number">4</span>(%rbp)<br><span class="hljs-number">19</span>:	<span class="hljs-number">89</span> <span class="hljs-number">7</span>d f8 	        movl 	%edi, -<span class="hljs-number">8</span>(%rbp)<br><span class="hljs-number">1</span>c:	<span class="hljs-number">48</span> <span class="hljs-number">89</span> <span class="hljs-number">75</span> <span class="hljs-built_in">f0</span> 	        movq 	%rsi, -<span class="hljs-number">16</span>(%rbp)<br><span class="hljs-number">20</span>:	<span class="hljs-number">89</span> <span class="hljs-built_in">c7</span> 	                movl 	%eax, %edi<br><span class="hljs-number">22</span>:	<span class="hljs-number">89</span> ce 	                movl	%ecx, %esi<br><span class="hljs-number">24</span>:	e8 <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> 	       callq	<span class="hljs-number">0</span> &lt;_main+<span class="hljs-number">0x29</span>&gt;<br><span class="hljs-number">29</span>:	<span class="hljs-number">48</span> <span class="hljs-number">8</span>d <span class="hljs-number">3</span>d <span class="hljs-number">1</span>a <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> 	leaq	<span class="hljs-number">26</span>(%rip), %rdi<br><span class="hljs-number">30</span>:	<span class="hljs-number">89</span> <span class="hljs-number">45</span> ec 	        movl	%eax, -<span class="hljs-number">20</span>(%rbp)<br><span class="hljs-number">33</span>:	<span class="hljs-number">8</span>b <span class="hljs-number">75</span> ec 	        movl	-<span class="hljs-number">20</span>(%rbp), %esi<br><span class="hljs-number">36</span>:	b0 <span class="hljs-number">00</span>                	movb	<span class="hljs-number">$0</span>, %al<br><span class="hljs-number">38</span>:	e8 <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> 	       callq	<span class="hljs-number">0</span> &lt;_main+<span class="hljs-number">0x3D</span>&gt;<br><span class="hljs-number">3</span>d:	<span class="hljs-number">31</span> <span class="hljs-built_in">c9</span>                	xorl 	%ecx, %ecx<br><span class="hljs-number">3</span>f:	<span class="hljs-number">89</span> <span class="hljs-number">45</span> e8             	movl 	%eax, -<span class="hljs-number">24</span>(%rbp)<br><span class="hljs-number">42</span>:	<span class="hljs-number">89</span> <span class="hljs-built_in">c8</span> 	                movl	%ecx, %eax<br><span class="hljs-number">44</span>:	<span class="hljs-number">48</span> <span class="hljs-number">83</span> <span class="hljs-built_in">c4</span> <span class="hljs-number">20</span>          	addq 	<span class="hljs-number">$32</span>, %rsp<br><span class="hljs-number">48</span>:	<span class="hljs-number">5</span>d                      popq	%rbp<br><span class="hljs-number">49</span>:	<span class="hljs-built_in">c3</span> 	                retq<br></code></pre></td></tr></table></figure>
+<h4 id="一个简单的编译器的例子"><a href="#一个简单的编译器的例子" class="headerlink" title="*一个简单的编译器的例子"></a>*一个简单的编译器的例子</h4><p>某种简单的加法计算器，只接受两种指令 <code>push</code> 和 <code>add</code>，<code>push</code> 是压栈操作，<code>add</code> 是将栈顶两个元素弹出相加并将结果压栈。<br>那么当我们输入程序 <code>1 + 2 + 3</code> 时，它的编译过程为：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/10/17/166819e2e514d18e?w=693&h=112&f=png&s=10367" srcset="/img/loading.gif" lazyload></p>
+<p>生成的指令：</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-keyword">push</span> <span class="hljs-number">1</span><br><span class="hljs-keyword">push</span> <span class="hljs-number">2</span><br><span class="hljs-keyword">add</span><br><span class="hljs-keyword">push</span> <span class="hljs-number">3</span><br><span class="hljs-keyword">add</span><br><span class="hljs-symbol">ret</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="三、汇编"><a href="#三、汇编" class="headerlink" title="三、汇编"></a>三、汇编</h3><p>汇编器将汇编指令汇编成机器代码。</p>
+<h3 id="四、链接"><a href="#四、链接" class="headerlink" title="四、链接"></a>四、链接</h3><p>参见 <a target="_blank" rel="noopener" href="https://andyccc.github.io/2018/07/01/dyld-%E5%92%8C%E9%93%BE%E6%8E%A5/">dyld 和链接</a>。</p>
+<h4 id="补充："><a href="#补充：" class="headerlink" title="*补充："></a>*补充：</h4><p>首先需要知道的是，函数（区分函数指针）是一段指令块，被分配在可执行文件的某块内存中。</p>
+<p>我们工程中的每个源文件都被编译器编译成后缀为 <code>.o</code> 的目标文件（object file），试想一下上面的例子中，<code>main.i</code> 中仅仅得到了 <code>sum()</code> 的声明，因此 <code>main.o</code> 中也仅存在 <code>sum()</code> 的声明，那么 <code>sum()</code> 的指令集是怎么执行的呢？这就是链接的作用了，其实整个代码的编译过程中，有一个叫<strong>符号表</strong>的东西起了很大的作用，符号表以键值对的形式存储了当前工程中所有源文件的外部符号，比如上面的例子中，<code>_sum</code> 即为符号（键），<code>*_sum</code> 即为符号的引用（指向 <code>sum()</code> 指令块的指针，值）。</p>
+<p>语法分析器拿到 <code>sum</code> 记号时，它会从当前文件（<code>main.i</code>）中寻找 <code>sum</code> 的定义，这个定义可能是从别的头文件展开的，也可能是该文件本身定义的，当不存在时就会报语法错误。然后编译器后端分析抽象语法树时，会将当前函数的指令预设置为下一条指令。比如</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-comment">// 上个例子中的 Sum.c</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;Sum.h&quot;</span></span><br><br><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">foo</span><span class="hljs-params">()</span> </span>&#123;<br>    <br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> * argv[])</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">// insert code here...</span><br>    foo();<br>    sum(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>生成的目标文件 <code>main.o</code> 中的指令为：</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">main.o:</span><br>(__TEXT,__text) section<br><span class="hljs-symbol">_foo:</span><br><span class="hljs-number">0000000000000000</span>	pushq	%rbp<br><span class="hljs-number">0000000000000001</span>	movq	%rsp, %rbp<br><span class="hljs-number">0000000000000004</span>	popq	%rbp<br><span class="hljs-number">0000000000000005</span>	retq<br><span class="hljs-number">0000000000000006</span>	nopw	%cs:(%rax,%rax)<br><span class="hljs-symbol">_main:</span><br><span class="hljs-number">0000000000000010</span>	pushq	%rbp<br><span class="hljs-number">0000000000000011</span>	movq	%rsp, %rbp<br><span class="hljs-number">0000000000000014</span>	subq	<span class="hljs-number">$0x20</span>, %rsp<br><span class="hljs-number">0000000000000018</span>	movl	<span class="hljs-number">$0x0</span>, -<span class="hljs-number">0x4</span>(%rbp)<br><span class="hljs-number">000000000000001</span>f	movl	%edi, -<span class="hljs-number">0x8</span>(%rbp)<br><span class="hljs-number">0000000000000022</span>	movq	%rsi, -<span class="hljs-number">0x10</span>(%rbp)<br><span class="hljs-number">0000000000000026</span>	callq	<span class="hljs-number">0x2b</span><br><span class="hljs-number">000000000000002</span>b	movl	<span class="hljs-number">$0x1</span>, %edi<br><span class="hljs-number">0000000000000030</span>	movl	<span class="hljs-number">$0x2</span>, %esi<br><span class="hljs-number">0000000000000035</span>	callq	<span class="hljs-number">0x3a</span><br><span class="hljs-number">000000000000003</span>a	xorl	%esi, %esi<br><span class="hljs-number">000000000000003</span>c	movl	%eax, -<span class="hljs-number">0x14</span>(%rbp)<br><span class="hljs-number">000000000000003</span>f	movl	%esi, %eax<br><span class="hljs-number">0000000000000041</span>	addq	<span class="hljs-number">$0x20</span>, %rsp<br><span class="hljs-number">0000000000000045</span>	popq	%rbp<br><span class="hljs-number">0000000000000046</span>	retq<br></code></pre></td></tr></table></figure>
+
+<p>可以看到 <code>main.o</code> 中并没有 <code>sum</code> 函数。此时符号表中存储的的符号为 <code>_sum</code>，此时的 <code>Sum.o</code>：</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">Sum.o:</span><br>(__TEXT,__text) section<br><span class="hljs-symbol">_sum:</span><br><span class="hljs-number">0000000000000000</span>	pushq	%rbp<br><span class="hljs-number">0000000000000001</span>	movq	%rsp, %rbp<br><span class="hljs-number">0000000000000004</span>	movl	%edi, -<span class="hljs-number">0x4</span>(%rbp)<br><span class="hljs-number">0000000000000007</span>	movl	%esi, -<span class="hljs-number">0x8</span>(%rbp)<br><span class="hljs-number">000000000000000</span>a	movl	-<span class="hljs-number">0x4</span>(%rbp), %esi<br><span class="hljs-number">000000000000000</span>d	addl	-<span class="hljs-number">0x8</span>(%rbp), %esi<br><span class="hljs-number">0000000000000010</span>	movl	%esi, %eax<br><span class="hljs-number">0000000000000012</span>	popq	%rbp<br><span class="hljs-number">0000000000000013</span>	retq<br></code></pre></td></tr></table></figure>
+
+<p>链接器会将 <code>Sum.o</code> 和 <code>main.o</code> 链接成一个可执行文件，当需要调用 <code>sum</code> 函数时，链接器会去符号表中找 <code>_sum</code> 符号，如果找不到编译器就会报链接错误，如果找到，链接器通过 <code>_sum</code> 键找到指向 <code>sum</code> 指令块的指针，然后将 <code>sum</code> 指令块重新布局到可执行文件的内存中，此时的 <code>callq</code> 指令会调用重新定义后的内存地址。</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">main:</span><br>(__TEXT,__text) section<br><span class="hljs-symbol">_foo:</span><br><span class="hljs-number">0000000100000</span>f50	pushq	%rbp<br><span class="hljs-number">0000000100000</span>f51	movq	%rsp, %rbp<br><span class="hljs-number">0000000100000</span>f54	popq	%rbp<br><span class="hljs-number">0000000100000</span>f55	retq<br><span class="hljs-number">0000000100000</span>f56	nopw	%cs:(%rax,%rax)<br><span class="hljs-symbol">_main:</span><br><span class="hljs-number">0000000100000</span>f60	pushq	%rbp<br><span class="hljs-number">0000000100000</span>f61	movq	%rsp, %rbp<br><span class="hljs-number">0000000100000</span>f64	subq	<span class="hljs-number">$0x20</span>, %rsp<br><span class="hljs-number">0000000100000</span>f68	movl	<span class="hljs-number">$0x0</span>, -<span class="hljs-number">0x4</span>(%rbp)<br><span class="hljs-number">0000000100000</span>f6f	movl	%edi, -<span class="hljs-number">0x8</span>(%rbp)<br><span class="hljs-number">0000000100000</span>f72	movq	%rsi, -<span class="hljs-number">0x10</span>(%rbp)<br><span class="hljs-number">0000000100000</span>f76	callq	<span class="hljs-number">0x100000f50</span> <span class="hljs-comment">// foo 函数首地址</span><br><span class="hljs-number">0000000100000</span>f7b	movl	<span class="hljs-number">$0x1</span>, %edi<br><span class="hljs-number">0000000100000</span>f80	movl	<span class="hljs-number">$0x2</span>, %esi<br><span class="hljs-number">0000000100000</span>f85	callq	<span class="hljs-number">0x100000fa0</span> <span class="hljs-comment">// sum 函数首地址</span><br><span class="hljs-number">0000000100000</span>f8a	xorl	%esi, %esi<br><span class="hljs-number">0000000100000</span>f8c	movl	%eax, -<span class="hljs-number">0x14</span>(%rbp)<br><span class="hljs-number">0000000100000</span>f8f	movl	%esi, %eax<br><span class="hljs-number">0000000100000</span>f91	addq	<span class="hljs-number">$0x20</span>, %rsp<br><span class="hljs-number">0000000100000</span>f95	popq	%rbp<br><span class="hljs-number">0000000100000</span>f96	retq<br><span class="hljs-number">0000000100000</span>f97	<span class="hljs-keyword">nop</span><br><span class="hljs-number">0000000100000</span>f98	<span class="hljs-keyword">nop</span><br><span class="hljs-number">0000000100000</span>f99	<span class="hljs-keyword">nop</span><br><span class="hljs-number">0000000100000</span>f9a	<span class="hljs-keyword">nop</span><br><span class="hljs-number">0000000100000</span>f9b	<span class="hljs-keyword">nop</span><br><span class="hljs-number">0000000100000</span>f9c	<span class="hljs-keyword">nop</span><br><span class="hljs-number">0000000100000</span>f9d	<span class="hljs-keyword">nop</span><br><span class="hljs-number">0000000100000</span>f9e	<span class="hljs-keyword">nop</span><br><span class="hljs-number">0000000100000</span>f9f	<span class="hljs-keyword">nop</span><br><span class="hljs-symbol">_sum:</span><br><span class="hljs-number">0000000100000</span>fa0	pushq	%rbp<br><span class="hljs-number">0000000100000</span>fa1	movq	%rsp, %rbp<br><span class="hljs-number">0000000100000</span>fa4	movl	%edi, -<span class="hljs-number">0x4</span>(%rbp)<br><span class="hljs-number">0000000100000</span>fa7	movl	%esi, -<span class="hljs-number">0x8</span>(%rbp)<br><span class="hljs-number">0000000100000</span>faa	movl	-<span class="hljs-number">0x4</span>(%rbp), %esi<br><span class="hljs-number">0000000100000</span>fad	addl	-<span class="hljs-number">0x8</span>(%rbp), %esi<br><span class="hljs-number">0000000100000</span>fb0	movl	%esi, %eax<br><span class="hljs-number">0000000100000</span>fb2	popq	%rbp<br><span class="hljs-number">0000000100000</span>fb3	retq<br></code></pre></td></tr></table></figure>
+
+<p>这就是静态链接过程中，静态链接器的工作。</p>
+<p>但是 iOS 开发中方法的调用会更复杂，涉及到 <code>runtime</code> 和 dyld，大致流程为：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/10/19/1668b86b12e208f4?w=648&h=360&f=png&s=31407" srcset="/img/loading.gif" lazyload></p>
+<p>上图中，dyld 会将 <code>0xyy</code> 重定向为 <code>objc_msgSend()</code> 指令块的地址（运行时完成，动态链接）。<code>- foo</code> 的首地址被存储在名为 <code>Foo</code> 的类对象中（类似于 C++ 的虚函数表）。然后该指令块会在运行时被调用。<a target="_blank" rel="noopener" href="https://andyccc.github.io/2018/01/20/%E4%BB%8Eruntime%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81%E7%9A%84%E5%8A%A8%E6%80%81%E6%80%A7/">了解更多</a></p>
+<h3 id="五、加载"><a href="#五、加载" class="headerlink" title="五、加载"></a>五、加载</h3><p>dyld 会将链接完成的可执行文件加载到内存中：</p>
+<ul>
+<li>将 <code>__TEXT,__text</code> 中的指令拷贝到虚拟内存的 <code>.rodata（readonly）</code> 中。</li>
+<li>将 <code>__DATA,__data</code> 中的全局和静态变量拷贝到虚拟内存的 <code>.rwdata （readwrite）</code>中。</li>
+<li>使用 <code>.symbol</code> 中的符号完成动态链接。</li>
+<li>初始化堆栈，从 <code>main()</code> 函数开始执行程序。</li>
+</ul>
+<p>其中涉及到的 <code>+ load</code> 函数，参见 <a target="_blank" rel="noopener" href="https://andyccc.github.io/2018/07/01/dyld-%E5%92%8C%E9%93%BE%E6%8E%A5/">dyld 和链接</a>。</p>
+<h3 id="六、显示"><a href="#六、显示" class="headerlink" title="六、显示"></a>六、显示</h3><p>参见<a target="_blank" rel="noopener" href="https://andyccc.github.io/">优化APP的显示性能</a>。</p>
+<h3 id="七、结语"><a href="#七、结语" class="headerlink" title="七、结语"></a>七、结语</h3><p>现在知道我们写完的代码是怎么转换成机器能明白的语言了吧。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/OC/">OC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/05/11/2020-2/27.iOS%20%E7%B3%BB%E7%BB%9F%E5%86%85%E6%A0%B8%20XNU%EF%BC%9AApp%20%E5%A6%82%E4%BD%95%E5%8A%A0%E8%BD%BD/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">iOS 系统内核 XNU：App 如何加载</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/30/2020-2/26.%E5%A6%82%E4%BD%95%E5%88%B6%E5%AE%9A%E4%B8%80%E5%A5%97%E9%80%82%E5%90%88%E8%87%AA%E5%B7%B1%E5%9B%A2%E9%98%9F%E7%9A%84%20iOS%20%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">
+                        <span class="hidden-mobile">如何制定一套适合自己团队的 iOS 编码规范</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

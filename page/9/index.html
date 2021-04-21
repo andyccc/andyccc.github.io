@@ -1,0 +1,796 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="生活不像你想象得那么好,但也不会像你想象得那么糟">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          style=margin-top:0>
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2018/03/23/2018-2/%E5%93%88%E5%B8%8C%E8%A1%A8/" target="_self">
+          哈希表
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/03/23/2018-2/%E5%93%88%E5%B8%8C%E8%A1%A8/" target="_self">
+          
+          
+            
+          
+          前言 哈希表的优势数据结构存在的意义是处理数据，对数据的基本处理无非是增删改查，即插入、删除、查找、修改。对线性表（数组）来说，插入和删除的时间复杂度是O(N)，即每次插入和删除都要改变插入位置后面所有元素的个数，从而造成O(N)的时间复杂度，而查找和修改的时间复杂度是O(1)，因为可以直接用下标得到那个位置的元素。对链表来说，插入和删除的时间复杂度为O(1)，而查找和修改的时间复杂度为O(N)，
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-03-23 14:36" pubdate>
+              2018-03-23
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2018/03/10/2018/%E5%85%B3%E4%BA%8E%20iOS%20%E4%B8%AD%E7%9A%84%20WebView/" target="_self">
+          关于 iOS 中的 WebView
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/03/10/2018/%E5%85%B3%E4%BA%8E%20iOS%20%E4%B8%AD%E7%9A%84%20WebView/" target="_self">
+          
+          
+            
+          
+          
+UIWebView 使用方式与普通 View 一样。
+
+使用方式与普通 View 一样。内置一个 UIScrollView。
+需要设置 UIWebViewDelegate。delegate 只有四个回调方法：是否开始，load 开始，load 完成，load 失败。
+HTML1[webView loadHTMLString:@&quot;&lt;html&gt;&lt;body&gt;&lt;p
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-03-10 11:14" pubdate>
+              2018-03-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/webview/">webview</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/webview/">webview</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2018/03/02/2018/%E4%BD%BF%E7%94%A8%20WKWebView%20%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%8F%E9%AA%8C/" target="_self">
+          使用 WKWebView 的一些经验
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/03/02/2018/%E4%BD%BF%E7%94%A8%20WKWebView%20%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%8F%E9%AA%8C/" target="_self">
+          
+          
+            
+          
+          
+白屏问题 UIWebView 上当内存占用过大时，App 会 crash；WKWebView 上当内存占用过大时，WebContent process 会 crash，导致白屏。
+
+白屏问题UIWebView 上当内存占用过大时，App 会 crash；WKWebView 上当内存占用过大时，WebContent process 会 crash，导致白屏。此时，wkWebView 的 url 变
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-03-02 10:14" pubdate>
+              2018-03-02
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/webview/">webview</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/webview/">webview</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2018/02/09/2018-2/%E7%B1%BB%E5%92%8C%E5%85%83%E7%B1%BB/" target="_self">
+          类和元类
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/02/09/2018-2/%E7%B1%BB%E5%92%8C%E5%85%83%E7%B1%BB/" target="_self">
+          
+          
+            
+          
+          
+Objective-C 是一门基于类的对象系统，每一个对象都是某个类的实例；对象的 isa 指针指向它的类。该类描述对象的一些信息：数据占用的空间，变量的类型和布局等。该类也描述对象的一些行为：对象可以响应的选择器（selector）和对象实现的实例方法。
+（注：面向对象的含义，类是一类事物的共有特性的描述，比如：“人”类中的“姓名”，“年龄”等属性，“吃饭”、“喝水”等行为，所有的人都具备，所
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-02-09 14:35" pubdate>
+              2018-02-09
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS-%E8%BF%90%E8%A1%8C%E6%97%B6/">iOS 运行时</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2018/01/20/2018-2/%E4%BB%8Eruntime%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81%E7%9A%84%E5%8A%A8%E6%80%81%E6%80%A7/" target="_self">
+          从runtime源码解析消息发送的动态性
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/01/20/2018-2/%E4%BB%8Eruntime%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81%E7%9A%84%E5%8A%A8%E6%80%81%E6%80%A7/" target="_self">
+          
+          
+            
+          
+          写在前面的话本文不是对runtime的使用的简单的阐述，而是我对runtime中消息发送的一些更深层的理解。
+不要相信任何博客或者文章，apple 的 opensource 源代码会告诉我们想知道的一切，所以善用源码可能会事半功倍。
+一、结构体 vs 类我们知道，OC 是 C 语言的超集，是对 C 和 C++ 的进一步封装，一开始学习 OC 这门语言的时候，我们就被灌输过一句话：对象存储在堆内存，
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-01-20 11:30" pubdate>
+              2018-01-20
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS-%E8%BF%90%E8%A1%8C%E6%97%B6/">iOS 运行时</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2018/01/02/2018-2/%E9%80%82%E9%85%8DiPhoneX%20&%20iOS11/" target="_self">
+          适配iPhoneX &amp; iOS11
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/01/02/2018-2/%E9%80%82%E9%85%8DiPhoneX%20&%20iOS11/" target="_self">
+          
+          
+            
+          
+          一、Screen SizeiPhoneX 的屏幕尺寸为 375pt × 812pt @3x，像素为 1125px × 2436px。可以通过判断屏幕的高度来判断设备是否是 iPhoneX，可以在全局宏定义中添加判断设备的宏定义（横竖屏通用）：
+1#define IS_IPHONE_X     (( fabs((double)[[UIScreen mainScreen] bounds].size.h
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-01-02 18:33" pubdate>
+              2018-01-02
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS-%E6%96%B0%E7%89%B9%E6%80%A7/">iOS 新特性</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2018/01/02/2018-2/ARC%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E4%BB%A5%E5%8F%8A%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8/" target="_self">
+          ARC内存管理以及循环引用
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/01/02/2018-2/ARC%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E4%BB%A5%E5%8F%8A%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8/" target="_self">
+          
+          
+            
+          
+          ARC:”Automatic Reference Counting”，自动引用计数。Swift语言延续了OC的做法，也是利用ARC机制进行内存管理，和OC的ARC一样，当一些类的实例不在需要的时候，ARC会释放它们的内存。但是，在少数情况下，ARC需要知道你的代码之间的关系才能更好的为你管理内存，和OC一样，Swift中的ARC也存在循环引用导致内存泄露的情况。    
+一、ARC的工作机制每当我
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-01-02 16:25" pubdate>
+              2018-01-02
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">iOS 内存管理</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2018/01/02/2018-2/%E5%80%BC%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%9C%A8Swift%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8/" target="_self">
+          值类型和引用类型在Swift中的使用
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/01/02/2018-2/%E5%80%BC%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%9C%A8Swift%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8/" target="_self">
+          
+          
+            
+          
+          前言 值类型 vs 引用类型1、什么是值类型值类型就是值直接保存在变量中。例如：
+12int a = 10;a = 20; 
+
+值类型赋新值的时候会直接覆盖旧值。
+
+1234// 1int b = a;// 2b = 30;
+
+按注释：
+1.这段代码首先声明了一个int类型的变量b，然后将a中保存的值赋值给b。
+2.给b赋新值，不会影响a中保存的值。
+
+2、什么是引用类型引用类型，变量中保存的是地
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-01-02 14:22" pubdate>
+              2018-01-02
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">iOS 内存管理</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2018/01/02/2018-2/Swift%E9%9B%86%E5%90%88%E5%87%BD%E6%95%B0-Reduce%E3%80%81Map%E3%80%81FlatMap%E3%80%81Filter%E8%AF%A6%E8%A7%A3/" target="_self">
+          Swift集合函数:Reduce、Map、FlatMap、Filter详解
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/01/02/2018-2/Swift%E9%9B%86%E5%90%88%E5%87%BD%E6%95%B0-Reduce%E3%80%81Map%E3%80%81FlatMap%E3%80%81Filter%E8%AF%A6%E8%A7%A3/" target="_self">
+          
+          
+            
+          
+          Reduce声明
+1func reduce&lt;Result&gt;(_ initialResult: Result, _ nextPartialResult: (Result, Element) throws -&gt; Result) rethrows -&gt; Result
+
+Returns the result of combining the elements of the sequ
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-01-02 11:20" pubdate>
+              2018-01-02
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS-API-%E8%AF%A6%E8%A7%A3/">iOS API 详解</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2017/08/30/2017/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3copy%E5%85%B3%E9%94%AE%E5%AD%97/" target="_self">
+          深入理解copy关键字
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2017/08/30/2017/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3copy%E5%85%B3%E9%94%AE%E5%AD%97/" target="_self">
+          
+          
+            
+          
+          我们在声明 NSString、NSArray 等具有可变子类的属性时，一般都会用 copy 关键字来指定它的特质。
+为什么要用 copy
+copy 关键字的解释是：此特质所表达的所属关系与 strong（为属性设置新值时，先保留新值，并释放旧值，然后再将新值设置上去）类似。不同的是，设置新值时，不保留新值，而是将其“拷贝”。
+
+看上去并没有什么大不了的，拷贝与否好像和设置成功不成功的关系不大！但是
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-08-30 10:26" pubdate>
+              2017-08-30
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/iOS-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">iOS 内存管理</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/8/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/#board">7</a><a class="page-number" href="/page/8/#board">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/#board">10</a><a class="page-number" href="/page/11/#board">11</a><a class="extend next" rel="next" href="/page/10/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

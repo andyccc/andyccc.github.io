@@ -1,0 +1,506 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>状态管理 - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="状态管理">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-03-12 00:22" pubdate>
+        2019年3月12日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      15
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">状态管理</h1>
+            
+            <div class="markdown-body">
+              <h3 id="状态管理"><a href="#状态管理" class="headerlink" title="状态管理"></a>状态管理</h3><p>声明：Flutter专栏文档均来自慕课网<br><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://coding.imooc.com/class/321.html">https://coding.imooc.com/class/321.html</a></p>
+<h4 id="状态管理-1"><a href="#状态管理-1" class="headerlink" title="状态管理"></a>状态管理</h4><ul>
+<li>  什么是StatelessWidget？</li>
+<li>  什么是StatefulWidget？</li>
+<li>  什么是StatefulWidget和StatelessWidget最佳实践？</li>
+</ul>
+<p>状态是在构建widget时可以同步读取的信息，或者在widget的生命周期中可能更改的信息，在Flutter中如果要管理状态需要用到 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/widgets/StatefulWidget-class.html">StatefulWidget</a>。</p>
+<h4 id="什么是StatelessWidget？"><a href="#什么是StatelessWidget？" class="headerlink" title="什么是StatelessWidget？"></a>什么是<strong>StatelessWidget</strong>？</h4><p>Flutter中的<code>StatelessWidget</code>是一个不需要状态更改的widget - 它没有要管理的内部状态。</p>
+<p>当您描述的用户界面部分不依赖于对象本身中的配置信息以及widget的BuildContext 时，无状态widget非常有用。</p>
+<p><code>AboutDialog</code>, <code>CircleAvator</code>和 <code>Text</code> 都是<code>StatelessWidget</code>的子类。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-comment">// Flutter</span><br><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;package</span>:flutter/material.dart&#x27;;<br><br>void main() =&gt; runApp(<span class="hljs-type">MyStatelessWidget</span>(text: <span class="hljs-string">&quot;StatelessWidget Example to show immutable data&quot;</span>));<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyStatelessWidget</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> text;<br>  <span class="hljs-type">MyStatelessWidget</span>(&#123;<span class="hljs-type">Key</span> key, <span class="hljs-keyword">this</span>.text&#125;) : <span class="hljs-keyword">super</span>(key: key);<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Center</span>(<br>      child: <span class="hljs-type">Text</span>(<br>        text,<br>        textDirection: <span class="hljs-type">TextDirection</span>.ltr,<br>      ),<br>    );<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>在前面的示例中，您使用了MyStatelessWidget类的构造函数 传递标记为final的text。这个类继承了StatelessWidget-它包含不可变数据</p>
+<p>无状态widget的build方法通常只会在以下三种情况调用:</p>
+<ul>
+<li>  将widget插入树中时</li>
+<li>  当widget的父级更改其配置时</li>
+<li>  当它依赖的<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/widgets/InheritedWidget-class.html">InheritedWidget</a>发生变化时</li>
+</ul>
+<h4 id="什么是StatefulWidget？"><a href="#什么是StatefulWidget？" class="headerlink" title="什么是StatefulWidget？"></a>什么是<strong>StatefulWidget</strong>？</h4><p><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/widgets/StatefulWidget-class.html">StatefulWidget</a> 是可变状态的widget。 使用<code>setState</code>方法管理StatefulWidget的状态的改变。调用setState告诉Flutter框架，某个状态发生了变化，Flutter会重新运行build方法，以便应用程序可以应用最新状态。</p>
+<p>状态是在构建widget时可以同步读取的信息可能会在widget的生命周期中发生变化。确保在状态改变时及时通知状态 变化是widget实现者的责任。当widget可以动态更改时，需要使用StatefulWidget。 例如, 通过键入表单或移动滑块来更改widget的状态. 或者, 它可以随时间变化 - 或者数据推送更新UI</p>
+<p><code>Checkbox</code>, <code>Radio</code>, <code>Slider</code>, <code>InkWell</code>, <code>Form</code>, 和 <code>TextField</code> 都是有状态的widget，也是StatefulWidget的子类。</p>
+<p>下面的示例声明了一个StatefulWidget，它需要一个<code>createState()</code>方法。此方法创建管理widget状态的状态对象_MyStatefulWidgetState。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyStatefulWidget</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  <span class="hljs-type">MyStatefulWidget</span>(&#123;<span class="hljs-type">Key</span> key, <span class="hljs-keyword">this</span>.title&#125;) : <span class="hljs-keyword">super</span>(key: key);<br>  <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> title;<br>  <span class="hljs-meta">@override</span><br>  _MyStatefulWidgetState createState() =&gt; _MyStatefulWidgetState();<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>以下状态类_MyStatefulWidgetState实现widget的<code>build()</code>方法。当状态改变时，例如，当用户切换按钮时，使用新的切换值调用setState。这会导致框架在UI中重建此widget。</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs haskell"><span class="hljs-class"><span class="hljs-keyword">class</span> _MyStatefulWidgetState extends <span class="hljs-type">State</span>&lt;<span class="hljs-type">MyStatefulWidget</span>&gt; &#123;</span><br><span class="hljs-class">  bool showtext=true;</span><br><span class="hljs-class">  bool toggleState=true;</span><br><span class="hljs-class">  <span class="hljs-type">Timer</span> t2;</span><br><span class="hljs-class">  void toggleBlinkState()&#123;</span><br><span class="hljs-class">    setState(()&#123;</span><br><span class="hljs-class">      toggleState=!toggleState;</span><br><span class="hljs-class">    &#125;);</span><br><span class="hljs-class">    var twenty = const <span class="hljs-type">Duration</span>(<span class="hljs-title">milliseconds</span>: 1000);</span><br><span class="hljs-class">    if(<span class="hljs-title">toggleState</span>==<span class="hljs-title">false</span>) &#123;</span><br><span class="hljs-class">      t2 = <span class="hljs-type">Timer</span>.periodic(<span class="hljs-title">twenty</span>, (<span class="hljs-type">Timer</span> <span class="hljs-title">t</span>) &#123;</span><br><span class="hljs-class">        toggleShowText();</span><br><span class="hljs-class">      &#125;);</span><br><span class="hljs-class">    &#125; else &#123;</span><br><span class="hljs-class">      t2.cancel();</span><br><span class="hljs-class">    &#125;</span><br><span class="hljs-class">  &#125;</span><br><span class="hljs-class">  void toggleShowText()&#123;</span><br><span class="hljs-class">    setState(()&#123;</span><br><span class="hljs-class">      showtext=!showtext;</span><br><span class="hljs-class">    &#125;);</span><br><span class="hljs-class">  &#125;</span><br><span class="hljs-class"></span><br><span class="hljs-class">  @override</span><br><span class="hljs-class">  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> <span class="hljs-title">context</span>) &#123;</span><br><span class="hljs-class">    return <span class="hljs-type">Scaffold</span>(</span><br><span class="hljs-class">      <span class="hljs-title">body</span>: <span class="hljs-type">Center</span>(</span><br><span class="hljs-class">        <span class="hljs-title">child</span>: <span class="hljs-type">Column</span>(</span><br><span class="hljs-class">          <span class="hljs-title">children</span>: &lt;<span class="hljs-type">Widget</span>&gt;[</span><br><span class="hljs-class">            (<span class="hljs-title">showtext</span></span><br><span class="hljs-class">              ?(<span class="hljs-type">Text</span>(&#x27;<span class="hljs-type">This</span> <span class="hljs-title">execution</span> <span class="hljs-title">will</span> <span class="hljs-title">be</span> <span class="hljs-title">done</span> <span class="hljs-title">before</span> <span class="hljs-title">you</span> <span class="hljs-title">can</span> <span class="hljs-title">blink</span>.&#x27;))</span><br><span class="hljs-class">              :(<span class="hljs-type">Container</span>())</span><br><span class="hljs-class">            ),</span><br><span class="hljs-class">            <span class="hljs-type">Padding</span>(</span><br><span class="hljs-class">              <span class="hljs-title">padding</span>: <span class="hljs-type">EdgeInsets</span>.<span class="hljs-title">only</span>(<span class="hljs-title">top</span>: 70.0),</span><br><span class="hljs-class">              child: <span class="hljs-type">RaisedButton</span>(</span><br><span class="hljs-class">                <span class="hljs-title">onPressed</span>: <span class="hljs-title">toggleBlinkState</span>,</span><br><span class="hljs-class">                <span class="hljs-title">child</span>: (<span class="hljs-title">toggleState</span></span><br><span class="hljs-class">                  ?( <span class="hljs-type">Text</span>(&#x27;<span class="hljs-type">Blink</span>&#x27;))</span><br><span class="hljs-class">                  :(<span class="hljs-type">Text</span>(&#x27;<span class="hljs-type">Stop</span> <span class="hljs-type">Blinking</span>&#x27;))</span><br><span class="hljs-class">                )</span><br><span class="hljs-class">              )</span><br><span class="hljs-class">            )</span><br><span class="hljs-class">          ],</span><br><span class="hljs-class">        ),</span><br><span class="hljs-class">      ),</span><br><span class="hljs-class">    );</span><br><span class="hljs-class">  &#125; </span><br></code></pre></td></tr></table></figure>
+
+<h4 id="什么是StatefulWidget和StatelessWidget最佳实践？"><a href="#什么是StatefulWidget和StatelessWidget最佳实践？" class="headerlink" title="什么是StatefulWidget和StatelessWidget最佳实践？"></a>什么是<strong>StatefulWidget</strong>和<strong>StatelessWidget</strong>最佳实践？</h4><p>在设计widget时，需要考虑以下几点。</p>
+<blockquote>
+<p><strong>1.确定widget应该使用StatefulWidget还是StatelessWidget</strong></p>
+</blockquote>
+<p>在<strong>Flutter</strong>中，<strong>widget</strong>是有状态的还是无状态的 - 取决于<code>是否</code> 他们<code>依赖于状态的变化</code></p>
+<ul>
+<li>  如果用户交互或数据改变导致widget改变，那么它就是有状态的。</li>
+<li>  如果一个widget是最终的或不可变的，那么它就是无状态。</li>
+</ul>
+<blockquote>
+<p><strong>2.确定哪个对象管理widget的状态（对于StatefulWidget）</strong></p>
+</blockquote>
+<h5 id="在Flutter中，管理状态有三种主要方式："><a href="#在Flutter中，管理状态有三种主要方式：" class="headerlink" title="在Flutter中，管理状态有三种主要方式："></a>在Flutter中，管理状态有三种主要方式：</h5><ul>
+<li>  每个widget管理自己的状态</li>
+<li>  父widget管理widget的状态</li>
+<li>  混合搭配管理的方法</li>
+</ul>
+<p><strong>如何决定使用哪种方式时，可以参考以下原则：</strong></p>
+<ul>
+<li>  如果所讨论的状态是用户数据，例如复选框的已选中或未选中状态，或滑块的位置，则状态最好由父widget管理；</li>
+<li>  如果widget的状态取决于动作，例如动画，那么最好是由widget自身来管理状态；</li>
+<li>  如有还是不确定谁管理状态，请让父widget管理子widget的状态；</li>
+</ul>
+<blockquote>
+<p><strong>3.StatefulWidget 和 Stated的子类</strong></p>
+</blockquote>
+<p>MyStatefulWidget类管理自己的状态 - 它扩展了StatefulWidget，它覆盖<code>createState()</code>方法来创建State对象，框架调用createState()来构建widget。在这个例子中，<code>createState()</code>创建了一个_MyStatefulWidgetState的实例 在下一个最佳实践中实现：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyStatefulWidget</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  <span class="hljs-type">MyStatefulWidget</span>(&#123;<span class="hljs-type">Key</span> key, <span class="hljs-keyword">this</span>.title&#125;) : <span class="hljs-keyword">super</span>(key: key);<br>  <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> title;<br>  <span class="hljs-meta">@override</span><br>  _MyStatefulWidgetState createState() =&gt; _MyStatefulWidgetState();<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_MyStatefulWidgetState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State&lt;MyStatefulWidget&gt;</span> </span>&#123;<br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    ...<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>4.将StatefulWidget添加到widget树中</strong></p>
+</blockquote>
+<p>将自定义的StatefulWidget添加到应用程序构建方法中的widget树中：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyStatelessWidget</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-comment">// This widget is the root of your application.</span><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">MaterialApp</span>(<br>      title: <span class="hljs-symbol">&#x27;Flutter</span> <span class="hljs-type">Demo</span>&#x27;,<br>      theme: <span class="hljs-type">ThemeData</span>(<br>        primarySwatch: <span class="hljs-type">Colors</span>.blue,<br>      ),<br>      home: <span class="hljs-type">MyStatefulWidget</span>(title: <span class="hljs-symbol">&#x27;State</span> <span class="hljs-type">Change</span> <span class="hljs-type">Demo</span>&#x27;),<br>    );<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p> image  image</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Flutter%E5%AD%A6%E4%B9%A0/">Flutter学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Dart/">Dart</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Flutter/">Flutter</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91/">混合开发</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/14/2019/8.%E8%B7%AF%E7%94%B1%E4%B8%8E%E5%AF%BC%E8%88%AA/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">路由与导航</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/10/2019/6.%E5%B8%83%E5%B1%80%E4%B8%8E%E5%88%97%E8%A1%A8/">
+                        <span class="hidden-mobile">布局与列表</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

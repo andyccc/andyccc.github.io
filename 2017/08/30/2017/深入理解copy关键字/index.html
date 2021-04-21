@@ -1,0 +1,462 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>深入理解copy关键字 - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="深入理解copy关键字">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2017-08-30 10:26" pubdate>
+        2017年8月30日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      12
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">深入理解copy关键字</h1>
+            
+            <div class="markdown-body">
+              <p>我们在声明 <code>NSString</code>、<code>NSArray </code>等具有可变子类的属性时，一般都会用 <code>copy</code> 关键字来指定它的特质。</p>
+<h2 id="为什么要用-copy"><a href="#为什么要用-copy" class="headerlink" title="为什么要用 copy"></a>为什么要用 copy</h2><blockquote>
+<p><code>copy</code> 关键字的解释是：此特质所表达的所属关系与 <code>strong</code>（为属性设置新值时，先保留新值，并释放旧值，然后再将新值设置上去）类似。不同的是，设置新值时，不保留新值，而是将其“拷贝”。</p>
+</blockquote>
+<p>看上去并没有什么大不了的，拷贝与否好像和设置成功不成功的关系不大！但是，传递给设置方法的新值可能是一个可变类的实例（父类指针指向子类对象），例如，给类型为 <code>NSString</code> 的属性设置新值时，可能会传递一个<code>NSMutableString</code>的实例。此时如果不拷贝字符串，设置完属性后，字符串的值可能会在对象不知道的情况下遭人更改。所以要拷贝一份”不可变”的字符串，确保对象中的字符串不会无意间被改变。</p>
+<h2 id="理解copy的作用"><a href="#理解copy的作用" class="headerlink" title="理解copy的作用"></a>理解copy的作用</h2><p>举个例子来说：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-built_in">NSString</span> *aString;<br><br><span class="hljs-keyword">self</span>.aString = <span class="hljs-string">@&quot;test string&quot;</span>;<br><span class="hljs-built_in">NSMutableString</span> *mutableString = [[<span class="hljs-built_in">NSMutableString</span> alloc] initWithString:<span class="hljs-string">@&quot;hello world&quot;</span>];<br><span class="hljs-keyword">self</span>.aString = mutableString;<br>[mutableString setString:<span class="hljs-string">@&quot;hahaha&quot;</span>];<br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%@&quot;</span>,_aString);<br><span class="hljs-comment">//print: hahaha</span><br></code></pre></td></tr></table></figure>
+<p>我们首先声明了一个不可变字符串类型的属性 <code>aString</code>，并且给它赋了一个值，然后初始化了一个可变的字符串 <code>mutableString</code>，由于OC这门语言的多态性，即<strong>父类指针可以指向子类对象</strong>，因为 <code>NSMutableString</code> 是 <code>NSString</code> 的子类，所以，我们可以将不可变字符串类型的指针 <code>self.aString</code> 指向可变字符串类型的对象 <code>mutableString</code>，然后当我们改变 <code>mutableString</code> 的值的时候，此时不可变字符串 <code>self.aString</code> 的值也随之改变，假如我们再其他较多的地方也使用了 <code>self.aString</code> 这个对象，那么该对象的值就会在我们不知情的情况下遭到修改，然后就会造成多处使用错误。<br>下面我们对上述代码稍作修改：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">self</span>.aString = <span class="hljs-string">@&quot;test string&quot;</span>;<br><span class="hljs-built_in">NSMutableString</span> *mutableString = [[<span class="hljs-built_in">NSMutableString</span> alloc] initWithString:<span class="hljs-string">@&quot;hello world&quot;</span>];<br><span class="hljs-keyword">self</span>.aString = [mutableString <span class="hljs-keyword">copy</span>];<br>[mutableString setString:<span class="hljs-string">@&quot;hahaha&quot;</span>];<br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%@&quot;</span>,_aString);<br><span class="hljs-comment">//print: hello world</span><br></code></pre></td></tr></table></figure>
+<p>在将可变字符串赋值给  <code>self.aString</code>  的时候，进行一步copy的操作，此时可以看到打印的信息为 <code>hello world</code> ，这就说明，当我们修改可变对象的时候没对不可变对象造成任何影响。<br>为了避免每次赋值都进行一次 copy 操作，有的时候也会遗漏，我们可以在声明属性的时候，使用 <code>copy</code> 关键字，<code>copy</code> 关键字的作用就是每当该属性被赋值的时候，都进行一次拷贝，这样就可以保证这个对象永远不会因为其可变子类对象的修改而被修改。例如：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *aString;<br><br><span class="hljs-keyword">self</span>.aString = <span class="hljs-string">@&quot;test string&quot;</span>;<br><span class="hljs-built_in">NSMutableString</span> *mutableString = [[<span class="hljs-built_in">NSMutableString</span> alloc] initWithString:<span class="hljs-string">@&quot;hello world&quot;</span>];<br><span class="hljs-keyword">self</span>.aString = mutableString;<br>[mutableString setString:<span class="hljs-string">@&quot;hahaha&quot;</span>];<br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%@&quot;</span>,_aString);<br><span class="hljs-comment">//print: hello world</span><br></code></pre></td></tr></table></figure>
+<p>使用 <code>copy</code> 关键字就可以保证该属性指向的值永远为不可变对象。</p>
+<h2 id="copy-的原理"><a href="#copy-的原理" class="headerlink" title="copy 的原理"></a>copy 的原理</h2><p>那么 <code>copy</code> 关键字怎么保证我们每次辅助的时候都进行一次拷贝的n呢？</p>
+<p>假如我们声明一个 <code>strong</code> 修饰的属性：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-built_in">NSString</span> *aString;<br></code></pre></td></tr></table></figure>
+
+<p>那么它被合成的 <code>-setter</code> 方法为：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs objc"><span class="hljs-comment">// ARC 下</span><br>- (<span class="hljs-keyword">void</span>)setAString:(<span class="hljs-built_in">NSString</span> *)aString &#123;<br>    _aString = aString;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+ <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs objc"><span class="hljs-comment">// MRC 下</span><br>- (<span class="hljs-keyword">void</span>)setAString:(<span class="hljs-built_in">NSString</span> *)aString &#123;<br>    <span class="hljs-comment">// retain 新值</span><br>    <span class="hljs-keyword">id</span> tmp = [aString <span class="hljs-keyword">retain</span>];<br>    <span class="hljs-comment">// 释放旧值</span><br>    [_aString release];<br>    <span class="hljs-comment">// 设置新值</span><br>    _aString = tmp;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>MRC 下的 <code>-setter</code> 方法可以让我们清晰的看到 <code>strong</code> 关键字的作用。那么 <code>copy</code> 和 <code>strong</code> 的不同点在哪呢?</p>
+<p>如下代码：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *aString;<br></code></pre></td></tr></table></figure>
+
+<p>它被合成的 <code>-setter</code> 方法为：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs objc"><span class="hljs-comment">// ARC</span><br>- (<span class="hljs-keyword">void</span>)setAString:(<span class="hljs-built_in">NSString</span> *)aString &#123;<br>    _aString = [aString <span class="hljs-keyword">copy</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs objc"><span class="hljs-comment">// MRC</span><br>- (<span class="hljs-keyword">void</span>)setAString:(<span class="hljs-built_in">NSString</span> *)aString &#123;<br>    <span class="hljs-comment">// 拷贝新值</span><br>    <span class="hljs-keyword">id</span> tmp = [aString <span class="hljs-keyword">copy</span>];<br>    <span class="hljs-comment">// 释放旧值</span><br>    [_aString release];<br>    <span class="hljs-comment">// 设置</span><br>    _aString = tmp;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>不同点在于它会将新值的拷贝设置给属性，而不是直接 <code>retain</code>。这就可以确保该属性持有的那一份一直都是被设置的对象的拷贝，所以无论怎么修改被设置的对象，都不会影响它。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/iOS-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">iOS 内存管理</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/01/02/2018-2/Swift%E9%9B%86%E5%90%88%E5%87%BD%E6%95%B0-Reduce%E3%80%81Map%E3%80%81FlatMap%E3%80%81Filter%E8%AF%A6%E8%A7%A3/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Swift集合函数:Reduce、Map、FlatMap、Filter详解</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2016/12/26/2016/iOS10%20%E9%80%82%E9%85%8D%E9%97%AE%E9%A2%98-Xcode8/">
+                        <span class="hidden-mobile">iOS10 适配问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

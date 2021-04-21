@@ -1,0 +1,582 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>值类型和引用类型在Swift中的使用 - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="值类型和引用类型在Swift中的使用">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2018-01-02 14:22" pubdate>
+        2018年1月2日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      39
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">值类型和引用类型在Swift中的使用</h1>
+            
+            <div class="markdown-body">
+              <h2 id="前言-值类型-vs-引用类型"><a href="#前言-值类型-vs-引用类型" class="headerlink" title="前言 值类型 vs 引用类型"></a>前言 值类型 vs 引用类型</h2><h3 id="1、什么是值类型"><a href="#1、什么是值类型" class="headerlink" title="1、什么是值类型"></a>1、什么是值类型</h3><p>值类型就是值直接保存在变量中。例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">int</span> a = <span class="hljs-number">10</span>;<br>a = <span class="hljs-number">20</span>; <br></code></pre></td></tr></table></figure>
+
+<p>值类型赋新值的时候会直接覆盖旧值。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/1/2/160b5665a4d091ad?w=320&h=94&f=png&s=614" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 1</span><br><span class="hljs-keyword">int</span> b = a;<br><span class="hljs-comment">// 2</span><br>b = <span class="hljs-number">30</span>;<br></code></pre></td></tr></table></figure>
+
+<p>按注释：</p>
+<p>1.这段代码首先声明了一个<code>int</code>类型的变量<code>b</code>，然后将<code>a</code>中保存的值赋值给<code>b</code>。</p>
+<p>2.给<code>b</code>赋新值，不会影响<code>a</code>中保存的值。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/1/2/160b5665a518e28c?w=527&h=94&f=png&s=858" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2、什么是引用类型"><a href="#2、什么是引用类型" class="headerlink" title="2、什么是引用类型"></a>2、什么是引用类型</h3><p>引用类型，变量中保存的是地址，地址指向实际的对象。例如：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs objc"><span class="hljs-built_in">NSString</span> *foo = <span class="hljs-string">@&quot;hello&quot;</span>;<br><span class="hljs-comment">// NSString *foo = [[NSString alloc] initWithString:@&quot;hello&quot;];</span><br>foo = <span class="hljs-string">@&quot;world&quot;</span>;<br><span class="hljs-comment">// foo = [[NSString alloc] initWithString:@&quot;world&quot;];</span><br></code></pre></td></tr></table></figure>
+
+<p>引用类型变量重新赋值的时候会改变变量中保存的地址，新的地址会覆盖旧的地址，并且新的地址指向（引用）新创建的对象。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/1/2/160b5665a613c620?w=423&h=294&f=png&s=15000" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs objc"><span class="hljs-built_in">NSMutableString</span> *foo = [<span class="hljs-built_in">NSMutableString</span> stringWithString:<span class="hljs-string">@&quot;helllo, &quot;</span>];<br><span class="hljs-comment">// 1</span><br><span class="hljs-built_in">NSMutableString</span> *bar = foo;<br><span class="hljs-comment">// 2</span><br>[bar appendString:<span class="hljs-string">@&quot;OC&quot;</span>];<br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%@&quot;</span>, foo);<br><span class="hljs-comment">// print &quot;helllo, OC&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>1、声明了一个新的变量<code>bar</code>，<code>bar</code>中保存的地址等于<code>foo</code>中保存的地址，因此它们指向同一个对象。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/1/2/160b5665a4667f6a?w=345&h=203&f=png&s=9695" srcset="/img/loading.gif" lazyload></p>
+<p>2、当修改<code>bar</code>指向的对象时，<code>foo</code>指向的对象也被修改，因为它们俩引用的是同一个对象。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/1/2/160b5665a4eee036?w=375&h=203&f=png&s=10760" srcset="/img/loading.gif" lazyload></p>
+<h2 id="一、Swift中的值类型和引用类型"><a href="#一、Swift中的值类型和引用类型" class="headerlink" title="一、Swift中的值类型和引用类型"></a>一、Swift中的值类型和引用类型</h2><p>相对于OC，Swift 的优点主要有安全、快速、简洁。Swift的安全性主要体现在，它会在编译时就确定要调用的方法和属性（静态优化），而不是像OC一样到运行时才确定调用哪个方法。Swift会在编译时就告诉你，你的代码是否有bug（比如访问了野指针，数组越界等），而OC会在运行时才发现这些错误并造成APP的crash。</p>
+<p>类似于OC中的类，Swift中的类都是引用类型，结构体、枚举、元组都是值类型。</p>
+<p>值类型的特点就是拷贝，假如我们创建了一个值类型的实例，当它作为参数传递给函数或者赋值给常量或变量时，这个实例就会生成一份它自身的拷贝（unique copy），当对这个实例进行赋值、参数传递等操作时，实际上被赋值或者传递的是拷贝的那一份，无论怎么修改都不会改变该实例本身。而引用类型的实例进行赋值、参数传递等操作时，实际上传递的就是它本身，我们在函数中修改的就是它自身。类似于 C 函数中的值传递和引用传递。</p>
+<h3 id="1、引用类型"><a href="#1、引用类型" class="headerlink" title="1、引用类型"></a>1、引用类型</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-comment">// Reference type example</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">C</span> </span>&#123; <br>	<span class="hljs-keyword">var</span> data: <span class="hljs-type">Int</span> <span class="hljs-operator">=</span> <span class="hljs-operator">-</span><span class="hljs-number">1</span> <br>&#125;<br><span class="hljs-keyword">let</span> x <span class="hljs-operator">=</span> <span class="hljs-type">C</span>()<br><span class="hljs-keyword">let</span> y <span class="hljs-operator">=</span> x			    <span class="hljs-comment">// x is copied to y</span><br>x.data <span class="hljs-operator">=</span> <span class="hljs-number">42</span>				<span class="hljs-comment">// changes the instance referred to by x (and y)</span><br>println(<span class="hljs-string">&quot;<span class="hljs-subst">\(x.data)</span>, <span class="hljs-subst">\(y.data)</span>&quot;</span>)	<span class="hljs-comment">// prints &quot;42, 42&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>上述代码的内存如下图所示，变量<code>x</code>和<code>y</code>指向同一个类<code>C</code>的实例。<br><img src="https://user-gold-cdn.xitu.io/2018/1/2/160b564a2543e978?w=384&h=140&f=png&s=6615" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2、值类型"><a href="#2、值类型" class="headerlink" title="2、值类型"></a>2、值类型</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-comment">// Value type example</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">S</span> </span>&#123; <br>	<span class="hljs-keyword">var</span> data: <span class="hljs-type">Int</span> <span class="hljs-operator">=</span> <span class="hljs-operator">-</span><span class="hljs-number">1</span><br>&#125;<br><span class="hljs-keyword">var</span> a <span class="hljs-operator">=</span> <span class="hljs-type">S</span>()<br><span class="hljs-keyword">var</span> b <span class="hljs-operator">=</span> a						<span class="hljs-comment">// a is copied to b</span><br>a.data <span class="hljs-operator">=</span> <span class="hljs-number">42</span>						<span class="hljs-comment">// Changes a, not b</span><br>println(<span class="hljs-string">&quot;<span class="hljs-subst">\(a.data)</span>, <span class="hljs-subst">\(b.data)</span>&quot;</span>)	<span class="hljs-comment">// prints &quot;42, -1&quot;</span><br><br></code></pre></td></tr></table></figure>
+
+<p>内存如下图所示，对实例进行赋值操作时，<code>b = a</code>，会将<code>a</code>的拷贝赋值给<code>b</code>，而不是<code>a</code>本身，因此，<code>a</code>和<code>b</code>保存了两个不同的实例，对其中一个的修改不会影响另一个（下图箭头并不是指针的意思，为了表示清楚一点用了箭头）。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/1/2/160b564a1f79f5b2?w=391&h=155&f=png&s=8231" srcset="/img/loading.gif" lazyload></p>
+<p>值类型拷贝操作的时间复杂度为基于被拷贝数据量大小的O(n)。当值类型的实例传递到函数中时，实际上是声明了一个局部变量，它的作用域仅仅是函数的内部，所以当出了函数时，这份拷贝的实例就会被释放，因此不用担心它的空间复杂度或者拷贝浪费内存的问题。</p>
+<h3 id="3、可变性"><a href="#3、可变性" class="headerlink" title="3、可变性"></a>3、可变性</h3><p>对于值类型和引用类型，关键字<code>var</code>和<code>let</code>是有区别的。对于引用类型来说，<code>let</code>的意思是，<em>引用</em>必须是常量，换句话你说，你不能修改常量指向其他实例，即不能修改常量中保存的地址，但是你可以修改实例本身。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">let</span> x <span class="hljs-operator">=</span> <span class="hljs-type">C</span>()<br><span class="hljs-keyword">let</span> m <span class="hljs-operator">=</span> <span class="hljs-type">C</span>()<br>x <span class="hljs-operator">=</span> m <span class="hljs-comment">//ERROR: note: change &#x27;let&#x27; to &#x27;var&#x27; to make it mutable</span><br>x.data <span class="hljs-operator">=</span> <span class="hljs-number">55</span> <span class="hljs-comment">// It&#x27;s OK</span><br></code></pre></td></tr></table></figure>
+
+<p>对于值类型来说，<code>let</code>的意思是<em>实例</em>必须是常量，而常量也是不变的，因此不能修改常量中保存的值，也不能修改值的本身。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">let</span> a <span class="hljs-operator">=</span> <span class="hljs-type">S</span>()<br>a.data <span class="hljs-operator">=</span> <span class="hljs-number">2</span> <span class="hljs-comment">//ERROR: note: change &#x27;let&#x27; to &#x27;var&#x27; to make it mutable</span><br><span class="hljs-keyword">let</span> b <span class="hljs-operator">=</span> <span class="hljs-type">S</span>()<br>a <span class="hljs-operator">=</span> b <span class="hljs-comment">//ERROR: note: change &#x27;let&#x27; to &#x27;var&#x27; to make it mutable</span><br></code></pre></td></tr></table></figure>
+
+<p>因此，相对于引用类型来说，值类型能更好控制实例可变和不可变，例如<code>NSString </code>和<code>NSMutableString </code>，只需要将字符串声明为<code>let a = &quot; &quot;</code>，那么它就是不可变类型的字符串，声明为<code>var a: String?</code>，它就是可变字符串。（Swift中的String为值类型）</p>
+<h3 id="4、如何选择"><a href="#4、如何选择" class="headerlink" title="4、如何选择"></a>4、如何选择</h3><blockquote>
+<p>If you always get a unique, copied instance, you can trust that no other part of your app is changing the data under the covers. This is especially helpful in multi-threaded environments where a different thread could alter your data out from under you. This can create nasty bugs that are extremely hard to debug.</p>
+</blockquote>
+<p>如果你一直希望持有一个实例的一份独立的备份，即使APP在其他地方修改了这部分数据，你仍然能访问一份原始数据。这在多线程的环境中特别有用，如果其他子线程在你不知道的情况下修改了这个实例，那么你仍然持有一份最原始的数据的备份。</p>
+<p>使用值类型的情况：</p>
+<ul>
+<li>使用<code>==</code>比较两个实例时</li>
+<li>当你需要一份独立的备份时</li>
+<li>多线程中可能会修改数据时</li>
+</ul>
+<p>使用引用类型的情况：</p>
+<ul>
+<li>使用<code>===</code>比较两个实例时</li>
+<li>你需要共享并且修改这个类型的实例时</li>
+</ul>
+<blockquote>
+<p><code>==(Equal To)</code>表示两个实例的值相等(注意，值类型变量中保存的是值不是地址)；</p>
+</blockquote>
+<blockquote>
+<p><code>===(Identical To)</code>表示两个实例完全相等，包括它们在内存中的地址也相同。</p>
+</blockquote>
+<p>在Swift中，<code>Array ``String ``Dictionary ``Int``Bool</code>等数据类型都是值类型，换句话说都是<code>struct</code>而不是<code>class</code>。因此在对它们赋值、传参等操作时，切记它是值传递，而不是引用传递。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">foo</span>(<span class="hljs-params">a</span>: [<span class="hljs-type">String</span>])</span><br>&#123;<br>    <span class="hljs-keyword">var</span> b <span class="hljs-operator">=</span> a<br>    b.append(<span class="hljs-string">&quot;haha&quot;</span>)<br>&#125;<br><br><span class="hljs-keyword">var</span> arr: [<span class="hljs-type">String</span>] <span class="hljs-operator">=</span> [<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-string">&quot;world&quot;</span>]<br>foo(a: arr)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;<span class="hljs-subst">\(arr)</span>&quot;</span>)<br><span class="hljs-comment">// [&quot;hello&quot;, &quot;world&quot;]</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="二、enum、struct、class"><a href="#二、enum、struct、class" class="headerlink" title="二、enum、struct、class"></a>二、enum、struct、class</h2><p>Swift的类型系统：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/1/2/160b564aa578d621?w=480&h=134&f=png&s=12300" srcset="/img/loading.gif" lazyload></p>
+<p>Named type（命名类型）是指在定义时，可以使用特定的名字去命名的类型。例如：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">let foo: Double = <span class="hljs-number">0.0</span><br><span class="hljs-regexp">//</span> Double: 特定的命名类型<br></code></pre></td></tr></table></figure>
+
+<p>Named model type（命名模型类型）是指可以在声明的时候可以重写<code>setter</code>或者<code>getter</code>的类型。例如：</p>
+<p>假如你有一个存储<em>半径</em>的变量，然后要声明一个存储<em>直径</em>的变量：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">var</span> radius <span class="hljs-operator">=</span> <span class="hljs-number">5.0</span>;<br><span class="hljs-keyword">var</span> diameter: <span class="hljs-type">Double</span> &#123;<br>	<span class="hljs-keyword">get</span> &#123;<br>		<span class="hljs-keyword">return</span> radius <span class="hljs-operator">*</span> <span class="hljs-number">2</span><br>	&#125;<br>	<span class="hljs-keyword">set</span> &#123;<br>		radius <span class="hljs-operator">=</span> newValue <span class="hljs-operator">/</span> <span class="hljs-number">2</span><br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Compound type（复合类型）是指没有特定命名的类型。例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-comment">// declare a tuple </span><br><span class="hljs-keyword">let</span> foo: (<span class="hljs-type">String</span>, [<span class="hljs-type">String</span>]) <span class="hljs-operator">=</span> (<span class="hljs-string">&quot;foo&quot;</span>, [<span class="hljs-string">&quot;bar&quot;</span>])<br><span class="hljs-comment">// not</span><br><span class="hljs-keyword">let</span> foo: <span class="hljs-type">Tuple</span> <span class="hljs-operator">=</span> (<span class="hljs-string">&quot;foo&quot;</span>, [<span class="hljs-string">&quot;bar&quot;</span>]) <br><span class="hljs-comment">// error</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="1、enum"><a href="#1、enum" class="headerlink" title="1、enum"></a>1、enum</h3><h4 id="1-、初始值"><a href="#1-、初始值" class="headerlink" title="(1)、初始值"></a>(1)、初始值</h4><p>枚举类型的每一个选项都可以带有一个初始值，和OC中的枚举类型一样，不同的是，Swift允许你指定这个初始值的类型，并且给每一个选项赋值。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Color</span>: <span class="hljs-title">String</span> </span>&#123;<br>    <span class="hljs-keyword">case</span> black <span class="hljs-operator">=</span> <span class="hljs-string">&quot;black&quot;</span><br>    <span class="hljs-keyword">case</span> gray  <span class="hljs-operator">=</span> <span class="hljs-string">&quot;gray&quot;</span><br>    <span class="hljs-keyword">case</span> blue  <span class="hljs-operator">=</span> <span class="hljs-string">&quot;blue&quot;</span><br>    <span class="hljs-keyword">case</span> white <span class="hljs-operator">=</span> <span class="hljs-string">&quot;white&quot;</span><br>&#125;<br><br><span class="hljs-comment">// 省略写法</span><br><span class="hljs-comment">//enum Color: String &#123;</span><br><span class="hljs-comment">//    case black ,gray, blue, white</span><br><span class="hljs-comment">//&#125;</span><br><br><span class="hljs-keyword">let</span> black <span class="hljs-operator">=</span> <span class="hljs-type">Color</span>.black.rawValue<br><span class="hljs-built_in">print</span>(black)<br><span class="hljs-comment">// black</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="2-关联值"><a href="#2-关联值" class="headerlink" title="(2)关联值"></a>(2)关联值</h4><p>Swift中的枚举类型的每一个选项都允许你传入一个变量作为它的关联值，你可以在<code>switch</code>它的时候使用这个变量。例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">CSColor</span> </span>&#123;<br><span class="hljs-comment">// 声明关联值的类型</span><br>    <span class="hljs-keyword">case</span> named(<span class="hljs-type">Color</span>)<br>    <span class="hljs-keyword">case</span> rgb(<span class="hljs-type">UInt8</span>, <span class="hljs-type">UInt8</span>, <span class="hljs-type">UInt8</span>) <span class="hljs-comment">// 0-255</span><br>&#125;<br><span class="hljs-comment">// CustomStringConvertible：这个协议的作用就是用字面量来描述一个类、结构体或者枚举</span><br><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">CSColor</span>: <span class="hljs-title">CustomStringConvertible</span> </span>&#123;<br>    <span class="hljs-keyword">var</span> description: <span class="hljs-type">String</span> &#123;<br>        <span class="hljs-keyword">get</span> &#123;<br>            <span class="hljs-keyword">switch</span> <span class="hljs-keyword">self</span> &#123;<br>            <span class="hljs-keyword">case</span> .named(<span class="hljs-keyword">let</span> name):<br>                <span class="hljs-keyword">return</span> name.rawValue<br>            <span class="hljs-keyword">case</span> .rgb(<span class="hljs-keyword">let</span> r, <span class="hljs-keyword">let</span> g, <span class="hljs-keyword">let</span> b):<br>                <span class="hljs-keyword">return</span> <span class="hljs-type">String</span>.<span class="hljs-keyword">init</span>(format: <span class="hljs-string">&quot;0x%02X%02X%02X&quot;</span>, r, g, b)<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br><span class="hljs-keyword">let</span> color <span class="hljs-operator">=</span> <span class="hljs-type">CSColor</span>.rgb(<span class="hljs-number">255</span>, <span class="hljs-number">255</span>, <span class="hljs-number">255</span>)<br><span class="hljs-comment">// 0xFFFFFF</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="（3）Optional"><a href="#（3）Optional" class="headerlink" title="*（3）Optional"></a>*（3）Optional</h4><p><code>Optional</code>在Swift中首先是个神奇的东西，其次是个非常重要的东西，理解它对于学习Swift重中之重。<br>它的声明：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Optional</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;<br>    <span class="hljs-keyword">case</span> none      <span class="hljs-comment">// 没有值</span><br>    <span class="hljs-keyword">case</span> <span class="hljs-keyword">some</span>(<span class="hljs-type">T</span>)   <span class="hljs-comment">// 有类型为T的某个值</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>Optional</code>类型其实是一个枚举类型，它只有两个选项，要么是<code>none</code>，要么是某个<code>T</code>类型的值<code>some</code>。</p>
+<h5 id="（I）关于"><a href="#（I）关于" class="headerlink" title="（I）关于?"></a>（I）关于<code>?</code></h5><p><code>?</code>的意思是声明的变量是个<code>Optional</code>类型。例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">var</span> foo: <span class="hljs-type">Double？</span><br></code></pre></td></tr></table></figure>
+
+<p>声明一个Double类型的变量，可以不赋值或者赋初值为<code>nil</code>，否则必须初始化它，如果一个变量不是<code>Optional</code>类型，那它永远不可能是<code>nil</code>。</p>
+<p>当我们在使用<code>?</code>解包的时候，它的执行过程应该为（伪代码）：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-comment">// 1</span><br><span class="hljs-keyword">var</span> bar: <span class="hljs-type">String</span>? <span class="hljs-operator">=</span> <span class="hljs-string">&quot;BAR&quot;</span><br><span class="hljs-comment">// 2</span><br><span class="hljs-keyword">let</span> x <span class="hljs-operator">=</span> bar<span class="hljs-operator">?</span>.lowercased<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-comment">// 1 伪代码</span><br><span class="hljs-keyword">var</span> bar: <span class="hljs-type">Optional</span>&lt;<span class="hljs-type">String</span>&gt; <span class="hljs-operator">=</span> <span class="hljs-string">&quot;bar&quot;</span><br><span class="hljs-comment">// 2 ?的作用</span><br><span class="hljs-keyword">switch</span> bar &#123;<br><span class="hljs-keyword">case</span> .none:<br>    bar <span class="hljs-operator">=</span> <span class="hljs-literal">nil</span><br><span class="hljs-keyword">case</span> .some(<span class="hljs-keyword">let</span> xx):<br>    bar <span class="hljs-operator">=</span> xx<br>&#125;<br><br><span class="hljs-keyword">if</span> bar <span class="hljs-operator">==</span> <span class="hljs-literal">nil</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">return</span> bar.lowercased<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>如果<code>bar = nil</code>，则返回<code>nil</code>，如果<code>bar != nil</code>，则返回<code>bar</code>的值，并且调用<code>lowercased</code>方法。当然返回值赋值给<code>x</code>，<code>x</code>也是<code>Optional</code>类型，因为它也可能为<code>nil</code>。</p>
+<h5 id="（II）关于"><a href="#（II）关于" class="headerlink" title="（II）关于!"></a>（II）关于<code>!</code></h5><p><code>!</code>的作用是强制解包的意思（unwrap），即，将<code>Optional</code>类型的变量强制解包为某个类型的值。如果这个值为<code>nil</code>，仍然强制解包的话，应用将会在运行时crash。所以如果不能确定变量的值是一定不是<code>nil</code>的话，千万不要用<code>!</code>解包。这种方式可以保证应用不会crash：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">var</span> bar: <span class="hljs-type">String</span>?<br><span class="hljs-keyword">var</span> x: <span class="hljs-type">String</span>?<br><span class="hljs-keyword">if</span> bar <span class="hljs-operator">!=</span> <span class="hljs-literal">nil</span> &#123;<br>    x <span class="hljs-operator">=</span> bar<span class="hljs-operator">!</span>.lowercased<br>&#125;<br><span class="hljs-built_in">print</span>(x)<br></code></pre></td></tr></table></figure>
+
+<h5 id="（III）关于nil"><a href="#（III）关于nil" class="headerlink" title="（III）关于nil"></a>（III）关于<code>nil</code></h5><p>OC中的<code>nil</code>代表空指针的意思，就是C中的<code>NULL</code>，它的定义为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-comment">// MacType.h</span><br>#ifndef <span class="hljs-type">NULL</span><br>#define <span class="hljs-type">NULL</span>    __DARWIN_NULL<br><span class="hljs-keyword">#endif</span> <span class="hljs-comment">/* ! NULL */</span><br>#ifndef <span class="hljs-literal">nil</span><br>  <span class="hljs-keyword">#if</span> defined(__has_feature) <br>    <span class="hljs-keyword">#if</span> __has_feature(cxx_nullptr)<br>      #define <span class="hljs-literal">nil</span> nullptr <span class="hljs-comment">// nullptr 空指针常量</span><br>    <span class="hljs-keyword">#else</span><br>      #define <span class="hljs-literal">nil</span> __DARWIN_NULL<br>    <span class="hljs-keyword">#endif</span><br>  <span class="hljs-keyword">#else</span><br>    #define <span class="hljs-literal">nil</span> __DARWIN_NULL<br>  <span class="hljs-keyword">#endif</span><br><span class="hljs-keyword">#endif</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// C</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> NULL (void *)0</span><br></code></pre></td></tr></table></figure>
+
+<p>在OC中我们可以向<code>nil</code>发送消息（调用方法），因为OC是一门动态的语言，在编译期它并不关心一个对象是不是<code>nil</code>，它只关心这个类型的对象能不能接收这条消息。它会在运行时判断消息的接收者是不是<code>nil</code>，如果是<code>nil</code>，它会根据消息的返回类型返回对应的值，例如要求返回<code>int</code>类型，返回值就是<code>0</code>，<code>BOOL</code>类型，返回值就是<code>NO</code>，<code>id</code>类型，返回值就是<code>nil</code>，函数将直接返回。</p>
+<p>Swift中的<code>nil</code>，并不是空指针的意思，因为Swift并不是一门纯面向对象的语言，大大减少了对引用类型的依赖，使用较多的是值类型，因此空指针对值类型来说，并没有什么意义。因此，<code>nil</code>表示的是<em>没有值</em>（the absence of a value）即，这块内存的这个变量中没有保存任何值。所以它在Swift中的定义为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">typealias</span> <span class="hljs-literal">nil</span> <span class="hljs-operator">=</span> <span class="hljs-type">Optional</span>.none <br></code></pre></td></tr></table></figure>
+
+<h3 id="2、struct-amp-class"><a href="#2、struct-amp-class" class="headerlink" title="2、struct &amp; class"></a>2、struct &amp; class</h3><p>Swift中的类都是引用类型，结构体都是值类型。</p>
+<blockquote>
+<p>Comparing Classes and Structures (类和结构体的异同点)</p>
+</blockquote>
+<blockquote>
+<p>Classes and structures in Swift have many things in common. Both can (共同点):</p>
+</blockquote>
+<blockquote>
+<p>Define properties to store values. (声明属性)</p>
+</blockquote>
+<blockquote>
+<p>Define methods to provide functionality. (声明方法)</p>
+</blockquote>
+<blockquote>
+<p>Define subscripts to provide access to their values using subscript syntax. (使用点语法)</p>
+</blockquote>
+<blockquote>
+<p>Define initializers to set up their initial state. (使用构造方法初始化)</p>
+</blockquote>
+<blockquote>
+<p>Be extended to expand their functionality beyond a default<br>implementation. (扩展默认实现以外的功能)</p>
+</blockquote>
+<blockquote>
+<p>Conform to protocols to provide standard functionality of a certain kind. (使用协议)</p>
+</blockquote>
+<blockquote>
+<p>For more information, see <a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Properties.html#//apple_ref/doc/uid/TP40014097-CH14-ID254">Properties</a>, <a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Methods.html#//apple_ref/doc/uid/TP40014097-CH15-ID234">Methods</a>, <a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Subscripts.html#//apple_ref/doc/uid/TP40014097-CH16-ID305">Subscripts</a>, <a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html#//apple_ref/doc/uid/TP40014097-CH18-ID203">Initialization</a>, <a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Extensions.html#//apple_ref/doc/uid/TP40014097-CH24-ID151">Extensions</a>, and <a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Protocols.html#//apple_ref/doc/uid/TP40014097-CH25-ID267">Protocols</a>. (更多信息)</p>
+</blockquote>
+<blockquote>
+<p>Classes have additional capabilities that structures do not (类比结构体多的能力):</p>
+</blockquote>
+<blockquote>
+<p>Inheritance enables one class to inherit the characteristics of another. (类可以继承)</p>
+</blockquote>
+<blockquote>
+<p>Type casting enables you to check and interpret the type of a class instance at runtime. (类型转换使您能够在运行时检查和解释实例的类型)</p>
+</blockquote>
+<blockquote>
+<p>Deinitializers enable an instance of a class to free up any resources it has assigned. (提供析构方法来释放一个类占用的资源)</p>
+</blockquote>
+<blockquote>
+<p>Reference counting allows more than one reference to a class instance. (引用计数允许存在多个对实例的引用)</p>
+</blockquote>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/iOS-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">iOS 内存管理</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/01/02/2018-2/ARC%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E4%BB%A5%E5%8F%8A%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ARC内存管理以及循环引用</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/01/02/2018-2/Swift%E9%9B%86%E5%90%88%E5%87%BD%E6%95%B0-Reduce%E3%80%81Map%E3%80%81FlatMap%E3%80%81Filter%E8%AF%A6%E8%A7%A3/">
+                        <span class="hidden-mobile">Swift集合函数:Reduce、Map、FlatMap、Filter详解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

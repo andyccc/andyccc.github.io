@@ -1,0 +1,501 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>从消息转发到多继承 - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="从消息转发到多继承">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-09-08 10:11" pubdate>
+        2020年9月8日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      21
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">从消息转发到多继承</h1>
+            
+            <div class="markdown-body">
+              <h2 id="从消息转发到多继承"><a href="#从消息转发到多继承" class="headerlink" title="从消息转发到多继承"></a>从消息转发到多继承</h2><h3 id="0x0-消息的动态派发"><a href="#0x0-消息的动态派发" class="headerlink" title="0x0 消息的动态派发"></a>0x0 消息的动态派发</h3><p>Objective-C 中函数的调用是在运行时确定的，编译期确定的函数调用和运行时的区别，举个例子：</p>
+<p>定义两个函数，如下：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">foo</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;foo&quot;</span>);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">bar</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;bar&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>假如编译期确定的 <code>foo()</code> 的首地址为 TEXT 段的 0x20，<code>bar()</code> 的首地址为 0x30，则当函数调用由编译期决定时：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">main</span>() &#123;<br>    <span class="hljs-selector-tag">if</span> (flag) &#123;<br>        <span class="hljs-selector-tag">foo</span>(); <span class="hljs-comment">// 指令 callq 0x20</span><br>    &#125; <span class="hljs-selector-tag">else</span> &#123;<br>        <span class="hljs-selector-tag">bar</span>(); <span class="hljs-comment">// 指令 callq 0x30</span><br>    &#125;<br>    <span class="hljs-selector-tag">return</span> <span class="hljs-selector-tag">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>也就是函数的首地址会被硬编码进目标文件。而函数调用由运行时决定时：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs swift">main() &#123;<br>    void (<span class="hljs-operator">*</span><span class="hljs-keyword">func</span>)();<br>    <span class="hljs-keyword">if</span> (flag) &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">=</span> </span>foo;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">=</span> </span>bar;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">func</span>()</span>; <span class="hljs-comment">//根据运行时 flag 的值确定指令 callq 0x20 还是 0x30</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>此时，函数的地址被存储在变量 <code>func</code> 中，而自动变量的值只有当程序运行起来才能确定。因此，函数的调用是在运行时确定的。</p>
+<p>OC 类中的实例方法和类方法会在运行时以函数指针的形式加载进类对象和元类的方法列表（C++ 中的虚函数表）中，即方法列表中存储着指向函数首地址的变量（函数指针）以及该函数的 selector（字符串）；当 <code>[obj method]</code> 时，运行时会使用 <code>method:</code> 这个 selector去类对象的方法列表中找到函数指针，然后调用。</p>
+<p>这就是 OC 的动态消息派发的工作方式。</p>
+<h3 id="0x1-消息转发"><a href="#0x1-消息转发" class="headerlink" title="0x1 消息转发"></a>0x1 消息转发</h3><p>如上文所示，我们可以通过在运行时修改变量（函数指针）的值来修改函数的调用，也可以通过增删改查方法列表来增删改查实例方法或者类方法，因为类对象和元类是“单例”，使得这些增删改查更容易实现。</p>
+<p>当 <code>[obj method]</code> 时，如果此时的 <code>- method:</code> 不在方法列表中时，OC 会提供消息转发的机制，以避免 crash。</p>
+<p>消息转发主要分为三步：</p>
+<ul>
+<li><ol>
+<li><code>+ resolveInstanceMethod:</code> 和 <code>+ resolveClassMethod:</code></li>
+</ol>
+</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">+ (BOOL) resolveInstanceMethod:(SEL)aSEL<br>&#123;<br>    <span class="hljs-keyword">if</span> (aSEL == <span class="hljs-meta">@selector(resolveThisMethodDynamically)</span>) &#123;<br>          class_addMethod([self <span class="hljs-class"><span class="hljs-keyword">class</span>], <span class="hljs-type">aSEL</span>, <span class="hljs-type"></span></span>(IMP)dynamicMethodIMP, <span class="hljs-string">&quot;v@:&quot;</span>);<br>          <span class="hljs-keyword">return</span> YES;<br>    &#125;<br>    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">super</span> resolveInstanceMethod:aSel];<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>此方法允许我们动态的向类对象或者元类中添加方法，即添加对应的 selector 和函数指针。如果返回 <code>No</code> 则进入下一步。</p>
+<ul>
+<li><ol start="2">
+<li>快速转发 <code>- forwardingTargetForSelector:</code></li>
+</ol>
+</li>
+</ul>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs haxe">- (id)forwardingTargetForSelector:<span class="hljs-type"></span>(SEL)aSelector &#123;<br>    <span class="hljs-keyword">return</span> [OtherTarget <span class="hljs-keyword">new</span><span class="hljs-type"></span>];<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>此方法允许我们将找不到的方法转发给其他方法列表中具有该方法的类对象的实例。如果返回 <code>nil</code> 则进入下一步。</p>
+<ul>
+<li><ol start="3">
+<li>正常转发 <code>- forwardInvocation:</code></li>
+</ol>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp">- (<span class="hljs-keyword">void</span>)forwardInvocation:(NSInvocation *)anInvocation<br>&#123;<br>    SEL aSelector = [anInvocation selector];<br>    Friend *<span class="hljs-keyword">friend</span> = [Friend <span class="hljs-keyword">new</span>];<br>    <span class="hljs-keyword">if</span> ([<span class="hljs-keyword">friend</span> respondsToSelector:aSelector])<br>        [anInvocation invokeWithTarget:<span class="hljs-keyword">friend</span>];<br>    <span class="hljs-keyword">else</span><br>        [super forwardInvocation:invocation];<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>NSInvocation</code> 是消息的对象形式，每一个 <code>NSInvocation</code> 实例都存储了这个消息的 selector、target、参数和返回值，它用于在对象间和应用程序间存储和转发 message。因此当某个方法需要转发的时候，就会创建一个 <code>NSInvocation</code> 实例，将该方法的信息存储进去，以便转发的时候获取这些信息。</p>
+<p><code>invocation</code> 实例必须使用固定的 type encode 创建，也就是使用的时候必须要先确定某个方法的 type encode (method signature)，因此重写该方法之前必须先重写 <code>+ methodSignatureForSelector:</code> 以获取该方法的 type encode，比如：<code>@@:i</code> 表示该方法的返回值是 Object(@)，接受者是 Object(@)，<code>:</code> 代表 <code>SEL</code>，具有一个 <code>int</code> 类型的参数(i)。</p>
+<h3 id="0x2-多继承"><a href="#0x2-多继承" class="headerlink" title="0x2 多继承"></a>0x2 多继承</h3><p>多继承和消息转发有什么关系呢？</p>
+<p>从上文可知，消息转发可以使得某个对象和其他对象之间建立某种联系，我们知道，类表述的某一类对象具有的共有的特征（属性或成员变量）和行为（方法），继承关系是子类对父类的特征和行为的扩展，消息转发使得某一个对象具有其他对象的特征和行为。</p>
+<p>比如，一个 <code>儿子</code> 既想继承 <code>父亲</code>  <code>写代码</code> 的能力，又想继承 <code>母亲</code> <code>跳舞</code> 的能力，在 OC 正常的语法中，我们知道只支持单继承，消息转发可以帮助我们实现：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// Son.h</span><br><span class="hljs-comment">// Son 的头文件定义这些方法，但是不实现，为了处理编译不通过</span><br><span class="hljs-comment">// 也可以不定义，使用 `performSelector`调用</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Son</span> : <span class="hljs-title">NSObject</span></span><br>- (<span class="hljs-built_in">NSString</span> *)writeCode;<br>- (<span class="hljs-keyword">void</span>)dance;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">// Son.m</span><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Son</span> </span>&#123;<br>    Mother *_mother;<br>    Father *_father;<br>&#125;<br><br><span class="hljs-comment">// 初始化被转发的对象</span><br>- (<span class="hljs-keyword">instancetype</span>)init &#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span> = [<span class="hljs-keyword">super</span> init]) &#123;<br>        _mother = [Mother new];<br>        _father = [Father new];<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;<br>&#125;<br><br><span class="hljs-comment">// 获取 selector 的 type encode</span><br>- (<span class="hljs-built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector &#123;<br>    <span class="hljs-built_in">NSMethodSignature</span> *s = [<span class="hljs-keyword">super</span> methodSignatureForSelector:aSelector];<br><br>    <span class="hljs-keyword">if</span> ([_mother respondsToSelector:aSelector]) &#123;<br>        s = [_mother methodSignatureForSelector:aSelector];<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ([_father respondsToSelector:aSelector]) &#123;<br>        s = [_father methodSignatureForSelector:aSelector];<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        s = [<span class="hljs-keyword">super</span> methodSignatureForSelector:aSelector];<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> s;<br>&#125;<br><br><span class="hljs-comment">// 转发</span><br>- (<span class="hljs-keyword">void</span>)forwardInvocation:(<span class="hljs-built_in">NSInvocation</span> *)anInvocation &#123;<br>    SEL s = [anInvocation selector];<br>    <span class="hljs-keyword">if</span> ([_mother respondsToSelector:s]) &#123;<br>        [anInvocation invokeWithTarget:_mother];<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ([_father respondsToSelector:s]) &#123;<br>        [anInvocation invokeWithTarget:_father];<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        [<span class="hljs-keyword">super</span> forwardInvocation:anInvocation];<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// Mother.h</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Mother</span> : <span class="hljs-title">NSObject</span></span><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">// Mother.m</span><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Mother</span></span><br><span class="hljs-comment">// 实现 dance 方法</span><br>- (<span class="hljs-keyword">void</span>)dance &#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;dance&quot;</span>);<br>&#125;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">// Father.h</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Father</span> : <span class="hljs-title">NSObject</span></span><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">// Father.m</span><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Father</span></span><br>- (<span class="hljs-built_in">NSString</span> *)writeCode &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">@&quot;hello world&quot;</span>;<br>&#125;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">// main.m</span><br><span class="hljs-keyword">int</span> main(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> * argv[]) &#123;<br>    <span class="hljs-keyword">@autoreleasepool</span> &#123;<br>        <span class="hljs-comment">// insert code here...</span><br>        Son *son = [Son new];<br>        [son dance];<br>        <span class="hljs-built_in">NSString</span> *code = [son writeCode];<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%@&quot;</span>, code);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>当执行 <code>main.m</code> 中的代码时，得到的结果为：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">2019</span>-<span class="hljs-number">10</span>-<span class="hljs-number">14</span> <span class="hljs-number">15</span>:<span class="hljs-number">37</span>:<span class="hljs-number">38</span>.<span class="hljs-number">525737</span>+<span class="hljs-number">0800</span> Fizz[<span class="hljs-number">61993</span>:<span class="hljs-number">5201679</span>] dance<br><span class="hljs-attribute">2019</span>-<span class="hljs-number">10</span>-<span class="hljs-number">14</span> <span class="hljs-number">15</span>:<span class="hljs-number">37</span>:<span class="hljs-number">38</span>.<span class="hljs-number">526253</span>+<span class="hljs-number">0800</span> Fizz[<span class="hljs-number">61993</span>:<span class="hljs-number">5201679</span>] hello world<br></code></pre></td></tr></table></figure>
+
+<p>因此，<code>Son</code> 得到了 <code>Father</code> 写代码的能力和 <code>Mother</code> 跳舞的能力。</p>
+<p>那么此时的 <code>Son</code> 是得到了多个父类的能力（方法），那么假如此时 <code>Son</code> 想继承 <code>Father</code> 的 <code>firstName</code> 呢？</p>
+<p>我们知道，OC 中定义的属性会自动合成为 <code>ivar + setter + getter</code> 的形式，即生成成员变量、设置方法和获取方法，因此我们可以通过转发 <code>setter</code> 和 <code>getter</code> 来实现继承属性。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// Father.h</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Father</span> : <span class="hljs-title">NSObject</span></span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *firstName;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">// Son.h</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Son</span> : <span class="hljs-title">NSObject</span></span><br><span class="hljs-comment">// 定义 setter 和 getter</span><br>- (<span class="hljs-keyword">void</span>)setFirstName:(<span class="hljs-built_in">NSString</span> *)name;<br>- (<span class="hljs-built_in">NSString</span> *)firstName;<br>- (<span class="hljs-built_in">NSString</span> *)writeCode;<br>- (<span class="hljs-keyword">void</span>)dance;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">// main.m</span><br><span class="hljs-keyword">int</span> main(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> * argv[]) &#123;<br>    <span class="hljs-keyword">@autoreleasepool</span> &#123;<br>        <span class="hljs-comment">// insert code here...</span><br>        Son *son = [Son new];<br>        [son dance];<br>        <span class="hljs-built_in">NSString</span> *tmp = [son writeCode];<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%@&quot;</span>, tmp);<br>        [son setFirstName:<span class="hljs-string">@&quot;user&quot;</span>];<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%@&quot;</span>, [son firstName]);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>此时的 log 为：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">2019</span>-<span class="hljs-number">10</span>-<span class="hljs-number">14</span> <span class="hljs-number">16</span>:<span class="hljs-number">01</span>:<span class="hljs-number">53</span>.<span class="hljs-number">229544</span>+<span class="hljs-number">0800</span> Fizz[<span class="hljs-number">62378</span>:<span class="hljs-number">5213867</span>] dance<br><span class="hljs-attribute">2019</span>-<span class="hljs-number">10</span>-<span class="hljs-number">14</span> <span class="hljs-number">16</span>:<span class="hljs-number">01</span>:<span class="hljs-number">53</span>.<span class="hljs-number">229918</span>+<span class="hljs-number">0800</span> Fizz[<span class="hljs-number">62378</span>:<span class="hljs-number">5213867</span>] hello world<br><span class="hljs-attribute">2019</span>-<span class="hljs-number">10</span>-<span class="hljs-number">14</span> <span class="hljs-number">16</span>:<span class="hljs-number">01</span>:<span class="hljs-number">53</span>.<span class="hljs-number">229971</span>+<span class="hljs-number">0800</span> Fizz[<span class="hljs-number">62378</span>:<span class="hljs-number">5213867</span>] user<br></code></pre></td></tr></table></figure>
+
+<p>这样 <code>Son</code> 即可同时获取 <code>Father</code> 和 <code>Mother</code> 的特征（仅属性，成员变量不行，实际上也是方法）和能力，实现多继承。</p>
+<p>同时继承自 <code>Son</code> 的 <code>Grandson</code> 也同时拥有 <code>Son</code> 多继承得到的属性和方法，因为方法查找会沿着父类链查找到根类，这就是另一个话题了。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/OC/">OC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/09/09/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2002%E3%80%81%E5%BC%80%E8%BE%9F%E7%A9%BA%E9%97%B4%20-%20%E5%AD%97%E8%8A%82%E5%AF%B9%E9%BD%90%20+%20%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">开辟空间 - 字节对齐 + 内存对齐</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/08/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2001%E3%80%81%E5%A6%82%E4%BD%95%E6%8E%A2%E7%B4%A2%E5%BA%95%E5%B1%82%20+%20alloc%20%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/">
+                        <span class="hidden-mobile">如何探索底层 + alloc 做了什么</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

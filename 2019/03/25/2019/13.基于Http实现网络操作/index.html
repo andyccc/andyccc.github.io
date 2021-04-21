@@ -1,0 +1,488 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>基于**Http**实现网络操作 - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="基于**Http**实现网络操作">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-03-25 23:56" pubdate>
+        2019年3月25日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      866 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      12
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">基于**Http**实现网络操作</h1>
+            
+            <div class="markdown-body">
+              <h3 id="基于Http实现网络操作"><a href="#基于Http实现网络操作" class="headerlink" title="基于Http实现网络操作"></a>基于<strong>Http</strong>实现网络操作</h3><ul>
+<li>  如何用Http库做get请求？</li>
+<li>  如何用Http库做post请求？</li>
+<li>  如何将Response转换成Dart object？</li>
+<li>  如何将请求结果展示在界面上？</li>
+</ul>
+<p>网络请求是开发APP必不可少的一部分，比如获取用户订单数据，获取商品列表，提交表单等等都离不了网络请求，那么在Flutter中如何进行网络请求呢？</p>
+<blockquote>
+<p>Flutter官方推荐我们在Flutter中用Http进行网络请求。</p>
+</blockquote>
+<h4 id="什么是Http？"><a href="#什么是Http？" class="headerlink" title="什么是Http？"></a>什么是Http？</h4><p>Http是Flutter社区开发的一个可组合的、跨平台的用于Flutter的网络请求插件。</p>
+<h4 id="如何用http库做get请求？"><a href="#如何用http库做get请求？" class="headerlink" title="如何用http库做get请求？"></a>如何用http库做get请求？</h4><ul>
+<li>  在<code>pubspec.yaml</code>中引入<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://pub.dartlang.org/packages/http">http</a>插件；</li>
+<li>  调用<code>http.get</code>发送请求；</li>
+</ul>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">dependencies:</span><br><span class="hljs-symbol">  http:</span> <span class="hljs-params">&lt;latest_version&gt;</span> <br></code></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript">Future&lt;http.Response&gt; <span class="hljs-function"><span class="hljs-title">fetchPost</span>(<span class="hljs-params"></span>)</span> &#123;<br>  <span class="hljs-keyword">return</span> http.get(<span class="hljs-string">&#x27;https://jsonplaceholder.typicode.com/posts/1&#x27;</span>);<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p><code>http.get()</code>返回一个包含<code>http.Response</code>的<code>Future</code>：</p>
+<ul>
+<li>  <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/dart-async/Future-class.html">Future</a>：是与异步操作一起工作的核心Dart类。它用于表示未来某个时间可能会出现的可用值或错误；</li>
+<li>  <code>http.Response</code>：类包含一个成功的HTTP请求接收到的数据；</li>
+</ul>
+<blockquote>
+<p>在一节会重点讲解Future的用法，如何从Future中获取服务端具体的返回数据。</p>
+</blockquote>
+<h4 id="如何将Response转换成Dart-object？"><a href="#如何将Response转换成Dart-object？" class="headerlink" title="如何将Response转换成Dart object？"></a>如何将Response转换成Dart object？</h4><p>虽然发出网络请求很简单，但如果要使用原始的<code>Future&lt;http.Response&gt;</code>并不简单。为了让我们可以开开心心的写代码，我们可以将<code>http.Response</code>转换成我们自己的<code>Dart</code>对象。</p>
+<h4 id="创建一个CommonModel类"><a href="#创建一个CommonModel类" class="headerlink" title="创建一个CommonModel类"></a>创建一个CommonModel类</h4><p>首先，我们需要创建一个<strong>CommonModel</strong>类，它包含我们网络请求的数据。它还将包括一个工厂构造函数，它允许我们可以通过<strong>json</strong>创建一个<strong>CommonModel</strong>对象。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CommonModel</span> </span>&#123;<br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">String</span> icon;<br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">String</span> title;<br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">String</span> url;<br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">String</span> statusBarColor;<br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">bool</span> hideAppBar;<br>  CommonModel(&#123;<span class="hljs-keyword">this</span>.icon, <span class="hljs-keyword">this</span>.title, <span class="hljs-keyword">this</span>.url, <span class="hljs-keyword">this</span>.statusBarColor, <span class="hljs-keyword">this</span>.hideAppBar&#125;);<br>  <span class="hljs-keyword">factory</span> CommonModel.fromJson(<span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">String</span>, <span class="hljs-built_in">dynamic</span>&gt; json) &#123;<br>    <span class="hljs-keyword">return</span> CommonModel(<br>      icon: json[<span class="hljs-string">&#x27;icon&#x27;</span>],<br>      title: json[<span class="hljs-string">&#x27;title&#x27;</span>],<br>      url: json[<span class="hljs-string">&#x27;url&#x27;</span>],<br>      statusBarColor: json[<span class="hljs-string">&#x27;statusBarColor&#x27;</span>],<br>      hideAppBar: json[<span class="hljs-string">&#x27;hideAppBar&#x27;</span>],<br>    );<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>将<code>http.Response</code>转换成一个<code>CommonModel</code>对象</p>
+<p>现在，我们将更新<code>fetchPost</code>函数以返回一个<code>Future&lt;Post&gt;</code>。为此，我们需要：</p>
+<ol>
+<li> 使用<code>dart:convert</code> package将响应内容转化为一个<code>json</code>Map；</li>
+<li> 使用fromJson工厂函数，将json Map 转化为一个CommonModel对象；</li>
+</ol>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs dart">Future&lt;CommonModel&gt; fetchPost() <span class="hljs-keyword">async</span> &#123;<br>    <span class="hljs-keyword">final</span> response = <span class="hljs-keyword">await</span> http.<span class="hljs-keyword">get</span>(<span class="hljs-string">&#x27;http://www.devio.org/io/flutter_app/json/test_common_model.json&#x27;</span>);<br>    <span class="hljs-keyword">final</span> result = json.decode(response.body);<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> CommonModel.fromJson(result);<br>  &#125; <br></code></pre></td></tr></table></figure>
+
+<h4 id="如何将请求结果展示在界面上？"><a href="#如何将请求结果展示在界面上？" class="headerlink" title="如何将请求结果展示在界面上？"></a>如何将请求结果展示在界面上？</h4><p> image</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;dart</span>:convert&#x27;;<br><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;package</span>:flutter/material.dart&#x27;;<br><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;package</span>:http/http.dart&#x27; as http;<br><br>void main() =&gt; runApp(<span class="hljs-keyword">new</span> <span class="hljs-type">MyApp</span>());<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyApp</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">State</span>&lt;<span class="hljs-type">StatefulWidget</span>&gt; createState() =&gt; _MyAppState();<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_MyAppState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State&lt;MyApp&gt;</span> </span>&#123;<br>  <span class="hljs-type">String</span> showResult = &#x27;&#x27;;<br>  <span class="hljs-type">Future</span>&lt;<span class="hljs-type">CommonModel</span>&gt; fetchPost() async &#123;<br>    <span class="hljs-keyword">final</span> response = await http<br>        .get(<span class="hljs-symbol">&#x27;http</span>:<span class="hljs-comment">//www.devio.org/io/flutter_app/json/test_common_model.json&#x27;);</span><br>    <span class="hljs-keyword">final</span> result = json.decode(response.body);<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">CommonModel</span>.fromJson(result);<br>  &#125;<br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">MaterialApp</span>(<br>      home: <span class="hljs-type">Scaffold</span>(<br>        appBar: <span class="hljs-type">AppBar</span>(<br>          title: <span class="hljs-type">Text</span>(<span class="hljs-symbol">&#x27;Htt</span>p&#x27;),<br>        ),<br><br>        body: <span class="hljs-type">Column</span>(<br>          children: &lt;<span class="hljs-type">Widget</span>&gt;[<br>            <span class="hljs-type">InkWell</span>(<br>              onTap: () &#123;<br>                fetchPost().then((<span class="hljs-type">CommonModel</span> value) &#123;<br>                  setState(() &#123;<br>                    showResult =<br>                        &#x27;请求结果：\nhideAppBar：&#123;value.hideAppBar&#125;\nicon：&#123;value.icon&#125;&#x27;;<br>                  &#125;);<br>                &#125;);<br>              &#125;,<br>              child: <span class="hljs-type">Text</span>(<br>                &#x27;点我&#x27;,<br>                style: <span class="hljs-type">TextStyle</span>(fontSize: <span class="hljs-number">26</span>),<br>              ),<br>            ),<br>            <span class="hljs-type">Text</span>(showResult)<br>          ],<br>        ),<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CommonModel</span> </span>&#123;<br>  <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> icon;<br>  <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> title;<br>  <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> url;<br>  <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> statusBarColor;<br>  <span class="hljs-keyword">final</span> bool hideAppBar;<br>  <span class="hljs-type">CommonModel</span>(<br>      &#123;<span class="hljs-keyword">this</span>.icon, <span class="hljs-keyword">this</span>.title, <span class="hljs-keyword">this</span>.url, <span class="hljs-keyword">this</span>.statusBarColor, <span class="hljs-keyword">this</span>.hideAppBar&#125;);<br>  factory <span class="hljs-type">CommonModel</span>.fromJson(<span class="hljs-type">Map</span>&lt;<span class="hljs-type">String</span>, dynamic&gt; json) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">CommonModel</span>(<br>      icon: json[<span class="hljs-symbol">&#x27;ico</span>n&#x27;],<br>      title: json[<span class="hljs-symbol">&#x27;titl</span>e&#x27;],<br>      url: json[<span class="hljs-symbol">&#x27;ur</span>l&#x27;],<br>      statusBarColor: json[<span class="hljs-symbol">&#x27;statusBarColo</span>r&#x27;],<br>      hideAppBar: json[<span class="hljs-symbol">&#x27;hideAppBa</span>r&#x27;],<br>    );<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在上述代码中我们通过<strong>fetchPost</strong>()<strong>.then</strong>获取<strong>Fluter</strong>的返回结果，其实<strong>Future</strong>可以理解为<strong>ES5</strong>中的<strong>Promise</strong></p>
+</blockquote>
+<hr>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Flutter%E5%AD%A6%E4%B9%A0/">Flutter学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Dart/">Dart</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Flutter/">Flutter</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91/">混合开发</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/27/2019/14.%E5%9B%BE%E7%89%87%E6%8E%A7%E4%BB%B6%E5%BC%80%E5%8F%91%E8%AF%A6%E8%A7%A3/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">图片控件开发详解</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/23/2019/12.%E8%B0%83%E7%94%A8%E7%A1%AC%E4%BB%B6%E3%80%81%E7%AC%AC%E4%B8%89%E6%96%B9%E6%9C%8D%E5%8A%A1%E4%BB%A5%E5%8F%8A%E5%B9%B3%E5%8F%B0%E4%BA%A4%E4%BA%92%E3%80%81%E9%80%9A%E7%9F%A5/">
+                        <span class="hidden-mobile">调用硬件、第三方服务以及平台交互、通知</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

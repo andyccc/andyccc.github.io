@@ -1,0 +1,501 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>线程和异步UI - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="线程和异步UI">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-03-18 23:55" pubdate>
+        2019年3月18日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      35
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">线程和异步UI</h1>
+            
+            <div class="markdown-body">
+              <h3 id="线程和异步UI"><a href="#线程和异步UI" class="headerlink" title="线程和异步UI"></a>线程和异步UI</h3><p>声明：Flutter专栏文档均来自慕课网<br><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://coding.imooc.com/class/321.html">https://coding.imooc.com/class/321.html</a></p>
+<h4 id="线程和异步UI-1"><a href="#线程和异步UI-1" class="headerlink" title="线程和异步UI"></a>线程和异步UI</h4><ul>
+<li>  怎么编写异步的代码？</li>
+<li>  怎么把工作放到后台线程执行？</li>
+<li>  如何进行网络请求？</li>
+<li>  如何为长时间运行的任务添加一个进度指示器？</li>
+</ul>
+<h4 id="怎么编写异步的代码？"><a href="#怎么编写异步的代码？" class="headerlink" title="怎么编写异步的代码？"></a>怎么编写异步的代码？</h4><p>Dart有一个单线程执行模型，支持<code>Isolate</code>（一种在另一个线程上运行Dart代码的方法），一个事件循环和异步编程。除非你自己创建一个 <code>Isolate</code> ，否则你的 Dart 代码永远运行在主UI 线程，并由 event loop 驱动。Flutter 的 event loop 和 iOS 中的 main loop 相似：<code>Looper</code> 是附加在主线程上的。</p>
+<p>Dart 的单线程模型，并不意味着你写的代码一定要作为阻塞操作的方式运行，从而卡住 UI。相反，可以使用 Dart 语言提供的异步工具，例如<code>async / await</code>，来实现异步操作。</p>
+<p>举个例子，你可以使用<code>async / await</code>来让 Dart 帮你做一些繁重的工作，编写网络请求代码而不会挂起 UI：</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs abnf">loadData() async &#123;<br>  String dataURL = <span class="hljs-string">&quot;https://jsonplaceholder.typicode.com/posts&quot;</span><span class="hljs-comment">;</span><br>  http.Response response = await http.get(dataURL)<span class="hljs-comment">;</span><br>  setState(() &#123;<br>    widgets = json.decode(response.body)<span class="hljs-comment">;</span><br>  &#125;)<span class="hljs-comment">;</span><br>&#125; <br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>上面做法等价于Android中的<code>runOnUiThread</code>。</p>
+</blockquote>
+<p>一旦<code>await</code> 的网络请求完成，通过调用<code>setState()</code>来更新 UI，这会触发 widget 子树的重建，并更新相关数据。</p>
+<p>下面的例子展示了异步加载数据，并用<code>ListView</code>展示出来：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;dart</span>:convert&#x27;;<br><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;package</span>:flutter/material.dart&#x27;;<br><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;package</span>:http/http.dart&#x27; as http;<br><br>void main() &#123;<br>  runApp(<span class="hljs-type">SampleApp</span>());<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SampleApp</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">MaterialApp</span>(<br>      title: <span class="hljs-symbol">&#x27;Sample</span> <span class="hljs-type">App</span>&#x27;,<br>      theme: <span class="hljs-type">ThemeData</span>(<br>        primarySwatch: <span class="hljs-type">Colors</span>.blue,<br>      ),<br>      home: <span class="hljs-type">SampleAppPage</span>(),<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SampleAppPage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  <span class="hljs-type">SampleAppPage</span>(&#123;<span class="hljs-type">Key</span> key&#125;) : <span class="hljs-keyword">super</span>(key: key);<br>  <span class="hljs-meta">@override</span><br>  _SampleAppPageState createState() =&gt; _SampleAppPageState();<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_SampleAppPageState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State&lt;SampleAppPage&gt;</span> </span>&#123;<br>  <span class="hljs-type">List</span> widgets = [];<br>  <span class="hljs-meta">@override</span><br>  void initState() &#123;<br>    <span class="hljs-keyword">super</span>.initState();<br>    loadData();<br>  &#125;<br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Scaffold</span>(<br>      appBar: <span class="hljs-type">AppBar</span>(<br>        title: <span class="hljs-type">Text</span>(<span class="hljs-string">&quot;Sample App&quot;</span>),<br>      ),<br>      body: <span class="hljs-type">ListView</span>.builder(<br>          itemCount: widgets.length,<br>          itemBuilder: (<span class="hljs-type">BuildContext</span> context, int position) &#123;<br>            <span class="hljs-keyword">return</span> getRow(position);<br>          &#125;));<br>  &#125;<br>  <span class="hljs-type">Widget</span> getRow(int i) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Padding</span>(<br>      padding: <span class="hljs-type">EdgeInsets</span>.all(<span class="hljs-number">10.0</span>),<br>      child: <span class="hljs-type">Text</span>(<span class="hljs-string">&quot;Row $&#123;widgetsi&#125;&quot;</span>)<br>    );<br>  &#125;<br><br>  loadData() async &#123;<br>    <span class="hljs-type">String</span> dataURL = <span class="hljs-string">&quot;https://jsonplaceholder.typicode.com/posts&quot;</span>;<br>    http.<span class="hljs-type">Response</span> response = await http.get(dataURL);<br>    setState(() &#123;<br>      widgets = json.decode(response.body);<br>    &#125;);<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<h4 id="怎么把工作放到后台线程执行？"><a href="#怎么把工作放到后台线程执行？" class="headerlink" title="怎么把工作放到后台线程执行？"></a>怎么把工作放到后台线程执行？</h4><p>由于 Flutter 是单线程并且跑着一个 event loop（就像 Node.js），因此你不必担心线程管理或生成后台线程。如果你正在做 I/O 操作，如访问磁盘或网络请求，可以安全地使用<code>async / await</code>来完成。如果你需要做让 CPU 执行繁忙的计算密集型任务，你需要使用 <code>Isolate</code> 来避免阻塞 event loop。</p>
+<blockquote>
+<p>在<strong>Android</strong>中，当你想访问一个网络资源时，你通常会创建一个<strong>AsyncTask</strong>，当你需要一个耗时的后台任务时，你通常需要<strong>IntentService</strong>，在<strong>Flutter</strong>中则不需要这么繁琐。</p>
+</blockquote>
+<p>对于 I/O 操作，通过关键字 <code>async</code>把方法声明为异步方法，然后通过<code>await</code>关键字等待该异步方法执行完成：</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs abnf">loadData() async &#123;<br>  String dataURL = <span class="hljs-string">&quot;https://jsonplaceholder.typicode.com/posts&quot;</span><span class="hljs-comment">;</span><br>  http.Response response = await http.get(dataURL)<span class="hljs-comment">;</span><br>  setState(() &#123;<br>    widgets = json.decode(response.body)<span class="hljs-comment">;</span><br>  &#125;)<span class="hljs-comment">;</span><br>&#125; <br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在<strong>Android</strong>中，当你继承<strong>AsyncTask</strong>时，通常会覆盖<strong>3</strong>个方法，<strong>OnPreExecute</strong>、<strong>doInBackground</strong>和<strong>onPostExecute</strong>。 <strong>在</strong>Flutter<strong>中没有这种模式的等价物，因为你只需</strong>await<strong>函数执行完成，而</strong>Dart的事件循环将负责其余的事情。</p>
+</blockquote>
+<p>以上就是对诸如网络请求、数据库访问等，I/O 操作的典型做法。</p>
+<p>然而，有时候你需要处理大量的数据，这会导致你的 UI 挂起。在 Flutter 中，使用 <code>Isolate</code> 来发挥多核心 CPU 的优势来处理那些长期运行或是计算密集型的任务。</p>
+<p><code>Isolate</code> 是分离的运行线程，并且不和主线程的内存堆共享内存。这意味着你不能访问主线程中的变量，或者使用 <code>setState()</code> 来更新 UI。正如它们的名字一样，<code>Isolate</code>不能共享内存。</p>
+<p>下面的例子展示了一个简单的<code>Isolate</code>是如何把数据返回给主线程来更新 UI 的：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs awk">import <span class="hljs-string">&#x27;dart:isolate&#x27;</span>;<br>...<br>loadData() async &#123;<br>    <span class="hljs-regexp">//</span> 打开ReceivePort以接收传入的消息<br>    ReceivePort receivePort = ReceivePort();<br>    <span class="hljs-regexp">//</span>创建并生成与当前Isolate共享相同代码的Isolate<br>    await Isolate.spawn(dataLoader, receivePort.sendPort);<br>    <span class="hljs-regexp">//</span> 流的第一个元素<br>    SendPort sendPort = await receivePort.first;<br>    <span class="hljs-regexp">//</span> 流的第一个元素被收到后监听会关闭，所以需要新打开一个ReceivePort以接收传入的消息<br>    ReceivePort response = ReceivePort();<br>    <span class="hljs-regexp">//</span>通过此发送端口向其对应的“ReceivePort”①发送异步[消息]，这个“消息”指的是发送的参数②。<br>    sendPort.send(<br>        [<span class="hljs-string">&quot;https://jsonplaceholder.typicode.com/posts&quot;</span>, response.sendPort]);<br>    <span class="hljs-regexp">//</span> 获取端口发送来的数据③<br>    List msg = await response.first;<br>    setState(() &#123;<br>      widgets = msg;<br>    &#125;);<br>  &#125;<br>  <span class="hljs-regexp">//</span> isolate的入口函数，该函数会在新的Isolate中调用，Isolate.spawn的message参数会作为调用它时的唯一参数<br>  static dataLoader(SendPort sendPort) async &#123;<br>    <span class="hljs-regexp">//</span> 打开ReceivePort①以接收传入的消息<br>    ReceivePort port = ReceivePort();<br>    <span class="hljs-regexp">//</span> 通知其他的isolates，本isolate 所监听的端口<br>    sendPort.send(port.sendPort);<br>    <span class="hljs-regexp">//</span> 获取其他端口发送的异步消息 msg② -&gt; [<span class="hljs-string">&quot;https://jsonplaceholder.typicode.com/posts&quot;</span>, response.sendPort]<br>    await <span class="hljs-keyword">for</span> (var msg <span class="hljs-keyword">in</span> port) &#123;<br>      <span class="hljs-regexp">//</span>等价于List msg= await port.first;<br>      String data = msg[<span class="hljs-number">0</span>];<br>      SendPort replyTo = msg[<span class="hljs-number">1</span>];<br>      String dataURL = data;<br>      http.Response response = await http.get(dataURL);<br>      <span class="hljs-regexp">//</span> 其对应的“ReceivePort”发送解析出来的JSON数据③<br>      replyTo.send(json.decode(response.body));<br>    &#125;<br>  &#125; <br></code></pre></td></tr></table></figure>
+
+<p>这里，<code>dataLoader()</code> 是一个运行于自己独立执行线程上的 <code>Isolate</code>。在 <code>Isolate</code> 里，你可以执行 CPU 密集型任务（例如解析一个庞大的 json，解析json也是很耗时的哦），或是计算密集型的数学操作，如加密或信号处理等。</p>
+<p>你可以运行下面的完整例子：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;dart:convert&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;dart:isolate&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/material.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:http/http.dart&#x27;</span> <span class="hljs-keyword">as</span> http;<br><span class="hljs-built_in">void</span> <span class="hljs-function"><span class="hljs-title">main</span>(<span class="hljs-params"></span>)</span> &#123;<br>  runApp(SampleApp());<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SampleApp</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-meta">@override</span><br>  Wid<span class="hljs-keyword">get</span> <span class="hljs-title">build</span>(<span class="hljs-params">BuildContext context</span>) &#123;<br>    <span class="hljs-keyword">return</span> MaterialApp(<br>      title: <span class="hljs-string">&#x27;Sample App&#x27;</span>,<br>      <span class="hljs-attr">theme</span>: ThemeData(<br>        primarySwatch: Colors.blue,<br>      ),<br>      <span class="hljs-attr">home</span>: SampleAppPage(),<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SampleAppPage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  SampleAppPage(&#123;Key key&#125;) : <span class="hljs-built_in">super</span>(key: key);<br>  <span class="hljs-meta">@override</span><br>  _SampleAppPageState createState() =&gt; _SampleAppPageState();<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_SampleAppPageState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State</span>&lt;<span class="hljs-title">SampleAppPage</span>&gt; </span>&#123;<br>  List widgets = [];<br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-built_in">void</span> <span class="hljs-function"><span class="hljs-title">initState</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-built_in">super</span>.initState();<br>    loadData();<br>  &#125;<br>  <span class="hljs-function"><span class="hljs-title">showLoadingDialog</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-keyword">if</span> (widgets.length == <span class="hljs-number">0</span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>  &#125;<br>  <span class="hljs-function"><span class="hljs-title">getBody</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-keyword">if</span> (showLoadingDialog()) &#123;<br>      <span class="hljs-keyword">return</span> getProgressDialog();<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-keyword">return</span> getListView();<br>    &#125;<br>  &#125;<br>  <span class="hljs-function"><span class="hljs-title">getProgressDialog</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-keyword">return</span> Center(child: CircularProgressIndicator());<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  Wid<span class="hljs-keyword">get</span> <span class="hljs-title">build</span>(<span class="hljs-params">BuildContext context</span>) &#123;<br>    <span class="hljs-keyword">return</span> Scaffold(<br>        appBar: AppBar(<br>          title: Text(<span class="hljs-string">&quot;Sample App&quot;</span>),<br>        ),<br>        <span class="hljs-attr">body</span>: getBody());<br>  &#125;<br><br>  ListView getListView() =&gt; ListView.builder(<br>      itemCount: widgets.length,<br>      <span class="hljs-attr">itemBuilder</span>: (BuildContext context, int position) &#123;<br>        <span class="hljs-keyword">return</span> getRow(position);<br>      &#125;);<br>  Wid<span class="hljs-keyword">get</span> <span class="hljs-title">getRow</span>(<span class="hljs-params">int i</span>) &#123;<br>    <span class="hljs-keyword">return</span> Padding(<br>        padding: EdgeInsets.all(<span class="hljs-number">10.0</span>),<br>        <span class="hljs-attr">child</span>: Text(<span class="hljs-string">&quot;Row $&#123;widgetsi&#125;&quot;</span>));<br>  &#125;<br><br>  loadData() <span class="hljs-keyword">async</span> &#123;<br>    <span class="hljs-comment">// 打开ReceivePort以接收传入的消息</span><br>    ReceivePort receivePort = ReceivePort();<br>    <span class="hljs-comment">//创建并生成与当前Isolate共享相同代码的Isolate</span><br>    <span class="hljs-keyword">await</span> Isolate.spawn(dataLoader, receivePort.sendPort);<br>    <span class="hljs-comment">// 流的第一个元素</span><br>    SendPort sendPort = <span class="hljs-keyword">await</span> receivePort.first;<br>    <span class="hljs-comment">// 流的第一个元素被收到后监听会关闭，所以需要新打开一个ReceivePort以接收传入的消息</span><br>    ReceivePort response = ReceivePort();<br>    <span class="hljs-comment">//通过此发送端口向其对应的“ReceivePort”①发送异步[消息]，这个“消息”指的是发送的参数②。</span><br>    sendPort.send(<br>        [<span class="hljs-string">&quot;https://jsonplaceholder.typicode.com/posts&quot;</span>, response.sendPort]);<br>    <span class="hljs-comment">// 获取端口发送来的数据③</span><br>    List msg = <span class="hljs-keyword">await</span> response.first;<br>    setState(() &#123;<br>      widgets = msg;<br>    &#125;);<br>  &#125;<br>  <span class="hljs-comment">// isolate的入口函数，该函数会在新的Isolate中调用，Isolate.spawn的message参数会作为调用它时的唯一参数</span><br>  <span class="hljs-keyword">static</span> dataLoader(SendPort sendPort) <span class="hljs-keyword">async</span> &#123;<br>    <span class="hljs-comment">// 打开ReceivePort①以接收传入的消息</span><br>    ReceivePort port = ReceivePort();<br>    <span class="hljs-comment">// 通知其他的isolates，本isolate 所监听的端口</span><br>    sendPort.send(port.sendPort);<br>    <span class="hljs-comment">// 获取其他端口发送的异步消息 msg② -&gt; [&quot;https://jsonplaceholder.typicode.com/posts&quot;, response.sendPort]</span><br>    <span class="hljs-keyword">await</span> <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> msg <span class="hljs-keyword">in</span> port) &#123;<br>      <span class="hljs-comment">//等价于List msg= await port.first;</span><br>      <span class="hljs-built_in">String</span> data = msg[<span class="hljs-number">0</span>];<br>      SendPort replyTo = msg[<span class="hljs-number">1</span>];<br>      <span class="hljs-built_in">String</span> dataURL = data;<br>      http.Response response = <span class="hljs-keyword">await</span> http.get(dataURL);<br>      <span class="hljs-comment">// 其对应的“ReceivePort”发送解析出来的JSON数据③</span><br>      replyTo.send(json.decode(response.body));<br>    &#125;<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<h4 id="如何进行网络请求？"><a href="#如何进行网络请求？" class="headerlink" title="如何进行网络请求？"></a>如何进行网络请求？</h4><p>在 Flutter 中，使用流行的! <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://pub.dartlang.org/packages/http">http package</a>做网络请求非常简单。它把你可能需要自己做的网络请求操作抽象了出来，让发起请求变得简单。</p>
+<p>要使用 http 包，在<code>pubspec.yaml</code> 中添加如下依赖：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">dependencies:</span><br>  ...<br><span class="hljs-symbol">  http:</span> ^<span class="hljs-number">0.12</span><span class="hljs-number">.0</span>+<span class="hljs-number">1</span> <br></code></pre></td></tr></table></figure>
+
+<p>发起网络请求，在<code>http.get()</code> 这个 <code>async</code> 方法中使用 <code>await</code> ：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;dart:convert&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/material.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:http/http.dart&#x27;</span> <span class="hljs-keyword">as</span> http;<br>[...]<br>  loadData() <span class="hljs-keyword">async</span> &#123;<br>    <span class="hljs-built_in">String</span> dataURL = <span class="hljs-string">&quot;https://jsonplaceholder.typicode.com/posts&quot;</span>;<br>    http.Response response = <span class="hljs-keyword">await</span> http.<span class="hljs-keyword">get</span>(dataURL);<br>    setState(() &#123;<br>      widgets = json.decode(response.body);<br>    &#125;);<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>一旦获得结果后，你可以通过调用<strong>setState</strong>来告诉<strong>Flutter</strong>更新其状态，<strong>setState</strong>将使用网络调用的结果更新<strong>UI</strong>。</p>
+<blockquote>
+<p>关于网络请求的更多内容和实战技巧可学习<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://coding.imooc.com/lesson/%25E5%259F%25BA%25E4%25BA%258EHttp%25E5%25AE%259E%25E7%258E%25B0%25E7%25BD%2591%25E7%25BB%259C%25E6%2593%258D%25E4%25BD%259C">《基于<strong>Http</strong>实现网络操作》</a>部分的课程。</p>
+</blockquote>
+<h4 id="如何为长时间运行的任务添加一个进度指示器？"><a href="#如何为长时间运行的任务添加一个进度指示器？" class="headerlink" title="如何为长时间运行的任务添加一个进度指示器？"></a>如何为长时间运行的任务添加一个进度指示器？</h4><ul>
+<li>  在 iOS 中，在后台运行耗时任务时我们通常会使用 UIProgressView。</li>
+<li>  在 Android 中，在后台运行耗时任务时我们通常会使用 ProgressBar。</li>
+</ul>
+<p>那么，在Flutter也有与之对应的widget叫<code>ProgressIndicator</code>。通过一个布尔 flag 来控制是否展示进度。在任务开始时，告诉 Flutter更新状态，并在结束后隐藏。</p>
+<p>在下面的例子中，build函数被拆分成三个函数。如果<code>showLoadingDialog()</code> 是 <code>true</code> （当 <code>widgets.length == 0</code>时），则渲染 <code>ProgressIndicator</code>。否则，当数据从网络请求中返回时，渲染 <code>ListView</code>：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;dart</span>:convert&#x27;;<br><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;package</span>:flutter/material.dart&#x27;;<br><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;package</span>:http/http.dart&#x27; as http;<br><br>void main() &#123;<br>  runApp(<span class="hljs-type">SampleApp</span>());<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SampleApp</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">MaterialApp</span>(<br>      title: <span class="hljs-symbol">&#x27;Sample</span> <span class="hljs-type">App</span>&#x27;,<br>      theme: <span class="hljs-type">ThemeData</span>(<br>        primarySwatch: <span class="hljs-type">Colors</span>.blue,<br>      ),<br>      home: <span class="hljs-type">SampleAppPage</span>(),<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SampleAppPage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  <span class="hljs-type">SampleAppPage</span>(&#123;<span class="hljs-type">Key</span> key&#125;) : <span class="hljs-keyword">super</span>(key: key);<br>  <span class="hljs-meta">@override</span><br>  _SampleAppPageState createState() =&gt; _SampleAppPageState();<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_SampleAppPageState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State&lt;SampleAppPage&gt;</span> </span>&#123;<br>  <span class="hljs-type">List</span> widgets = [];<br>  <span class="hljs-meta">@override</span><br>  void initState() &#123;<br>    <span class="hljs-keyword">super</span>.initState();<br>    loadData();<br>  &#125;<br>  showLoadingDialog() &#123;<br>    <span class="hljs-keyword">return</span> widgets.length == <span class="hljs-number">0</span>;<br>  &#125;<br>  getBody() &#123;<br>    <span class="hljs-keyword">if</span> (showLoadingDialog()) &#123;<br>      <span class="hljs-keyword">return</span> getProgressDialog();<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-keyword">return</span> getListView();<br>    &#125;<br>  &#125;<br>    <br>  getProgressDialog() &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Center</span>(child: <span class="hljs-type">CircularProgressIndicator</span>());<br>  &#125;<br>    <br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Scaffold</span>(<br>        appBar: <span class="hljs-type">AppBar</span>(<br>          title: <span class="hljs-type">Text</span>(<span class="hljs-string">&quot;Sample App&quot;</span>),<br>        ),<br>        body: getBody());<br>  &#125;<br>    <br>  <span class="hljs-type">ListView</span> getListView() =&gt; <span class="hljs-type">ListView</span>.builder(<br>      itemCount: widgets.length,<br>      itemBuilder: (<span class="hljs-type">BuildContext</span> context, int position) &#123;<br>        <span class="hljs-keyword">return</span> getRow(position);<br>      &#125;);<br>    <br>  <span class="hljs-type">Widget</span> getRow(int i) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Padding</span>(padding: <span class="hljs-type">EdgeInsets</span>.all(<span class="hljs-number">10.0</span>), child: <span class="hljs-type">Text</span>(<span class="hljs-string">&quot;Row $&#123;widgetsi&#125;&quot;</span>));<br>  &#125;<br>    <br>  loadData() async &#123;<br>    <span class="hljs-type">String</span> dataURL = <span class="hljs-string">&quot;https://jsonplaceholder.typicode.com/posts&quot;</span>;<br>    http.<span class="hljs-type">Response</span> response = await http.get(dataURL);<br>    setState(() &#123;<br>      widgets = json.decode(response.body);<br>    &#125;);<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<hr>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Flutter%E5%AD%A6%E4%B9%A0/">Flutter学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Dart/">Dart</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Flutter/">Flutter</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91/">混合开发</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/20/2019/10.%E4%B8%BB%E9%A2%98%E5%92%8C%E6%96%87%E5%AD%97%E5%A4%84%E7%90%86/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">主题和文字处理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/16/2019/9.%E6%89%8B%E5%8A%BF%E6%A3%80%E6%B5%8B%E5%8F%8A%E8%A7%A6%E6%91%B8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86/">
+                        <span class="hidden-mobile">路由与导航</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

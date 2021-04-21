@@ -1,0 +1,476 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>APP首页框架搭建-Scaffold与PageView - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="APP首页框架搭建-Scaffold与PageView">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-03-30 00:33" pubdate>
+        2019年3月30日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      958 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      17
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">APP首页框架搭建-Scaffold与PageView</h1>
+            
+            <div class="markdown-body">
+              <h3 id="16-APP首页框架搭建-Scaffold与PageView"><a href="#16-APP首页框架搭建-Scaffold与PageView" class="headerlink" title="16.APP首页框架搭建-Scaffold与PageView"></a>16.APP首页框架搭建-Scaffold与PageView</h3><h4 id="APP首页框架搭建"><a href="#APP首页框架搭建" class="headerlink" title="APP首页框架搭建"></a>APP首页框架搭建</h4><ul>
+<li>  实现首页导航需要哪些材料？</li>
+<li>  什么是Scaffold widget？</li>
+<li>  什么是PageView？</li>
+<li>  实现首页导航</li>
+</ul>
+<h4 id="实现首页导航需要哪些材料"><a href="#实现首页导航需要哪些材料" class="headerlink" title="实现首页导航需要哪些材料**?**"></a>实现首页导航需要哪些材料**?**</h4><ul>
+<li>Scaffold</li>
+<li><ul>
+<li>  BottomNavigationBar</li>
+</ul>
+</li>
+<li>PageView</li>
+<li><ul>
+<li>  PageController</li>
+</ul>
+</li>
+</ul>
+<h4 id="什么是Scaffold-widget？"><a href="#什么是Scaffold-widget？" class="headerlink" title="什么是Scaffold widget？"></a>什么是Scaffold widget？</h4><p><code>Scaffold</code>是一个实现了基本的<code>material design</code>的布局结构。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Scaffold</span> <span class="hljs-title">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  <span class="hljs-comment">/// Creates a visual scaffold for material design widgets.</span><br>  <span class="hljs-keyword">const</span> Scaffold(&#123;<br>    Key key,<br>    <span class="hljs-keyword">this</span>.appBar,<br>    <span class="hljs-keyword">this</span>.body,<br>    <span class="hljs-keyword">this</span>.floatingActionButton,<br>    <span class="hljs-keyword">this</span>.floatingActionButtonLocation,<br>    <span class="hljs-keyword">this</span>.floatingActionButtonAnimator,<br>    <span class="hljs-keyword">this</span>.persistentFooterButtons,<br>    <span class="hljs-keyword">this</span>.drawer,<br>    <span class="hljs-keyword">this</span>.endDrawer,<br>    <span class="hljs-keyword">this</span>.bottomNavigationBar,<br>    <span class="hljs-keyword">this</span>.bottomSheet,<br>    <span class="hljs-keyword">this</span>.backgroundColor,<br>    <span class="hljs-keyword">this</span>.resizeToAvoidBottomPadding = <span class="hljs-literal">true</span>,<br>    <span class="hljs-keyword">this</span>.primary = <span class="hljs-literal">true</span>,<br>  &#125;) : assert(primary != <span class="hljs-literal">null</span>), <span class="hljs-keyword">super</span>(key: key);<br>... <br></code></pre></td></tr></table></figure>
+
+<h4 id="顶部导航"><a href="#顶部导航" class="headerlink" title="顶部导航"></a>顶部导航</h4><p> image</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/material.dart&#x27;</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TabbedAppBarSample</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-function">Widget <span class="hljs-title">build</span><span class="hljs-params">(BuildContext context)</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> MaterialApp(<br>      home: DefaultTabController(<br>        length: choices.length,<br>        child: Scaffold(<br>          appBar: AppBar(<br>            title: <span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-title">Text</span><span class="hljs-params">(<span class="hljs-string">&#x27;Tabbed AppBar&#x27;</span>)</span>,</span><br><span class="hljs-function">            bottom: <span class="hljs-title">TabBar</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">              isScrollable: <span class="hljs-keyword">true</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">              tabs: choices.map((Choice choice)</span> </span>&#123;<br>                <span class="hljs-keyword">return</span> Tab(<br>                  text: choice.title,<br>                  icon: Icon(choice.icon),<br>                );<br>              &#125;).toList(),<br>            ),<br>          ),<br>          body: TabBarView(<br>            children: choices.map((Choice choice) &#123;<br>              <span class="hljs-keyword">return</span> Padding(<br>                padding: <span class="hljs-keyword">const</span> EdgeInsets.all(<span class="hljs-number">16.0</span>),<br>                child: ChoiceCard(choice: choice),<br>              );<br>            &#125;).toList(),<br>          ),<br>        ),<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Choice</span> </span>&#123;<br>  <span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-title">Choice</span><span class="hljs-params">(&#123;<span class="hljs-keyword">this</span>.title, <span class="hljs-keyword">this</span>.icon&#125;)</span></span>;<br>  <span class="hljs-keyword">final</span> String title;<br>  <span class="hljs-keyword">final</span> IconData icon;<br>&#125;<br><br><span class="hljs-keyword">const</span> List&lt;Choice&gt; choices = <span class="hljs-keyword">const</span> &lt;Choice&gt;[<br>  <span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-title">Choice</span><span class="hljs-params">(title: <span class="hljs-string">&#x27;CAR&#x27;</span>, icon: Icons.directions_car)</span>,</span><br><span class="hljs-function">  <span class="hljs-keyword">const</span> <span class="hljs-title">Choice</span><span class="hljs-params">(title: <span class="hljs-string">&#x27;BICYCLE&#x27;</span>, icon: Icons.directions_bike)</span>,</span><br><span class="hljs-function">  <span class="hljs-keyword">const</span> <span class="hljs-title">Choice</span><span class="hljs-params">(title: <span class="hljs-string">&#x27;BOAT&#x27;</span>, icon: Icons.directions_boat)</span>,</span><br><span class="hljs-function">  <span class="hljs-keyword">const</span> <span class="hljs-title">Choice</span><span class="hljs-params">(title: <span class="hljs-string">&#x27;BUS&#x27;</span>, icon: Icons.directions_bus)</span>,</span><br><span class="hljs-function">  <span class="hljs-keyword">const</span> <span class="hljs-title">Choice</span><span class="hljs-params">(title: <span class="hljs-string">&#x27;TRAIN&#x27;</span>, icon: Icons.directions_railway)</span>,</span><br><span class="hljs-function">  <span class="hljs-keyword">const</span> <span class="hljs-title">Choice</span><span class="hljs-params">(title: <span class="hljs-string">&#x27;WALK&#x27;</span>, icon: Icons.directions_walk)</span>,</span><br><span class="hljs-function">]</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChoiceCard</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-title">ChoiceCard</span><span class="hljs-params">(&#123;Key key, <span class="hljs-keyword">this</span>.choice&#125;)</span> : <span class="hljs-title">super</span><span class="hljs-params">(key: key)</span></span>;<br>  <span class="hljs-keyword">final</span> Choice choice;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-function">Widget <span class="hljs-title">build</span><span class="hljs-params">(BuildContext context)</span> </span>&#123;<br>    <span class="hljs-keyword">final</span> TextStyle textStyle = Theme.of(context).textTheme.display1;<br>    <span class="hljs-keyword">return</span> Card(<br>      color: Colors.white,<br>      child: Center(<br>        child: Column(<br>          mainAxisSize: MainAxisSize.min,<br>          crossAxisAlignment: CrossAxisAlignment.center,<br>          children: &lt;Widget&gt;[<br>            Icon(choice.icon, size: <span class="hljs-number">128.0</span>, color: textStyle.color),<br>            Text(choice.title, style: textStyle),<br>          ],<br>        ),<br>      ),<br>    );<br>  &#125;<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>  runApp(TabbedAppBarSample());<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<h4 id="底部导航菜单"><a href="#底部导航菜单" class="headerlink" title="底部导航菜单"></a>底部导航菜单</h4><p> image</p>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><code class="hljs sqf">import <span class="hljs-string">&#x27;package:flutter/material.dart&#x27;</span>;<br>import <span class="hljs-string">&#x27;package:flutter_app/pages/home_page.dart&#x27;</span>;<br>import <span class="hljs-string">&#x27;package:flutter_app/pages/my_page.dart&#x27;</span>;<br>import <span class="hljs-string">&#x27;package:flutter_app/pages/search_page.dart&#x27;</span>;<br>import <span class="hljs-string">&#x27;package:flutter_app/pages/travel_page.dart&#x27;</span>;<br><br>class TabNavigator extends StatefulWidget &#123;<br>  @override<br>  <span class="hljs-variable">_TabNavigatorState</span> createState() =&gt; <span class="hljs-variable">_TabNavigatorState</span>();<br>&#125;<br><br>class <span class="hljs-variable">_TabNavigatorState</span> extends State&lt;TabNavigator&gt;<br>    <span class="hljs-keyword">with</span> SingleTickerProviderStateMixin &#123;<br>  final <span class="hljs-variable">_defaultColor</span> = Colors.grey;<br>  final <span class="hljs-variable">_activeColor</span> = Colors.blue;<br>  int <span class="hljs-variable">_currentIndex</span> = <span class="hljs-number">0</span>;<br>  var <span class="hljs-variable">_controller</span> = PageController(<br>    initialPage: <span class="hljs-number">0</span>,<br>  );<br><br>  @override<br>  void dispose() &#123;<br>    super.dispose();<br>    <span class="hljs-variable">_controller</span>.dispose();<br>  &#125;<br><br>  @override<br>  Widget build(BuildContext context) &#123;<br>    return Scaffold(<br>      body: PageView(<br>        controller: <span class="hljs-variable">_controller</span>,<br>        children: &lt;Widget&gt;[HomePage(), SearchPage(), TravelPage(), MyPage()],<br>        physics: NeverScrollableScrollPhysics(),<br>      ),<br>      bottomNavigationBar: BottomNavigationBar(<br>        currentIndex: <span class="hljs-variable">_currentIndex</span>,<br>        onTap: (index) &#123;<br>          <span class="hljs-variable">_controller</span>.jumpToPage(index);<br>          setState(() &#123;<br>            <span class="hljs-variable">_currentIndex</span> = index;<br>          &#125;);<br>        &#125;,<br>        <span class="hljs-built_in">type</span>: BottomNavigationBarType.fixed,<br>        <span class="hljs-built_in">items</span>: [<br>          BottomNavigationBarItem(<br>            icon: Icon(<br>              Icons.home,<br>              color: <span class="hljs-variable">_defaultColor</span>,<br>            ),<br>            activeIcon: Icon(<br>              Icons.home,<br>              color: <span class="hljs-variable">_activeColor</span>,<br>            ),<br>            title: <span class="hljs-built_in">Text</span>(<br>              <span class="hljs-string">&#x27;首页&#x27;</span>,<br>              style: TextStyle(<br>                  color: <span class="hljs-variable">_currentIndex</span> != <span class="hljs-number">0</span> ? <span class="hljs-variable">_defaultColor</span> : <span class="hljs-variable">_activeColor</span>),<br>            ),<br>          ),<br>          BottomNavigationBarItem(<br>              icon: Icon(<br>                Icons.search,<br>                color: <span class="hljs-variable">_defaultColor</span>,<br>              ),<br>              activeIcon: Icon(<br>                Icons.search,<br>                color: <span class="hljs-variable">_activeColor</span>,<br>              ),<br>              title: <span class="hljs-built_in">Text</span>(<br>                <span class="hljs-string">&#x27;搜索&#x27;</span>,<br>                style: TextStyle(<br>                    color: <span class="hljs-variable">_currentIndex</span> != <span class="hljs-number">1</span> ? <span class="hljs-variable">_defaultColor</span> : <span class="hljs-variable">_activeColor</span>),<br>              )),<br>          BottomNavigationBarItem(<br>              icon: Icon(<br>                Icons.camera_alt,<br>                color: <span class="hljs-variable">_defaultColor</span>,<br>              ),<br>              activeIcon: Icon(<br>                Icons.camera_alt,<br>                color: <span class="hljs-variable">_activeColor</span>,<br>              ),<br>              title: <span class="hljs-built_in">Text</span>(<br>                <span class="hljs-string">&#x27;旅拍&#x27;</span>,<br>                style: TextStyle(<br>                    color: <span class="hljs-variable">_currentIndex</span> != <span class="hljs-number">2</span> ? <span class="hljs-variable">_defaultColor</span> : <span class="hljs-variable">_activeColor</span>),<br>              )),<br>          BottomNavigationBarItem(<br>              icon: Icon(<br>                Icons.account_circle,<br>                color: <span class="hljs-variable">_defaultColor</span>,<br>              ),<br>              activeIcon: Icon(<br>                Icons.account_circle,<br>                color: <span class="hljs-variable">_activeColor</span>,<br>              ),<br>              title: <span class="hljs-built_in">Text</span>(<br>                <span class="hljs-string">&#x27;我的&#x27;</span>,<br>                style: TextStyle(<br>                    color: <span class="hljs-variable">_currentIndex</span> != <span class="hljs-number">3</span> ? <span class="hljs-variable">_defaultColor</span> : <span class="hljs-variable">_activeColor</span>),<br>              )),<br>        ],<br>      ),<br>    );<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<h4 id="侧拉栏菜单"><a href="#侧拉栏菜单" class="headerlink" title="侧拉栏菜单"></a>侧拉栏菜单</h4><p> image</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;package</span>:flutter/material.dart&#x27;;<br><br>void main() =&gt; runApp(<span class="hljs-type">MyApp</span>());<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyApp</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-keyword">final</span> appTitle = <span class="hljs-symbol">&#x27;Drawer</span> <span class="hljs-type">Demo</span>&#x27;;<br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">MaterialApp</span>(<br>      title: appTitle,<br>      home: <span class="hljs-type">MyHomePage</span>(title: appTitle),<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyHomePage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> title;<br>  <span class="hljs-type">MyHomePage</span>(&#123;<span class="hljs-type">Key</span> key, <span class="hljs-keyword">this</span>.title&#125;) : <span class="hljs-keyword">super</span>(key: key);<br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Scaffold</span>(<br>      appBar: <span class="hljs-type">AppBar</span>(title: <span class="hljs-type">Text</span>(title)),<br>      body: <span class="hljs-type">Center</span>(child: <span class="hljs-type">Text</span>(<span class="hljs-symbol">&#x27;My</span> <span class="hljs-type">Page</span>!&#x27;)),<br>      drawer: <span class="hljs-type">Drawer</span>(<br>        <span class="hljs-comment">// Add a ListView to the drawer. This ensures the user can scroll</span><br>        <span class="hljs-comment">// through the options in the Drawer if there isn&#x27;t enough vertical</span><br>        <span class="hljs-comment">// space to fit everything.</span><br>        child: <span class="hljs-type">ListView</span>(<br>          <span class="hljs-comment">// Important: Remove any padding from the ListView.</span><br>          padding: <span class="hljs-type">EdgeInsets</span>.zero,<br>          children: &lt;<span class="hljs-type">Widget</span>&gt;[<br>            <span class="hljs-type">DrawerHeader</span>(<br>              child: <span class="hljs-type">Text</span>(<span class="hljs-symbol">&#x27;Drawer</span> <span class="hljs-type">Header</span>&#x27;),<br>              decoration: <span class="hljs-type">BoxDecoration</span>(<br>                color: <span class="hljs-type">Colors</span>.blue,<br>              ),<br>            ),<br>            <span class="hljs-type">ListTile</span>(<br>              title: <span class="hljs-type">Text</span>(<span class="hljs-symbol">&#x27;Item</span> <span class="hljs-number">1</span>&#x27;),<br>              onTap: () &#123;<br>                <span class="hljs-comment">// Update the state of the app</span><br>                <span class="hljs-comment">// ...</span><br>                <span class="hljs-comment">// Then close the drawer</span><br>                <span class="hljs-type">Navigator</span>.pop(context);<br>              &#125;,<br>            ),<br>            <span class="hljs-type">ListTile</span>(<br>              title: <span class="hljs-type">Text</span>(<span class="hljs-symbol">&#x27;Item</span> <span class="hljs-number">2</span>&#x27;),<br>              onTap: () &#123;<br>                <span class="hljs-comment">// Update the state of the app</span><br>                <span class="hljs-comment">// ...</span><br>                <span class="hljs-comment">// Then close the drawer</span><br>                <span class="hljs-type">Navigator</span>.pop(context);<br>              &#125;,<br>            ),<br>          ],<br>        ),<br>      ),<br>    );<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<h4 id="什么是PageView？"><a href="#什么是PageView？" class="headerlink" title="什么是PageView？"></a>什么是PageView？</h4><p><code>PageView</code>是一个可以完成页面之间滚动的widget。 类似于Android中的ViewPager</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PageView</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>   <span class="hljs-type">PageView</span>(&#123;<br>    <span class="hljs-type">Key</span> key,<br>    <span class="hljs-keyword">this</span>.scrollDirection = <span class="hljs-type">Axis</span>.horizontal, <span class="hljs-comment">//滚动的方向，支持水平和垂直两个方向</span><br>    <span class="hljs-keyword">this</span>.reverse = <span class="hljs-literal">false</span>, <span class="hljs-comment">//是否反方向滚动</span><br>    <span class="hljs-type">PageController</span> controller, <span class="hljs-comment">//PageView的控制类</span><br>    <span class="hljs-keyword">this</span>.physics, <span class="hljs-comment">//手势滚动逻辑，支持不滚动，总是滚动，与滚动到边缘时是否有bounce</span><br>    <span class="hljs-keyword">this</span>.pageSnapping = <span class="hljs-literal">true</span>,<span class="hljs-comment">//设置为false以禁用页面捕捉，对自定义滚动行为很有用。</span><br>    <span class="hljs-keyword">this</span>.onPageChanged,<span class="hljs-comment">//页面切换时调用</span><br>    <span class="hljs-type">List</span>&lt;<span class="hljs-type">Widget</span>&gt; children = const &lt;<span class="hljs-type">Widget</span>&gt;[],<br>  &#125;) : controller = controller ?? _defaultPageController,<br>       childrenDelegate = <span class="hljs-type">SliverChildListDelegate</span>(children),<br>       <span class="hljs-keyword">super</span>(key: key);<br>... <br></code></pre></td></tr></table></figure>
+
+<hr>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Flutter%E5%AD%A6%E4%B9%A0/">Flutter学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Dart/">Dart</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Flutter/">Flutter</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91/">混合开发</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/04/18/hello-world/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/28/2019/15.%E5%BC%82%E6%AD%A5%EF%BC%9AFuture%E4%B8%8EFutureBuilder%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">
+                        <span class="hidden-mobile">Future与FutureBuilder实用技巧</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

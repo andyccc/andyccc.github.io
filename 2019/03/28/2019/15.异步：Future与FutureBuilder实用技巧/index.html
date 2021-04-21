@@ -1,0 +1,517 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>Future与FutureBuilder实用技巧 - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Future与FutureBuilder实用技巧">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-03-28 00:12" pubdate>
+        2019年3月28日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      19
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Future与FutureBuilder实用技巧</h1>
+            
+            <div class="markdown-body">
+              <h3 id="异步：Future与FutureBuilder实用技巧"><a href="#异步：Future与FutureBuilder实用技巧" class="headerlink" title="异步：Future与FutureBuilder实用技巧"></a>异步：Future与FutureBuilder实用技巧</h3><ul>
+<li>什么是Future？</li>
+<li>Future的常见用法？</li>
+<li><ul>
+<li>  获取Future的结果？</li>
+<li>  捕获Future的异常？</li>
+<li>  结合async，await？</li>
+<li>  future.whenComplete？</li>
+<li>  future.timeout？</li>
+</ul>
+</li>
+<li>什么是FutureBuilder？</li>
+<li>FutureBuilder常见的用法？</li>
+</ul>
+<h4 id="什么是Future？"><a href="#什么是Future？" class="headerlink" title="什么是Future？"></a>什么是Future？</h4><blockquote>
+<p><code>Future</code>表示在接下来的某个时间的<code>值</code>或<code>错误</code>，借助<code>Future</code>我们可以在Flutter实现<code>异步操作</code>。</p>
+</blockquote>
+<blockquote>
+<p>它类似于ES6中的Promise，提供<strong>then</strong>和<strong>catchError</strong>的链式调用；</p>
+</blockquote>
+<p><code>Future</code>是<code>dart:async</code>包中的一个类，使用它时需要导入<code>dart:async</code>包，<code>Future</code>有两种状态：</p>
+<ul>
+<li>  pending - 执行中；</li>
+<li>  completed - 执行结束，分两种情况要么成功要么失败；</li>
+</ul>
+<h4 id="Future的常见用法？"><a href="#Future的常见用法？" class="headerlink" title="Future的常见用法？"></a>Future的常见用法？</h4><ul>
+<li>  使用<code>future.then</code>获取future的值与捕获future的异常</li>
+<li>  结合<code>async</code>,<code>await</code></li>
+<li>  <code>future.whenComplete</code></li>
+<li>  <code>future.timeout</code></li>
+</ul>
+<h4 id="使用future-then获取future的值与捕获future的异常"><a href="#使用future-then获取future的值与捕获future的异常" class="headerlink" title="使用future.then获取future的值与捕获future的异常"></a>使用future.then获取future的值与捕获future的异常</h4><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;dart:async&#x27;</span>;<br>Future&lt;<span class="hljs-built_in">String</span>&gt; testFuture() &#123;<br><span class="hljs-regexp">//</span>   <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>();<br>  <span class="hljs-keyword">return</span> Future.value(<span class="hljs-string">&#x27;success&#x27;</span>);<br><span class="hljs-regexp">//</span>   <span class="hljs-keyword">return</span> Future.error(<span class="hljs-string">&#x27;error&#x27;</span>);<br>&#125;<br><br>main() &#123;<br>  testFuture().<span class="hljs-keyword">then</span>((s) &#123;<br>    <span class="hljs-built_in">print</span>(s);<br>  &#125;, onError: (e) &#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;onError:&#x27;</span>);<br>    <span class="hljs-built_in">print</span>(e);<br>  &#125;).catchError((e) &#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;catchError:&#x27;</span>);<br>    <span class="hljs-built_in">print</span>(e);<br>  &#125;);<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果catchError与onError同时存在，则会只调用onError；</p>
+</blockquote>
+<p><strong>Future</strong>的<strong>then</strong>的原型：</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pf">Future<span class="hljs-variable">&lt;R&gt;</span> then<span class="hljs-variable">&lt;R&gt;</span>(FutureOr<span class="hljs-variable">&lt;R&gt;</span> <span class="hljs-keyword">on</span>Value(T value), &#123;Function <span class="hljs-keyword">on</span>Error&#125;); <br></code></pre></td></tr></table></figure>
+
+<p>第一个参数会成功的结果回调，第二个参数<strong>onError</strong>可选表示执行出现异常。</p>
+<p><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://dartpad.dartlang.org/a1c357685c8141d6b28587dfee315839">练一练</a></p>
+<h4 id="结合async-await"><a href="#结合async-await" class="headerlink" title="结合async await"></a>结合<code>async</code> <code>await</code></h4><p><code>Future</code>是异步的，如果我们要将异步转同步，那么可以借助 <code>async</code> <code>await</code>来完成。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">import &#x27;dart:async&#x27;;<br><br>test<span class="hljs-literal">()</span> async &#123;<br>  <span class="hljs-built_in">int</span> result = await <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Future</span>.</span></span>delayed(<span class="hljs-constructor">Duration(<span class="hljs-params">milliseconds</span>: 2000)</span>, <span class="hljs-literal">()</span> &#123;<br>    return <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Future</span>.</span></span>value(<span class="hljs-number">123</span>);<br>  &#125;);<br>  print(&#x27;t3:&#x27; + <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">DateTime</span>.</span></span>now<span class="hljs-literal">()</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span>);<br>  print(result);<br>&#125;<br><br>main<span class="hljs-literal">()</span> &#123;<br>  print(&#x27;t1:&#x27; + <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">DateTime</span>.</span></span>now<span class="hljs-literal">()</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span>);<br>  test<span class="hljs-literal">()</span>;<br>  print(&#x27;t2:&#x27; + <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">DateTime</span>.</span></span>now<span class="hljs-literal">()</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span>);<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://dartpad.dartlang.org/50166d54277401e3ad324dd4d9fa8d6a">练一练</a></p>
+<p><strong>future.whenComplete</strong></p>
+<p>有时候我们需要在<code>Future</code>结束的时候做些事情，我们知道<code>then().catchError()</code>的模式类似于<code>try-catch</code>，<code>try-catch</code>有个<code>finally</code>代码块，而<code>future.whenComplete</code>就是<code>Future</code>的finally。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;dart:async&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;dart:math&#x27;</span>;<br><br><span class="hljs-keyword">void</span> main() &#123;<br>  <span class="hljs-keyword">var</span> random = Random();<br>  Future.delayed(<span class="hljs-built_in">Duration</span>(seconds: <span class="hljs-number">3</span>), () &#123;<br>    <span class="hljs-keyword">if</span> (random.nextBool()) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-number">100</span>;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-keyword">throw</span> <span class="hljs-string">&#x27;boom!&#x27;</span>;<br>    &#125;<br>  &#125;).then(<span class="hljs-built_in">print</span>).catchError(<span class="hljs-built_in">print</span>).whenComplete(() &#123;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;done!&#x27;</span>);<br>  &#125;);<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p><strong>future.timeout</strong></p>
+<p>完成一个异步操作可能需要很长的时间，比如：网络请求，但有时我们需要为异步操作设置一个超时时间，那么，如何为<code>Future</code>设置超时时间呢？</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;dart:async&#x27;</span>;<br><br><span class="hljs-keyword">void</span> main() &#123;<br>  <span class="hljs-keyword">new</span> Future.delayed(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Duration</span>(seconds: <span class="hljs-number">3</span>), () &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>  &#125;).timeout(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Duration</span>(seconds: <span class="hljs-number">2</span>)).then(<span class="hljs-built_in">print</span>).catchError(<span class="hljs-built_in">print</span>);<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>运行上述代码会看到：<code>TimeoutException after 0:00:02.000000: Future not completed</code>。</p>
+<p><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://dartpad.dartlang.org/c545f19c614e75ae10ed044328720661">练一练</a></p>
+<h4 id="什么是FutureBuilder？"><a href="#什么是FutureBuilder？" class="headerlink" title="什么是FutureBuilder？"></a>什么是FutureBuilder？</h4><p><code>FutureBuilder</code>是一个将异步操作和异步<strong>UI</strong>更新结合在一起的类，通过它我们可以将网络请求，数据库读取等的结果更新的页面上。</p>
+<h5 id="FutureBuilder的构造方法"><a href="#FutureBuilder的构造方法" class="headerlink" title="FutureBuilder的构造方法"></a>FutureBuilder的构造方法</h5><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-constructor">FutureBuilder(&#123;Key <span class="hljs-params">key</span>, Future&lt;T&gt; <span class="hljs-params">future</span>, T <span class="hljs-params">initialData</span>, @<span class="hljs-params">required</span> AsyncWidgetBuilder&lt;T&gt; <span class="hljs-params">builder</span> &#125;)</span> <br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>  <code>future</code>： Future对象表示此构建器当前连接的异步计算；</li>
+<li>  <code>initialData</code>： 表示一个非空的Future完成前的初始化数据；</li>
+<li>  <code>builder</code>： AsyncWidgetBuilder类型的回到函数，是一个基于异步交互构建widget的函数；</li>
+</ul>
+<p>这个<code>builder</code>函数接受两个参数<code>BuildContext context</code>与 <code>AsyncSnapshot&lt;T&gt; snapshot</code>，它返回一个widget。<code>AsyncSnapshot</code>包含异步计算的信息，它具有以下属性：</p>
+<p><code>connectionState</code> - 枚举ConnectionState的值，表示与异步计算的连接状态，ConnectionState有四个值：none，waiting，active和done;</p>
+<p><code>data</code> - 异步计算接收的最新数据；</p>
+<p><code>error</code> - 异步计算接收的最新错误对象；</p>
+<p>AsyncSnapshot还具有<code>hasData</code>和<code>hasError</code>属性，以分别检查它是否包含非空数据值或错误值。</p>
+<p>现在我们可以看到使用<code>FutureBuilder</code>的基本模式。在创建新的FutureBuilder对象时，我们将Future对象作为要处理的异步计算传递。 在构建器函数中，我们检查connectionState的值，并使用AsyncSnapshot中的数据或错误返回不同的窗口小部件。</p>
+<p><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://flutter-academy.com/async-in-flutter-futurebuilder/"><strong>https://flutter-academy.com/async-in-flutter-futurebuilder/</strong></a></p>
+<h4 id="FutureBuilder的使用？"><a href="#FutureBuilder的使用？" class="headerlink" title="FutureBuilder的使用？"></a>FutureBuilder的使用？</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;dart:convert&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/material.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:http/http.dart&#x27;</span> <span class="hljs-keyword">as</span> http;<br><br><span class="hljs-keyword">void</span> main() =&gt; runApp(<span class="hljs-keyword">new</span> MyApp());<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyApp</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  <span class="hljs-meta">@override</span><br>  State&lt;StatefulWidget&gt; createState() =&gt; _MyAppState();<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_MyAppState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State</span>&lt;<span class="hljs-title">MyApp</span>&gt; </span>&#123;<br>  <span class="hljs-built_in">String</span> showResult = <span class="hljs-string">&#x27;&#x27;</span>;<br>  Future&lt;CommonModel&gt; fetchPost() <span class="hljs-keyword">async</span> &#123;<br>    <span class="hljs-keyword">final</span> response = <span class="hljs-keyword">await</span> http    .<span class="hljs-keyword">get</span>(<span class="hljs-string">&#x27;http://www.devio.org/io/flutter_app/json/test_common_model.json&#x27;</span>);<br>    Utf8Decoder utf8decoder = Utf8Decoder(); <span class="hljs-comment">//fix 中文乱码</span><br>    <span class="hljs-keyword">var</span> result = json.decode(utf8decoder.convert(response.bodyBytes));<br>    <span class="hljs-keyword">return</span> CommonModel.fromJson(result);<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  Widget build(BuildContext context) &#123;<br>    <span class="hljs-keyword">return</span> MaterialApp(<br>      home: Scaffold(<br>        appBar: AppBar(<br>          title: Text(<span class="hljs-string">&#x27;Future与FutureBuilder实用技巧&#x27;</span>),<br>        ),<br><br>        body: FutureBuilder&lt;CommonModel&gt;(<br>            future: fetchPost(),<br>            builder:<br>                (BuildContext context, AsyncSnapshot&lt;CommonModel&gt; snapshot) &#123;<br>              <span class="hljs-keyword">switch</span> (snapshot.connectionState) &#123;<br>                <span class="hljs-keyword">case</span> ConnectionState.none:<br>                  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Text(<span class="hljs-string">&#x27;Input a URL to start&#x27;</span>);<br>                <span class="hljs-keyword">case</span> ConnectionState.waiting:<br>                  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Center(child: <span class="hljs-keyword">new</span> CircularProgressIndicator());<br>                <span class="hljs-keyword">case</span> ConnectionState.active:<br>                  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Text(<span class="hljs-string">&#x27;&#x27;</span>);<br>                <span class="hljs-keyword">case</span> ConnectionState.done:<br>                  <span class="hljs-keyword">if</span> (snapshot.hasError) &#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Text(<br>                      <span class="hljs-string">&#x27;<span class="hljs-subst">$&#123;snapshot.error&#125;</span>&#x27;</span>,<br>                      style: TextStyle(color: Colors.red),<br>                    );<br>                  &#125; <span class="hljs-keyword">else</span> &#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Column(children: &lt;Widget&gt;[<br>                      Text(<span class="hljs-string">&#x27;icon:<span class="hljs-subst">$&#123;snapshot.data.icon&#125;</span>&#x27;</span>),                  Text(<span class="hljs-string">&#x27;statusBarColor:<span class="hljs-subst">$&#123;snapshot.data.statusBarColor&#125;</span>&#x27;</span>),<br>                      Text(<span class="hljs-string">&#x27;title:<span class="hljs-subst">$&#123;snapshot.data.title&#125;</span>&#x27;</span>),<br>                      Text(<span class="hljs-string">&#x27;url:<span class="hljs-subst">$&#123;snapshot.data.url&#125;</span>&#x27;</span>)<br>                    ]);<br>                  &#125;<br>              &#125;<br>            &#125;),<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CommonModel</span> </span>&#123;<br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">String</span> icon;<br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">String</span> title;<br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">String</span> url;<br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">String</span> statusBarColor;<br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">bool</span> hideAppBar;<br>  CommonModel(<br>      &#123;<span class="hljs-keyword">this</span>.icon, <span class="hljs-keyword">this</span>.title, <span class="hljs-keyword">this</span>.url, <span class="hljs-keyword">this</span>.statusBarColor, <span class="hljs-keyword">this</span>.hideAppBar&#125;);<br>  <span class="hljs-keyword">factory</span> CommonModel.fromJson(<span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">String</span>, <span class="hljs-built_in">dynamic</span>&gt; json) &#123;<br>    <span class="hljs-keyword">return</span> CommonModel(<br>      icon: json[<span class="hljs-string">&#x27;icon&#x27;</span>],<br>      title: json[<span class="hljs-string">&#x27;title&#x27;</span>],<br>      url: json[<span class="hljs-string">&#x27;url&#x27;</span>],<br>      statusBarColor: json[<span class="hljs-string">&#x27;statusBarColor&#x27;</span>],<br>      hideAppBar: json[<span class="hljs-string">&#x27;hideAppBar&#x27;</span>],<br>    );<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>  <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://flutter-academy.com/async-in-flutter-futurebuilder/">https://flutter-academy.com/async-in-flutter-futurebuilder/</a></li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Flutter%E5%AD%A6%E4%B9%A0/">Flutter学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Dart/">Dart</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Flutter/">Flutter</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91/">混合开发</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/30/2019/16.APP%E9%A6%96%E9%A1%B5%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA-Scaffold%E4%B8%8EPageView/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">APP首页框架搭建-Scaffold与PageView</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/27/2019/14.%E5%9B%BE%E7%89%87%E6%8E%A7%E4%BB%B6%E5%BC%80%E5%8F%91%E8%AF%A6%E8%A7%A3/">
+                        <span class="hidden-mobile">图片控件开发详解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

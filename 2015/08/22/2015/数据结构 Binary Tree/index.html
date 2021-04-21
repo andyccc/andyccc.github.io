@@ -1,0 +1,503 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>数据结构 Binary Tree - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="数据结构 Binary Tree">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2015-08-22 21:19" pubdate>
+        2015年8月22日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      20
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数据结构 Binary Tree</h1>
+            
+            <div class="markdown-body">
+              <blockquote>
+<p>二叉树没什么可介绍的, 这里主要用 Swift 来实现二叉树的一系列相关函数. 实现这些函数的关键在于 遍历与递归的使用. Binary Tree 二叉树的基本结构如下: 1234567891011121314……</p>
+</blockquote>
+<p>二叉树没什么可介绍的, 这里主要用 Swift 来实现二叉树的一系列相关函数.<br>实现这些函数的关键在于 <strong><em>遍历与递归的使用</em></strong>.</p>
+<h2 id="Binary-Tree"><a href="#Binary-Tree" class="headerlink" title="Binary Tree"></a><a href="#Binary-Tree" title="Binary Tree"></a>Binary Tree</h2><p>二叉树的基本结构如下:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Node</span> </span>&#123;<br>    <span class="hljs-keyword">var</span> value: <span class="hljs-type">String</span>!<br>    <span class="hljs-keyword">var</span> left: <span class="hljs-type">Node</span>?<br>    <span class="hljs-keyword">var</span> right: <span class="hljs-type">Node</span>?<br><br>    <span class="hljs-keyword">convenience</span> <span class="hljs-function"><span class="hljs-keyword">init</span>(<span class="hljs-params">value</span>: <span class="hljs-type">String</span>)</span> &#123;<br>        <span class="hljs-keyword">self</span>.<span class="hljs-keyword">init</span>()<br>        <span class="hljs-keyword">self</span>.value <span class="hljs-operator">=</span> value<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">visit</span>()</span> &#123;<br>        <span class="hljs-built_in">print</span>(value)<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">isNodeEqualTo</span>(<span class="hljs-params">node</span>: <span class="hljs-type">Node</span>)</span> -&gt; <span class="hljs-type">Bool</span> &#123;<br>        <span class="hljs-keyword">return</span> value <span class="hljs-operator">==</span> node.value<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>以下的计算属性及方法均添加在 Node 的 extension 中.</p>
+<h2 id="一些简单属性"><a href="#一些简单属性" class="headerlink" title="一些简单属性"></a><a href="#%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E5%B1%9E%E6%80%A7" title="一些简单属性"></a>一些简单属性</h2><h3 id="最大深度"><a href="#最大深度" class="headerlink" title="最大深度"></a><a href="#%E6%9C%80%E5%A4%A7%E6%B7%B1%E5%BA%A6" title="最大深度"></a>最大深度</h3><p>二叉树的最大深度为 [log(N+1), N].</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs vim">var maxDepth: Int &#123;<br>    var <span class="hljs-keyword">number</span> = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">left</span> = <span class="hljs-keyword">left</span> &#123;<br>        <span class="hljs-keyword">number</span> = <span class="hljs-keyword">left</span>.maxDepth<br>    &#125;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">right</span> = <span class="hljs-keyword">right</span> &#123;<br>        <span class="hljs-keyword">number</span> = <span class="hljs-built_in">max</span>(<span class="hljs-keyword">number</span>, <span class="hljs-keyword">right</span>.maxDepth)<br>    &#125;<br>    <span class="hljs-keyword">number</span> = <span class="hljs-keyword">number</span> + <span class="hljs-number">1</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">number</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="所有节点"><a href="#所有节点" class="headerlink" title="所有节点"></a><a href="#%E6%89%80%E6%9C%89%E8%8A%82%E7%82%B9" title="所有节点"></a>所有节点</h3><p>二叉树的所有节点个数为 N.</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs vim">var allNodesNumber: Int &#123;<br>    var <span class="hljs-keyword">number</span> = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">left</span> = <span class="hljs-keyword">left</span> &#123;<br>        <span class="hljs-keyword">number</span> = <span class="hljs-keyword">number</span> + <span class="hljs-keyword">left</span>.allNodesNumber<br>    &#125;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">right</span> = <span class="hljs-keyword">right</span> &#123;<br>        <span class="hljs-keyword">number</span> = <span class="hljs-keyword">number</span> + <span class="hljs-keyword">right</span>.allNodesNumber<br>    &#125;<br>    <span class="hljs-keyword">number</span> = <span class="hljs-keyword">number</span> + <span class="hljs-number">1</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">number</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>所有节点:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs vim">var allNode<span class="hljs-variable">s:</span> [Node]! &#123;<br>    var leftNodes = [Node]()<br>    var rightNodes = [Node]()<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">left</span> = <span class="hljs-keyword">left</span> &#123;<br>        leftNodes = <span class="hljs-keyword">left</span>.allNodes<br>    &#125;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">right</span> = <span class="hljs-keyword">right</span> &#123;<br>        rightNodes = <span class="hljs-keyword">right</span>.allNodes<br>    &#125;<br>    <span class="hljs-keyword">return</span> leftNodes + [self] + rightNodes<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="所有叶子节点"><a href="#所有叶子节点" class="headerlink" title="所有叶子节点"></a><a href="#%E6%89%80%E6%9C%89%E5%8F%B6%E5%AD%90%E8%8A%82%E7%82%B9" title="所有叶子节点"></a>所有叶子节点</h3><p>叶子节点的 left 与 right 均为空.</p>
+<p>二叉树的所有叶子节点的个数为 [1, log(N+1)].</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs vim">var allLeafNodesNumber: Int &#123;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">left</span> == nil &amp;&amp; <span class="hljs-keyword">right</span> == nil &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br>    &#125;<br><br>    var <span class="hljs-keyword">number</span> = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">left</span> = <span class="hljs-keyword">left</span> &#123;<br>        <span class="hljs-keyword">number</span> = <span class="hljs-keyword">number</span> + <span class="hljs-keyword">left</span>.allLeafNodesNumber<br>    &#125;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">right</span> = <span class="hljs-keyword">right</span> &#123;<br>        <span class="hljs-keyword">number</span> = <span class="hljs-keyword">number</span> + <span class="hljs-keyword">right</span>.allLeafNodesNumber<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">number</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>所有叶子节点:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs vim">var allLeafNode<span class="hljs-variable">s:</span> [Node]! &#123;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">left</span> == nil &amp;&amp; <span class="hljs-keyword">right</span> == nil &#123;<br>        <span class="hljs-keyword">return</span> [self]<br>    &#125;<br><br>    var leafNodes = [Node]()<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">left</span> = <span class="hljs-keyword">left</span> &#123;<br>        leafNodes = leafNodes + <span class="hljs-keyword">left</span>.allLeafNodes<br>    &#125;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">right</span> = <span class="hljs-keyword">right</span> &#123;<br>        leafNodes = leafNodes + <span class="hljs-keyword">right</span>.allLeafNodes<br>    &#125;<br>    <span class="hljs-keyword">return</span> leafNodes<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="第-level-层的节点"><a href="#第-level-层的节点" class="headerlink" title="第 level 层的节点"></a><a href="#%E7%AC%AClevel%E5%B1%82%E7%9A%84%E8%8A%82%E7%82%B9" title="第level层的节点"></a>第 level 层的节点</h2><p>二叉树的第 level 层的所有节点个数:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs vim">func nodesNumberAtLevel(leve<span class="hljs-variable">l:</span> Int) -&gt; Int &#123;<br>    <span class="hljs-keyword">if</span> level &lt; <span class="hljs-number">1</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>    &#125;<br>    <span class="hljs-keyword">if</span> level == <span class="hljs-number">1</span> &#123;<br>        <span class="hljs-keyword">return</span> level<br>    &#125;<br>    var <span class="hljs-keyword">number</span> = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">left</span> = <span class="hljs-keyword">left</span> &#123;<br>        <span class="hljs-keyword">number</span> = <span class="hljs-keyword">number</span> + <span class="hljs-keyword">left</span>.nodesNumberAtLevel(leve<span class="hljs-variable">l:</span> level - <span class="hljs-number">1</span>)<br>    &#125;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">right</span> = <span class="hljs-keyword">right</span> &#123;<br>        <span class="hljs-keyword">number</span> = <span class="hljs-keyword">number</span> + <span class="hljs-keyword">right</span>.nodesNumberAtLevel(leve<span class="hljs-variable">l:</span> level - <span class="hljs-number">1</span>)<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">number</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>第 level 层的所有节点:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs vim">func nodesAtLevel(leve<span class="hljs-variable">l:</span> Int) -&gt; [Node] &#123;<br>    <span class="hljs-keyword">if</span> level &lt; <span class="hljs-number">1</span> &#123;<br>        <span class="hljs-keyword">return</span> [Node]()<br>    &#125;<br>    <span class="hljs-keyword">if</span> level == <span class="hljs-number">1</span> &#123;<br>        <span class="hljs-keyword">return</span> [self]<br>    &#125;<br><br>    var leftNodes = [Node]()<br>    var rightNodes = [Node]()<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">left</span> = <span class="hljs-keyword">left</span> &#123;<br>        leftNodes = <span class="hljs-keyword">left</span>.nodesAtLevel(leve<span class="hljs-variable">l:</span> level - <span class="hljs-number">1</span>)<br>    &#125;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">right</span> = <span class="hljs-keyword">right</span> &#123;<br>        rightNodes = <span class="hljs-keyword">right</span>.nodesAtLevel(leve<span class="hljs-variable">l:</span> level - <span class="hljs-number">1</span>)<br>    &#125;<br>    <span class="hljs-keyword">return</span> leftNodes + rightNodes<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>访问第 level 层的所有元素:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">func</span> <span class="hljs-selector-tag">visitNodesAtLevel</span>(<span class="hljs-attribute">level</span>: Int) &#123;<br>    <span class="hljs-selector-tag">for</span> <span class="hljs-selector-tag">node</span> <span class="hljs-selector-tag">in</span> <span class="hljs-selector-tag">self</span><span class="hljs-selector-class">.nodesAtLevel</span>(<span class="hljs-attribute">level</span>: level) &#123;<br>        <span class="hljs-selector-tag">node</span><span class="hljs-selector-class">.visit</span>()<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a><a href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91" title="二叉查找树"></a>二叉查找树</h2><p>二叉查找树的特点：左结点的值 &lt; 根节点的值 &lt; 右节点的值.</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs lasso"><span class="hljs-built_in">var</span> isBinarySearchTree: Bool &#123;<br>    <span class="hljs-keyword">return</span> p_isValueIn(<span class="hljs-keyword">min</span>: nil, <span class="hljs-keyword">max</span>: nil)<br>&#125;<br><br><span class="hljs-keyword">private</span> func p_isValueIn(<span class="hljs-keyword">min</span>: <span class="hljs-built_in">String</span>?, <span class="hljs-keyword">max</span>: <span class="hljs-built_in">String</span>?) -&gt; Bool &#123;<br>    <span class="hljs-comment">// 所有左子节点都必须小于根节点</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">min</span> != nil &amp;&amp; value &lt;= <span class="hljs-keyword">min</span>! &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>    &#125;<br>    <span class="hljs-comment">// 所有右子节点都必须大于根节点</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">max</span> != nil &amp;&amp; value &gt;= <span class="hljs-keyword">max</span>! &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>    &#125;<br><br>    <span class="hljs-built_in">var</span> ret = <span class="hljs-literal">true</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> left = left &#123;<br>        ret = ret &amp;&amp; left.p_isValueIn(<span class="hljs-keyword">min</span>: <span class="hljs-keyword">min</span>, <span class="hljs-keyword">max</span>: value)<br>    &#125;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> right = right &#123;<br>        ret = ret &amp;&amp; right.p_isValueIn(<span class="hljs-keyword">min</span>: value, <span class="hljs-keyword">max</span>: <span class="hljs-keyword">max</span>)<br>    &#125;<br>    <span class="hljs-keyword">return</span> ret<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="二叉树反转"><a href="#二叉树反转" class="headerlink" title="二叉树反转"></a><a href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E5%8F%8D%E8%BD%AC" title="二叉树反转"></a>二叉树反转</h2><p>反转的要点在于, 先分别对 left 和 right 递归调用, 最后在调换 left 与 right 的位置.</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs vim">func <span class="hljs-built_in">invert</span>() -&gt; Node &#123;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">left</span> == nil &amp;&amp; <span class="hljs-keyword">right</span> == nil &#123;<br>        <span class="hljs-keyword">return</span> self<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">left</span> = <span class="hljs-keyword">left</span> &#123;<br>        _ = <span class="hljs-keyword">left</span>.<span class="hljs-built_in">invert</span>()<br>    &#125;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">right</span> = <span class="hljs-keyword">right</span> &#123;<br>        _ = <span class="hljs-keyword">right</span>.<span class="hljs-built_in">invert</span>()<br>    &#125;<br><br>    <span class="hljs-keyword">let</span> tmp = <span class="hljs-keyword">left</span><br>    <span class="hljs-keyword">left</span> = <span class="hljs-keyword">right</span><br>    <span class="hljs-keyword">right</span> = tmp<br><br>    <span class="hljs-keyword">return</span> self<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="二叉树的遍历"><a href="#二叉树的遍历" class="headerlink" title="二叉树的遍历"></a><a href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86" title="二叉树的遍历"></a>二叉树的遍历</h2><h3 id="深度优先遍历-DFS"><a href="#深度优先遍历-DFS" class="headerlink" title="深度优先遍历 (DFS)"></a><a href="#%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86-DFS" title="深度优先遍历(DFS)"></a>深度优先遍历 (DFS)</h3><p>利用 Stack 的特点 (push/pop) 可以非常方便地实现二叉树的深度优先遍历(Depth First Search).</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs vim">func depthFirstSearch() &#123;<br>    var stack = [Node]()<br>    stack.<span class="hljs-keyword">append</span>(self)<br><br>    <span class="hljs-keyword">while</span> stack.<span class="hljs-built_in">count</span> &gt; <span class="hljs-number">0</span> &#123;<br>        guard <span class="hljs-keyword">let</span> currentNode = stack.<span class="hljs-keyword">last</span> <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">continue</span><br>        &#125;<br><br>        currentNode.visit()<br>        stack.removeLast()<br><br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">right</span> = currentNode.<span class="hljs-keyword">right</span> &#123;<br>            stack.<span class="hljs-keyword">append</span>(<span class="hljs-keyword">right</span>)<br>        &#125;<br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">left</span> = currentNode.<span class="hljs-keyword">left</span> &#123;<br>            stack.<span class="hljs-keyword">append</span>(<span class="hljs-keyword">left</span>)<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="广度优先遍历-BFS"><a href="#广度优先遍历-BFS" class="headerlink" title="广度优先遍历 (BFS)"></a><a href="#%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86-BFS" title="广度优先遍历(BFS)"></a>广度优先遍历 (BFS)</h3><p>利用 Queue 的特点 (enqueue/dequeue) 可以非常方便地实现二叉树的广度优先遍历(Breadth First Search).</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs maxima">func breadthFirstSearch() &#123;<br>    <span class="hljs-built_in">var</span> <span class="hljs-built_in">array</span> = [Node]()<br>    <span class="hljs-built_in">array</span>.<span class="hljs-built_in">append</span>(self)<br><br>    <span class="hljs-keyword">while</span> <span class="hljs-built_in">array</span>.count &gt; <span class="hljs-number">0</span> &#123;<br>        guard <span class="hljs-built_in">let</span> currentNode = <span class="hljs-built_in">array</span>.<span class="hljs-built_in">first</span> <span class="hljs-keyword">else</span> &#123;<br>            continue<br>        &#125;<br><br>        currentNode.visit()<br>        <span class="hljs-built_in">array</span>.removeFirst()<br><br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">let</span> left = currentNode.left &#123;<br>            <span class="hljs-built_in">array</span>.<span class="hljs-built_in">append</span>(left)<br>        &#125;<br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">let</span> right = currentNode.right &#123;<br>            <span class="hljs-built_in">array</span>.<span class="hljs-built_in">append</span>(right)<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="前序遍历"><a href="#前序遍历" class="headerlink" title="前序遍历"></a><a href="#%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86" title="前序遍历"></a>前序遍历</h3><figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs coq">func preOrderTraversal() &#123;<br>    visit()<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-built_in">left</span> = <span class="hljs-built_in">left</span> &#123;<br>        <span class="hljs-built_in">left</span>.preOrderTraversal()<br>    &#125;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-built_in">right</span> = <span class="hljs-built_in">right</span> &#123;<br>        <span class="hljs-built_in">right</span>.preOrderTraversal()<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>用 Stack 来实现前序遍历:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs vim">func preOrderTraversalViaStack() &#123;<br>    var stack = [Node]()<br>    stack.<span class="hljs-keyword">append</span>(self)<br><br>    <span class="hljs-keyword">while</span> stack.<span class="hljs-built_in">count</span> &gt; <span class="hljs-number">0</span> &#123;<br>        guard <span class="hljs-keyword">let</span> currentNode = stack.<span class="hljs-keyword">last</span> <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">continue</span><br>        &#125;<br><br>        currentNode.visit()<br>        stack.removeLast()<br><br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">right</span> = currentNode.<span class="hljs-keyword">right</span> &#123;<br>            stack.<span class="hljs-keyword">append</span>(<span class="hljs-keyword">right</span>)<br>        &#125;<br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-keyword">left</span> = currentNode.<span class="hljs-keyword">left</span> &#123;<br>            stack.<span class="hljs-keyword">append</span>(<span class="hljs-keyword">left</span>)<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="中序遍历"><a href="#中序遍历" class="headerlink" title="中序遍历"></a><a href="#%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86" title="中序遍历"></a>中序遍历</h3><figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs coq">func middleOrderTraversal() &#123;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-built_in">left</span> = <span class="hljs-built_in">left</span> &#123;<br>        <span class="hljs-built_in">left</span>.middleOrderTraversal()<br>    &#125;<br>    visit()<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-built_in">right</span> = <span class="hljs-built_in">right</span> &#123;<br>        <span class="hljs-built_in">right</span>.middleOrderTraversal()<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>用 Stack 来实现中序遍历:</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">func middleOrderTraversalViaStack() &#123;<br>    var stack = [<span class="hljs-keyword">Node</span><span class="hljs-title">]()</span><br><span class="hljs-title">    var</span> <span class="hljs-keyword">node</span><span class="hljs-title">: Node</span>? = self<br><br>    while stack.count &gt; <span class="hljs-number">0</span>  || <span class="hljs-keyword">node</span> <span class="hljs-title">!= nil</span> &#123;<br>        if <span class="hljs-keyword">node</span> <span class="hljs-title">!= nil</span> &#123;<br>            stack.append(<span class="hljs-keyword">node</span><span class="hljs-title">!)</span><br><span class="hljs-title">            node</span> = <span class="hljs-keyword">node</span><span class="hljs-title">?.left</span><br>        &#125; else &#123;<br>            <span class="hljs-keyword">node</span> <span class="hljs-title">= stack</span>.removeLast()<br>            <span class="hljs-keyword">node</span><span class="hljs-title">?.visit</span>()<br>            <span class="hljs-keyword">node</span> <span class="hljs-title">= node</span>?.right<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="后序遍历"><a href="#后序遍历" class="headerlink" title="后序遍历"></a><a href="#%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86" title="后序遍历"></a>后序遍历</h3><figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs coq">func lastOrderTraversal() &#123;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-built_in">left</span> = <span class="hljs-built_in">left</span> &#123;<br>        <span class="hljs-built_in">left</span>.lastOrderTraversal()<br>    &#125;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-built_in">right</span> = <span class="hljs-built_in">right</span> &#123;<br>        <span class="hljs-built_in">right</span>.lastOrderTraversal()<br>    &#125;<br>    visit()<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>用 Stack 来实现后序遍历:</p>
+<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a><a href="#%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81" title="示例代码"></a>示例代码</h2><p><a target="_blank" rel="noopener" href="https://github.com/andyccc/swift_algorithm">swift_algorithm</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a><a href="#%E5%8F%82%E8%80%83" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://github.com/raywenderlich/swift-algorithm-club">swift-algorithm-club</a></p>
+<p>坚持原创技术分享，您的支持将鼓励我继续创作！ So，来杯咖啡？</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Binary/">Binary</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Tree/">Tree</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2015/09/03/2015/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20Linked%20List/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构 Linked List</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2015/08/21/2015-2/NSURLSession/">
+                        <span class="hidden-mobile">NSURLSession</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

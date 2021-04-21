@@ -1,0 +1,443 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>如何构造酷炫的物理效果和过场动画效果 - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="如何构造酷炫的物理效果和过场动画效果">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-01-19 23:59" pubdate>
+        2020年1月19日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      35
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">如何构造酷炫的物理效果和过场动画效果</h1>
+            
+            <div class="markdown-body">
+              <h1>如何构造酷炫的物理效果和过场动画效果</h1>
+
+<p>不论是iOS开发，还是Android开发，现在的动画库差不多都需要手动去编写动画代码。这样的话，iOS 和 Android 开发者就需要分别去编写适合自己系统的代码。而且，手动编写动画的代码也非常复杂，不容易维护，很多动画细节的调整还需要和动画设计师不断沟通打磨，尤其是千行以上的动画代码编写、维护、沟通的成本巨大。</p><p>手动编写动画代码，除了会影响到开发者外，动画设计师也难以幸免。一款产品适配的平台越多，动画设计师设计走查的周期就越长，相应的动画成本就越高。同时，动画设计师很兴奋地设计出一套炫酷地动画效果后，在要通过开发者实现出来时，却因为工时评估过长而一再被简化，甚至被直接取消。试想一下，以后他还会动力十足地去设计酷炫的动画效果吗？</p><p>所以，你会发现现在有酷炫的动画效果的 App 非常少，而且多是出自个人开发者之手。那么，这就提高了对个人开发者的要求，不但要求他代码写得好，还要能够设计出好的动画效果。但是，这样的人才也是不可多得。</p><p>那，到底有没有什么办法能够把动画制作和App开发隔离开，专人做专事，而且还能使得多个平台的动画效果保持一致呢？</p><!-- [[[read_end]]] --><p>办法总比困难多。接下来，我们就一起看看如何实现的问题吧。</p><h2>Lottie</h2><p><a target="_blank" rel="noopener" href="http://airbnb.io/lottie/#/">Lottie 框架</a>就很好地解决了动画制作与开发隔离，以及多平台统一的问题。</p><p>Lottie 是 Airbnb 开源的一个动画框架。Lottie 这个名字来自于一名德国导演洛特·赖尼格尔（Lotte Reiniger），她最著名的电影叫作“阿赫迈德王子历险记（The Adventures of Prince Achmed）”。这个框架和其他的动画框架不太一样，动画的编写和维护将由动画设计师完成，完全无需开发者操心。</p><p>动画设计师做好动画以后，可以使用<a target="_blank" rel="noopener" href="https://www.adobe.com/products/aftereffects.html">After Effects</a>将动画导出成JSON文件，然后由Lottie 加载和渲染这个JSON文件，并转换成对应的动画代码。由于是JSON格式，文件也会很小，可以减少 App 包大小。运行时还可以通过代码控制更改动画，比如更改颜色、位置以及任何关键值。另外，Lottie 还支持页面切换的过场动画（UIViewController Transitions）。</p><p>下面的两张动画，就是使用Lottie 做出来的效果。<br><img src="https://static001.geekbang.org/resource/image/4a/c9/4a6a19fdb4fc53757d27ddb6aa4380c9.gif" srcset="/img/loading.gif" lazyload alt=""></p><p><img src="https://static001.geekbang.org/resource/image/27/75/270ed9bc73a18fde74611bdbef419975.gif" srcset="/img/loading.gif" lazyload alt=""></p><p>上面这些动画，就是由动画设计师使用 After Effects 创作，然后使用 <a target="_blank" rel="noopener" href="https://github.com/airbnb/lottie-web">Bodymovin</a>进行导出的，开发者完全不用做什么额外的代码工作，就能够使用原生方式将其渲染出来。</p><p>Bodymovin 是 Hernan Torrisi 做的一个 After Effects 的插件，起初导出的JSON文件只是通过 JavaScript 在网页中进行动画的播放，后来才将JSON文件的解析渲染应用到了其他平台上。</p><p>那么，如何使用 Bodymovin 呢？</p><h2>Bodymovin</h2><p>你需要先到<a target="_blank" rel="noopener" href="https://www.adobeexchange.com/creativecloud.details.12557.html">Adobe官网</a>下载Bodymovin插件，并在 After Effects 中安装。使用 After Effects 制作完动画后，选择 Windows 菜单，找到 Extensions 的 Bodymovin 项，在菜单中选择 Render 按钮就可以输出JSON文件了。</p><p><a target="_blank" rel="noopener" href="https://lottiefiles.com/">LottieFiles网站</a>还是一个动画设计师分享作品的平台，每个动画效果的JSON文件都可下载使用。所以，如果你现在没有动画设计师配合的话，可以到这个网站去查找并下载一个 Bodymovin 生成的JSON文件，然后运用到工程中去试试效果。</p><h2>在 iOS 中使用 Lottie</h2><p>在iOS开发中使用Lottie也很简单，只要集成 Lottie 框架，然后在程序中通过 Lottie 的接口控制 After Effects 生成的动画 JSON 就行了。</p><p>首先，你可以通过 CocoaPods 集成 Lottie 框架到你工程中。Lottie iOS 框架的 GitHub 地址是<a target="_blank" rel="noopener" href="https://github.com/airbnb/lottie-ios/">https://github.com/airbnb/lottie-ios/</a>，官方也提供了<a target="_blank" rel="noopener" href="https://github.com/airbnb/lottie-ios/tree/master/Example">可供学习的示例</a>。</p><p>然后，快速读取一个由Bodymovin 生成的JSON文件进行播放。具体代码如下所示：</p><pre><code>LOTAnimationView *animation = [LOTAnimationView animationNamed:@&quot;Lottie&quot;];[self.view addSubview:animation];[animation playWithCompletion:^(BOOL animationFinished) &#123;  // 动画完成后需要处理的事情&#125;];</code></pre><p>利用 Lottie 的动画进度控制能力，还可以完成手势与动效同步的问题。动画进度控制是 LOTAnimationView 的 animationProgress 属性，设置属性的示例代码如下：</p><pre><code>CGPoint translation = [gesture getTranslationInView:self.view];CGFloat progress = translation.y / self.view.bounds.size.height;animationView.animationProgress = progress;</code></pre><p>Lottie 还带有一个 UIViewController animation-controller，可以自定义页面切换的过场动画，示例代码如下：</p><pre><code>#pragma mark -- 定制转场动画// 代理返回推出控制器的动画- (id&lt;UIViewControllerAnimatedTransitioning&gt;)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source &#123;  LOTAnimationTransitionController *animationController = [[LOTAnimationTransitionController alloc] initWithAnimationNamed:@&quot;vcTransition1&quot; fromLayerNamed:@&quot;outLayer&quot; toLayerNamed:@&quot;inLayer&quot; applyAnimationTransform:NO];  return animationController;&#125;// 代理返回退出控制器的动画- (id&lt;UIViewControllerAnimatedTransitioning&gt;)animationControllerForDismissedController:(UIViewController *)dismissed &#123;  LOTAnimationTransitionController *animationController = [[LOTAnimationTransitionController alloc] initWithAnimationNamed:@&quot;vcTransition2&quot; fromLayerNamed:@&quot;outLayer&quot; toLayerNamed:@&quot;inLayer&quot; applyAnimationTransform:NO];  return animationController;&#125;</code></pre><p>Lottie 在运行期间提供接口和协议来更改动画，有动画数据搜索接口 LOTKeyPath，以及设置动画数据的协议 LOTValueDelegate。详细的说明和使用示例代码，你可以参看<a target="_blank" rel="noopener" href="http://airbnb.io/lottie/#/ios">官方 iOS 教程</a>。</p><h2>多平台支持</h2><p>Lottie 支持多平台，除了 支持<a target="_blank" rel="noopener" href="https://github.com/airbnb/lottie-ios">iOS</a>，还支持 <a target="_blank" rel="noopener" href="https://github.com/airbnb/lottie-android">Android</a> 、<a target="_blank" rel="noopener" href="https://github.com/react-native-community/lottie-react-native">React Native</a>和<a target="_blank" rel="noopener" href="https://github.com/simolus3/fluttie">Flutter</a>。除了官方维护的这些平台外，Lottie还支持<a target="_blank" rel="noopener" href="https://github.com/windows-toolkit/Lottie-Windows">Windows</a>、<a target="_blank" rel="noopener" href="https://blog.qt.io/blog/2019/03/08/announcing-qtlottie/">Qt</a>、<a target="_blank" rel="noopener" href="https://skia.org/user/modules/skottie">Skia</a> 。陈卿还实现了 <a target="_blank" rel="noopener" href="https://github.com/chenqingspring/react-lottie">React</a>、<a target="_blank" rel="noopener" href="https://github.com/chenqingspring/vue-lottie">Vue</a>和<a target="_blank" rel="noopener" href="https://github.com/chenqingspring/ng-lottie">Angular</a>对 Lottie的支持，并已将代码放到了GitHub上。</p><p>有了这么多平台的支持，对于动画设计师来说，可以安心做动画，只要简单地转换就可以完美展现动画效果，再也不用担心到开发者那里动画效果被大打折扣了。而对于开发者来说，再也不用写那些难以维护的大量动效代码了，而且App安装包的体积还变小了。</p><p>那么，<strong>这么神奇的框架，在 iOS 里到底是怎么实现的呢？</strong>接下来，我们就看下Lottie的实现原理吧。</p><p>通过原理的学习，你会掌握通过 JSON 来控制代码逻辑的能力。比如，你可以把运营活动流程的代码逻辑设计为一种规范，再设计一个拖拽工具用来创建运营活动流程，最后生成一份表示运营活动逻辑的 JSON，下发到 App 内来开启新的运营活动。</p><h2>Lottie 实现原理</h2><p>实际上，<a target="_blank" rel="noopener" href="https://github.com/airbnb/lottie-ios">Lottie iOS</a>在 iOS 内做的事情就是将 After Effects 编辑的动画内容，通过JSON文件这个中间媒介，一一映射到 iOS 的 LayerModel、Keyframe、ShapeItem、DashElement、Marker、Mask、Transform 这些类的属性中并保存了下来，接下来再通过 CoreAnimation 进行渲染。这就和你手动写动画代码的实现是一样的，只不过这个过程的精准描述，全部由动画设计师通过 JSON文件输入进来了。</p><p>Lottie iOS 使用系统自带的 Codable协议来解析JSON文件，这样就可以享受系统升级带来性能提升的便利，比如 ShapeItem 这个类设计如下：</p><pre><code>// Shape Layerclass ShapeItem: Codable &#123;    /// shape 的名字  let name: String    /// shape 的类型  let type: ShapeType  // 和 json 中字符映射  private enum CodingKeys : String, CodingKey &#123;    case name = &quot;nm&quot;    case type = &quot;ty&quot;  &#125;  // 初始化  required init(from decoder: Decoder) throws &#123;    let container = try decoder.container(keyedBy: ShapeItem.CodingKeys.self)    self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? &quot;Layer&quot;    self.type = try container.decode(ShapeType.self, forKey: .type)  &#125;&#125;</code></pre><p>通过上面代码可以看出，ShapeItem 有两个属性，映射到JSON的字符键值是 nm 和 ty，分别代表 shape 的名字和类型。下面，我们再一起看一段 Bodymovin 生成的JSON代码：</p><pre><code>&#123;&quot;ty&quot;:&quot;st&quot;,&quot;fillEnabled&quot;:true,&quot;c&quot;:&#123;&quot;k&quot;:[&#123;&quot;i&quot;:&#123;&quot;x&quot;:[0.833],&quot;y&quot;:[0.833]&#125;,&quot;o&quot;:&#123;&quot;x&quot;:[0.167],&quot;y&quot;:[0.167]&#125;,&quot;n&quot;:[&quot;0p833_0p833_0p167_0p167&quot;],&quot;t&quot;:22,&quot;s&quot;:[0,0.65,0.6,1],&quot;e&quot;:[0.76,0.76,0.76,1]&#125;,&#123;&quot;t&quot;:36&#125;]&#125;,&quot;o&quot;:&#123;&quot;k&quot;:100&#125;,&quot;w&quot;:&#123;&quot;k&quot;:3&#125;,&quot;lc&quot;:2,&quot;lj&quot;:2,&quot;nm&quot;:&quot;Stroke 1&quot;,&quot;mn&quot;:&quot;ADBE Vector Graphic - Stroke&quot;&#125;</code></pre><p>在这段JSON代码中，nm 键对应的值是 Stroke 1，ty 键对应的值是 st。那我们再来看看，<strong>st 是什么类型。</strong></p><p>我们知道，ShapeType 是个枚举类型，它的定义如下：</p><pre><code>enum ShapeType: String, Codable &#123;  case ellipse = &quot;el&quot;  case fill = &quot;fl&quot;  case gradientFill = &quot;gf&quot;  case group = &quot;gr&quot;  case gradientStroke = &quot;gs&quot;  case merge = &quot;mm&quot;  case rectangle = &quot;rc&quot;  case repeater = &quot;rp&quot;  case round = &quot;rd&quot;  case shape = &quot;sh&quot;  case star = &quot;sr&quot;  case stroke = &quot;st&quot;  case trim = &quot;tm&quot;  case transform = &quot;tr&quot;&#125;</code></pre><p>通过上面的枚举定义，可以看到 st 对应的是 stroke 类型。</p><p>Lottie 就是通过这种方式，定义了一系列的类结构，可以将JSON数据全部映射过来。所有映射用的类都放在 Lottie 的 Model 目录下。使用 CoreAnimation 渲染的相关代码都在 NodeRenderSystem 目录下，比如前面举例的 Stoke。</p><p>在渲染前会生成一个节点，实现在 StrokeNode.swift 里，然后对 StokeNode 这个节点渲染的逻辑在 StrokeRenderer.swift 里。核心代码如下：</p><pre><code>// 设置 Contextfunc setupForStroke(_ inContext: CGContext) &#123;  inContext.setLineWidth(width) // 行宽  inContext.setMiterLimit(miterLimit)  inContext.setLineCap(lineCap.cgLineCap) // 行间隔  inContext.setLineJoin(lineJoin.cgLineJoin)    // 设置线条样式  if let dashPhase = dashPhase, let lengths = dashLengths &#123;    inContext.setLineDash(phase: dashPhase, lengths: lengths)  &#125; else &#123;    inContext.setLineDash(phase: 0, lengths: [])  &#125;&#125;// 渲染func render(_ inContext: CGContext) &#123;  guard inContext.path != nil &amp;&amp; inContext.path!.isEmpty == false else &#123;    return  &#125;  guard let color = color else &#123; return &#125;  hasUpdate = false  setupForStroke(inContext)  inContext.setAlpha(opacity) // 设置透明度  inContext.setStrokeColor(color) // 设置颜色  inContext.strokePath()&#125;</code></pre><p>这段代码看起来是不是就很熟悉了？</p><p>如果是手写动画，这些代码就需要不断重复地写。使用第三方库去写动画的话，也无非就是多封装了一层，而属性的设置、动画时间的设置等，还是需要手动添加很多代码来完成。</p><p>但是，使用 Lottie 后，你就完全不用去管这些代码了，只需要在 After Effects 那设置属性、控制动画时间就好了。</p><h2>小结</h2><p>今天这篇文章，我分享了一个制作动画的利器 Lottie，并和你说了如何在 iOS 中使用，以及它的实现原理。听到这，你一定感到奇怪， iOS 开发中还有很多优秀的动画框架，比如 Pop，但是为什么我只跟你说了 Lottie 呢？</p><p>因为在我看来， Lottie 这样的工作流程或许就是未来的趋势，就像 iOS 现在的发展趋势一样，越来越多的业务逻辑不再需要全部使用 Objective-C 或 Swift 来实现了，而是使用JavaScript 语言或者 DSL 甚至是工具来描述业务，然后将描述业务的代码转换成一种中间代码，比如 JSON，不同平台再对相同的中间代码进行解析处理，以执行中间代码描述的业务逻辑。</p><p>这样做不仅可以减轻 App 包的大小，实现多端逻辑的统一处理，还可以让团队分工更加明确，一部分人专门开发业务代码，另一部分人负责端内稳定性、质量把控、性能提升工作的建设。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/iOS%E8%BF%9B%E9%98%B6/">iOS进阶</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/iOS/">iOS</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/02/23/2020-2/22.A%E3%80%81B%20%E6%B5%8B%E8%AF%95%EF%BC%9A%E9%AA%8C%E8%AF%81%E5%86%B3%E7%AD%96%E6%95%88%E6%9E%9C%E7%9A%84%E5%88%A9%E5%99%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">A/B 测试：验证决策效果的利器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/12/23/2020-2/20.%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98%20JSON%20%E8%A7%A3%E6%9E%90%E7%9A%84%E6%80%A7%E8%83%BD/">
+                        <span class="hidden-mobile">如何提高 JSON 解析的性能</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

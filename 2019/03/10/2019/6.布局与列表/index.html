@@ -1,0 +1,526 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>布局与列表 - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="布局与列表">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-03-10 00:01" pubdate>
+        2019年3月10日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      35
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">布局与列表</h1>
+            
+            <div class="markdown-body">
+              <h3 id="布局与列表"><a href="#布局与列表" class="headerlink" title="布局与列表"></a>布局与列表</h3><p>声明：Flutter专栏文档均来自慕课网<br><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://coding.imooc.com/class/321.html">https://coding.imooc.com/class/321.html</a></p>
+<h4 id="布局与列表-1"><a href="#布局与列表-1" class="headerlink" title="布局与列表"></a>布局与列表</h4><ul>
+<li>  LinearLayout 在Flutter中等价于什么(Android)？</li>
+<li>  RelativeLayout 在Flutter中等价于什么(Android)？</li>
+<li>  如何使用widget定义布局属性?</li>
+<li>  如何分层布局？</li>
+<li>  如何设置布局样式？</li>
+<li>  ScrollView在Flutter中等价于什么？</li>
+<li>  谁是Flutter的列表组件？</li>
+<li>  如何知道点击了列表中哪个item？</li>
+<li>  如何动态更新ListView？</li>
+</ul>
+<h4 id="LinearLayout-在Flutter-中等价于什么-Android-？"><a href="#LinearLayout-在Flutter-中等价于什么-Android-？" class="headerlink" title="LinearLayout 在Flutter**中等价于什么(**Android)？"></a>LinearLayout <strong>在</strong>Flutter**中等价于什么(**Android)？</h4><p>在Android中，使用LinearLayout来使你的控件呈水平或垂直排列。在Flutter中，你可以使用Row或Co lumn widget来实现相同的结果：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-keyword">@override</span><br>Widget build(BuildContext context) &#123;<br>  return Row(<br>    mainAxisAlignment: MainAxisAlignment.center,<br>    children: &lt;Widget&gt;[<br>      <span class="hljs-built_in">Text</span>(<span class="hljs-string">&#x27;Row One&#x27;</span>),<br>      <span class="hljs-built_in">Text</span>(<span class="hljs-string">&#x27;Row Two&#x27;</span>),<br>      <span class="hljs-built_in">Text</span>(<span class="hljs-string">&#x27;Row Three&#x27;</span>),<br>      <span class="hljs-built_in">Text</span>(<span class="hljs-string">&#x27;Row Four&#x27;</span>),<br>    ],<br>  );<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-keyword">@override</span><br>Widget build(BuildContext context) &#123;<br>  return Column(<br>    mainAxisAlignment: MainAxisAlignment.center,<br>    children: &lt;Widget&gt;[<br>      <span class="hljs-built_in">Text</span>(<span class="hljs-string">&#x27;Column One&#x27;</span>),<br>      <span class="hljs-built_in">Text</span>(<span class="hljs-string">&#x27;Column Two&#x27;</span>),<br>      <span class="hljs-built_in">Text</span>(<span class="hljs-string">&#x27;Column Three&#x27;</span>),<br>      <span class="hljs-built_in">Text</span>(<span class="hljs-string">&#x27;Column Four&#x27;</span>),<br>    ],<br>  );<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>要了解有关构建线性布局的更多信息，可参考区贡献的媒体文章<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://medium.com/@burhanrashid52/flutter-for-android-developers-how-to-design-linearlayout-in-flutter-5d819c0ddf1a">Flutter For Android Developers : How to design LinearLayout in Flutter?</a>。</p>
+</blockquote>
+<p><strong>RelativeLayout <strong>在</strong>Flutter</strong>中等价于什么(<strong>Android</strong>)？</p>
+<p><code>RelativeLayout</code>用于使widget相对于彼此位置排列。在Flutter中，有几种方法可以实现相同的结果</p>
+<p>您可以通过使用<code>Column</code>、<code>Row</code>和<code>Stack</code>的组合来实现<code>RelativeLayout</code>的效果。您可以为widget构造函数指定相对于父组件的布局规则。</p>
+<p>推荐参考在<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://stackoverflow.com/questions/44396075/equivalent-of-relativelayout-in-flutter">StackOverflow</a>上的一个在Flutter中构建RelativeLayout的例子。</p>
+<p>如何使用<strong>widget</strong>定义布局属性**?**</p>
+<p>在React Native中，大多数布局都可以使用传递给特定组件的props来完成。 例如，您可以使用View组件上的样式<code>prop</code>来指定<code>flexbox</code>属性。 要在列中排列组件，您可以指定一个prop，例如：<code>flexDirection：“column”</code>。</p>
+<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs handlebars"><span class="xml">// React Native</span><br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span></span></span><br><span class="hljs-tag"><span class="xml">  <span class="hljs-attr">style</span>=</span></span><span class="hljs-template-variable">&#123;&#123;</span><br><span class="hljs-template-variable">    <span class="hljs-name">flex:</span> <span class="hljs-number">1</span>,</span><br><span class="hljs-template-variable">    flexDirection: <span class="hljs-string">&quot;column&quot;</span>,</span><br><span class="hljs-template-variable">    justifyContent: <span class="hljs-string">&quot;space-between&quot;</span>,</span><br><span class="hljs-template-variable">    alignItems: <span class="hljs-string">&quot;center&quot;</span></span><br><span class="hljs-template-variable">  &#125;&#125;</span><span class="xml"><span class="hljs-tag"></span></span><br><span class="hljs-tag"><span class="xml">&gt;</span> </span><br></code></pre></td></tr></table></figure>
+
+<p>在Flutter中，布局主要由专门设计用于提供布局的小部件定义，并结合控件widget及其样式属性。</p>
+<p>例如, <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/widgets/Column-class.html">列</a> 和 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/widgets/Row-class.html">行</a> widgets 控制一个数组中的条目 并且 分别垂直和水平对齐它们。 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/widgets/Container-class.html">Container</a> widget 控制一个布局的样式和属性, 并且 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/widgets/Center-class.html">Center</a> widget 负责居中它的子widget。</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-comment">// Flutter</span><br>Center(<br><span class="hljs-symbol">  child:</span> Column(<br><span class="hljs-symbol">    children:</span> <span class="hljs-params">&lt;Widget&gt;</span>[<br>      Container(<br><span class="hljs-symbol">        color:</span> Colors.red,<br><span class="hljs-symbol">        width:</span> <span class="hljs-number">100.0</span>,<br><span class="hljs-symbol">        height:</span> <span class="hljs-number">100.0</span>,<br>      ),<br><br>      Container(<br><span class="hljs-symbol">        color:</span> Colors.blue,<br><span class="hljs-symbol">        width:</span> <span class="hljs-number">100.0</span>,<br><span class="hljs-symbol">        height:</span> <span class="hljs-number">100.0</span>,<br>      ),<br><br>      Container(<br><span class="hljs-symbol">        color:</span> Colors.green,<br><span class="hljs-symbol">        width:</span> <span class="hljs-number">100.0</span>,<br><span class="hljs-symbol">        height:</span> <span class="hljs-number">100.0</span>,<br>      ),<br>    ],<br>  ),<br>) <br></code></pre></td></tr></table></figure>
+
+<p>Flutter在其核心widget库中提供了各种布局小部件。 例如, <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/widgets/Padding-class.html">Padding</a>, <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/widgets/Align-class.html">Align</a>, 和 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/widgets/Stack-class.html">Stack</a>。</p>
+<p>更多布局widget可参考 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://flutter.io/docs/development/ui/widgets/layout">Layout Widgets</a>。</p>
+<p> image  image</p>
+<h4 id="如何分层布局？"><a href="#如何分层布局？" class="headerlink" title="如何分层布局？"></a>如何分层布局？</h4><p>在React Native中，组件可以使用<code>absolute</code>定位进行分层。</p>
+<p>Flutter 使用<code>Stack</code> widget 控制子widget在一层。 子widgets可以完全或者部分覆盖基础widgets。</p>
+<p><code>Stack</code>控件将其子项相对于其框的边缘定位。如果您只想重叠多个子窗口小部件，这个类很有用。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-comment">// Flutter</span><br><span class="hljs-selector-tag">Stack</span>(<br>  <span class="hljs-attribute">alignment</span>: const Alignment(<span class="hljs-number">0.6</span>, <span class="hljs-number">0.6</span>),<br>  <span class="hljs-attribute">children</span>: &lt;Widget&gt;[<br>    CircleAvatar(<br>      <span class="hljs-attribute">backgroundImage</span>: NetworkImage(<br>        <span class="hljs-string">&quot;https://avatars3.githubusercontent.com/u/14101776?v=4&quot;</span>),<br>    ),<br><br>    Container(<br>      <span class="hljs-attribute">decoration</span>: BoxDecoration(<br>          <span class="hljs-attribute">color</span>: Colors.black45,<br>      ),<br>      <span class="hljs-attribute">child</span>: Text(<span class="hljs-string">&#x27;Flutter&#x27;</span>),<br>    ),<br>  ],<br>) <br></code></pre></td></tr></table></figure>
+
+<p>上一个示例使用 <code>Stack</code> 覆盖容器 (显示其“Text”在半透明的黑色背景上) 在<code>CircleAvatar之上</code>.Stack 偏移文本 使用<code>alignment</code>属性和<code>Alignment</code>定位。</p>
+<p> image</p>
+<h4 id="如何设置布局样式？"><a href="#如何设置布局样式？" class="headerlink" title="如何设置布局样式？"></a>如何设置布局样式？</h4><p>在React Native中，我们可以是由内联样式和<code>stylesheets.create</code>来定义组件的样式：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-comment">// React Native</span><br><span class="hljs-params">&lt;View style=&#123;styles.container&#125;&gt;</span><br>  <span class="hljs-params">&lt;Text style=&#123;&#123; fontSize: <span class="hljs-number">32</span>, color: &quot;cyan&quot;, fontWeight: &quot;<span class="hljs-number">600</span>&quot; &#125;&#125;&gt;</span><br>    This is a sample text<br>  <span class="hljs-params">&lt;/Text&gt;</span><br><span class="hljs-params">&lt;/View&gt;</span><br><br>const styles = StyleSheet.create(&#123;<br><span class="hljs-symbol">  container:</span> &#123;<br><span class="hljs-symbol">    flex:</span> <span class="hljs-number">1</span>,<br><span class="hljs-symbol">    backgroundColor:</span> <span class="hljs-string">&quot;#fff&quot;</span>,<br><span class="hljs-symbol">    alignItems:</span> <span class="hljs-string">&quot;center&quot;</span>,<br><span class="hljs-symbol">    justifyContent:</span> <span class="hljs-string">&quot;center&quot;</span><br>  &#125;<br>&#125;); <br></code></pre></td></tr></table></figure>
+
+<p><strong>Flutter</strong>没有内联样式和<code>stylesheets.create</code>的概念，它有一套独特的布局系统，<code>Padding</code>、<code>Center</code>、<code>Column</code>、<code>Row</code>、等都是<strong>widget</strong>，另外组件也通常接受用于布局样式的构造参数：比如<code>Text</code> widget可以使用<code>TextStyle</code>属性。如果要在多个位置使用相同的文本样式， 你可以创建一个 <code>TextStyle</code> 类并将其应用于各个 <code>Text</code> widgets。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-string">//</span> <span class="hljs-string">Flutter</span><br><span class="hljs-string">var</span> <span class="hljs-string">textStyle</span> <span class="hljs-string">=</span> <span class="hljs-string">TextStyle(fontSize:</span> <span class="hljs-number">32.0</span><span class="hljs-string">,</span> <span class="hljs-attr">color:</span> <span class="hljs-string">Colors.cyan,</span> <span class="hljs-attr">fontWeight:</span><br>   <span class="hljs-string">FontWeight.w600);</span><br>    <span class="hljs-string">...</span><br><span class="hljs-string">Center(</span><br>  <span class="hljs-attr">child:</span> <span class="hljs-string">Column(</span><br>    <span class="hljs-attr">children:</span> <span class="hljs-string">&lt;Widget&gt;[</span><br>      <span class="hljs-string">Text(</span><br>        <span class="hljs-string">&#x27;Sample text&#x27;</span><span class="hljs-string">,</span><br>        <span class="hljs-attr">style:</span> <span class="hljs-string">textStyle,</span><br>      <span class="hljs-string">),</span><br>      <span class="hljs-string">Padding(</span><br>        <span class="hljs-attr">padding:</span> <span class="hljs-string">EdgeInsets.all(20.0),</span><br>        <span class="hljs-attr">child:</span> <span class="hljs-string">Icon(Icons.lightbulb_outline,</span><br>          <span class="hljs-attr">size:</span> <span class="hljs-number">48.0</span><span class="hljs-string">,</span> <span class="hljs-attr">color:</span> <span class="hljs-string">Colors.redAccent)</span><br>      <span class="hljs-string">),</span><br>    <span class="hljs-string">],</span><br>  <span class="hljs-string">),</span><br><span class="hljs-string">)</span> <br></code></pre></td></tr></table></figure>
+
+<p> image  image</p>
+<h4 id="ScrollView在Flutter中等价于什么？"><a href="#ScrollView在Flutter中等价于什么？" class="headerlink" title="ScrollView在Flutter中等价于什么？"></a>ScrollView<strong>在</strong>Flutter中等价于什么？</h4><p>在Android中，<code>ScrollView</code>允许您包含一个子控件，以便在用户设备的屏幕比控件内容小的情况下，使它们可以滚动。在Flutter中，最简单的方法是使用ListView。但在Flutter中，一个ListView既是一个ScrollView，也是一个Android ListView。</p>
+<p>在 iOS 中，你给 view 包裹上 ScrollView 来允许用户在需要时滚动你的内容。在 Flutter 中，最简单的方法是使用 ListView widget。它表现得既和 iOS 中的 ScrollView 一致，也能和 TableView 一致，因为你可以给它的 widget 做垂直排布：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-keyword">@override</span><br>Widget build(BuildContext context) &#123;<br>  return ListView(<br>    children: &lt;Widget&gt;[<br>      <span class="hljs-built_in">Text</span>(<span class="hljs-string">&#x27;Row One&#x27;</span>),<br>      <span class="hljs-built_in">Text</span>(<span class="hljs-string">&#x27;Row Two&#x27;</span>),<br>      <span class="hljs-built_in">Text</span>(<span class="hljs-string">&#x27;Row Three&#x27;</span>),<br>      <span class="hljs-built_in">Text</span>(<span class="hljs-string">&#x27;Row Four&#x27;</span>),<br>    ],<br>  );<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>更多关于在 Flutter 中如何排布 widget 的文档，请参阅 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://flutter.io/docs/development/ui/widgets/layout">layout tutorial</a>。</p>
+</blockquote>
+<h4 id="谁是Flutter的列表组件？"><a href="#谁是Flutter的列表组件？" class="headerlink" title="谁是Flutter的列表组件？"></a>谁是<strong>Flutter</strong>的列表组件？</h4><ul>
+<li>  在 iOS 中，通常用 UITableView 或 UICollectionView 来展示一个列表；</li>
+<li>  在 Android 中，通常用 ListView 或 RecyclerView 来展示一个列表；</li>
+<li>  在 RN 中，通常用 FlatList 或 SectionList 来展示一个列表；</li>
+</ul>
+<p>在 Flutter 中，你可以用 ListView 来达到相似的实现：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;package</span>:flutter/material.dart&#x27;;<br><br>void main() &#123;<br>  runApp(<span class="hljs-type">SampleApp</span>());<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SampleApp</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-comment">// This widget is the root of your application.</span><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">MaterialApp</span>(<br>      title: <span class="hljs-symbol">&#x27;Sample</span> <span class="hljs-type">App</span>&#x27;,<br>      theme: <span class="hljs-type">ThemeData</span>(<br>        primarySwatch: <span class="hljs-type">Colors</span>.blue,<br>      ),<br>      home: <span class="hljs-type">SampleAppPage</span>(),<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SampleAppPage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  <span class="hljs-type">SampleAppPage</span>(&#123;<span class="hljs-type">Key</span> key&#125;) : <span class="hljs-keyword">super</span>(key: key);<br>  <span class="hljs-meta">@override</span><br>  _SampleAppPageState createState() =&gt; _SampleAppPageState();<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_SampleAppPageState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State&lt;SampleAppPage&gt;</span> </span>&#123;<br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Scaffold</span>(<br>      appBar: <span class="hljs-type">AppBar</span>(<br>        title: <span class="hljs-type">Text</span>(<span class="hljs-string">&quot;Sample App&quot;</span>),<br>      ),<br>      body: <span class="hljs-type">ListView</span>(children: _getListData()),<br>    );<br>  &#125;<br>  _getListData() &#123;<br>    <span class="hljs-type">List</span>&lt;<span class="hljs-type">Widget</span>&gt; widgets = [];<br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) &#123;<br>      widgets.add(<span class="hljs-type">Padding</span>(padding: <span class="hljs-type">EdgeInsets</span>.all(<span class="hljs-number">10.0</span>), child: <span class="hljs-type">Text</span>(<span class="hljs-string">&quot;Row $i&quot;</span>)));<br>    &#125;<br>    <span class="hljs-keyword">return</span> widgets;<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在Android ListView中，您可以创建一个适配器，然后您可以将它传递给ListView，该适配器将使用适配器返回的内容来展示每一行，从上面代码中不难看出，在Flutter中没有adapter的等价物，我们唯一要做的就是控制这个list中要展示的数据。</p>
+</blockquote>
+<h4 id="如何知道点击了列表中哪个item？"><a href="#如何知道点击了列表中哪个item？" class="headerlink" title="如何知道点击了列表中哪个item？"></a>如何知道点击了列表中哪个<strong>item</strong>？</h4><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;package</span>:flutter/material.dart&#x27;;<br><br>void main() &#123;<br>  runApp(<span class="hljs-type">SampleApp</span>());<br>&#125;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SampleApp</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-comment">// This widget is the root of your application.</span><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">MaterialApp</span>(<br>      title: <span class="hljs-symbol">&#x27;Sample</span> <span class="hljs-type">App</span>&#x27;,<br>      theme: <span class="hljs-type">ThemeData</span>(<br>        primarySwatch: <span class="hljs-type">Colors</span>.blue,<br>      ),<br>      home: <span class="hljs-type">SampleAppPage</span>(),<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SampleAppPage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  <span class="hljs-type">SampleAppPage</span>(&#123;<span class="hljs-type">Key</span> key&#125;) : <span class="hljs-keyword">super</span>(key: key);<br>  <span class="hljs-meta">@override</span><br>  _SampleAppPageState createState() =&gt; _SampleAppPageState();<br>&#125;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_SampleAppPageState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State&lt;SampleAppPage&gt;</span> </span>&#123;<br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Scaffold</span>(<br>      appBar: <span class="hljs-type">AppBar</span>(<br>        title: <span class="hljs-type">Text</span>(<span class="hljs-string">&quot;Sample App&quot;</span>),<br>      ),<br>      body: <span class="hljs-type">ListView</span>(children: _getListData()),<br>    );<br>  &#125;<br>    <br>  _getListData() &#123;<br>    <span class="hljs-type">List</span>&lt;<span class="hljs-type">Widget</span>&gt; widgets = [];<br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) &#123;<br>      widgets.add(<span class="hljs-type">GestureDetector</span>(<br>        child: <span class="hljs-type">Padding</span>(<br>          padding: <span class="hljs-type">EdgeInsets</span>.all(<span class="hljs-number">10.0</span>),<br>          child: <span class="hljs-type">Text</span>(<span class="hljs-string">&quot;Row $i&quot;</span>),<br>        ),<br>        onTap: () &#123;<br>          print(<span class="hljs-symbol">&#x27;row</span> tapped&#x27;);<br>        &#125;,<br>      ));<br>    &#125;<br>    <span class="hljs-keyword">return</span> widgets;<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>在上述代码中我们通过<code>GestureDetector</code>来监听item的点击事件。</p>
+<h4 id="如何动态更新ListView？"><a href="#如何动态更新ListView？" class="headerlink" title="如何动态更新ListView？"></a>如何动态更新<strong>ListView</strong>？</h4><ul>
+<li>  在 iOS 中，你改变列表的数据，并通过 reloadData() 方法来通知 table 或是 collection view；</li>
+<li>  在 Android 中，改变列表数据后通过notifyDataSetChanged来更新列表；</li>
+</ul>
+<p>在 Flutter 中，如果你想通过 <code>setState()</code> 方法来更新 widget 列表，你会很快发现你的数据展示并没有变化。这是因为当 <code>setState()</code> 被调用时，Flutter 渲染引擎会去检查 widget 树来查看是否有什么地方被改变了。当它得到你的 ListView 时，它会使用一个<code>==</code>判断，并且发现两个 ListView 是相同的。没有什么东西是变了的，因此更新不是必须的。</p>
+<p><strong>一个更新 <code>ListView</code> 的简单方法是，在<code>setState()</code> 中创建一个新的 <code>List</code>，并把旧 <code>List</code> 的数据拷贝给新的 list</strong>。虽然这样很简单，但当数据集很大时，并不推荐这样做，来一起看个demo：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;package</span>:flutter/material.dart&#x27;;<br><br>void main() &#123;<br>  runApp(<span class="hljs-type">SampleApp</span>());<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SampleApp</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-comment">// This widget is the root of your application.</span><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">MaterialApp</span>(<br>      title: <span class="hljs-symbol">&#x27;Sample</span> <span class="hljs-type">App</span>&#x27;,<br>      theme: <span class="hljs-type">ThemeData</span>(<br>        primarySwatch: <span class="hljs-type">Colors</span>.blue,<br>      ),<br>      home: <span class="hljs-type">SampleAppPage</span>(),<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SampleAppPage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  <span class="hljs-type">SampleAppPage</span>(&#123;<span class="hljs-type">Key</span> key&#125;) : <span class="hljs-keyword">super</span>(key: key);<br>  <span class="hljs-meta">@override</span><br>  _SampleAppPageState createState() =&gt; _SampleAppPageState();<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_SampleAppPageState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State&lt;SampleAppPage&gt;</span> </span>&#123;<br>  <span class="hljs-type">List</span> widgets = [];<br>  <span class="hljs-meta">@override</span><br>  void initState() &#123;<br>    <span class="hljs-keyword">super</span>.initState();<br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) &#123;<br>      widgets.add(getRow(i));<br>    &#125;<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Scaffold</span>(<br>      appBar: <span class="hljs-type">AppBar</span>(<br>        title: <span class="hljs-type">Text</span>(<span class="hljs-string">&quot;Sample App&quot;</span>),<br>      ),<br>      body: <span class="hljs-type">ListView</span>(children: widgets),<br>    );<br>  &#125;<br>  <span class="hljs-type">Widget</span> getRow(int i) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">GestureDetector</span>(<br>      child: <span class="hljs-type">Padding</span>(<br>        padding: <span class="hljs-type">EdgeInsets</span>.all(<span class="hljs-number">10.0</span>),<br>        child: <span class="hljs-type">Text</span>(<span class="hljs-string">&quot;Row $i&quot;</span>),<br>      ),<br>      onTap: () &#123;<br>        setState(() &#123;<br>          widgets = <span class="hljs-type">List</span>.from(widgets);<br>          widgets.add(getRow(widgets.length + <span class="hljs-number">1</span>));<br>          print(<span class="hljs-symbol">&#x27;row</span> $i&#x27;);<br>        &#125;);<br>      &#125;,<br>    );<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>一个推荐的、高效的且有效的做法是，使用 <code>ListView.Builder</code>来构建列表。这个方法在你想要构建动态列表，或是列表拥有大量数据时会非常好用：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;package</span>:flutter/material.dart&#x27;;<br><br>void main() &#123;<br>  runApp(<span class="hljs-type">SampleApp</span>());<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SampleApp</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-comment">// This widget is the root of your application.</span><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">MaterialApp</span>(<br>      title: <span class="hljs-symbol">&#x27;Sample</span> <span class="hljs-type">App</span>&#x27;,<br>      theme: <span class="hljs-type">ThemeData</span>(<br>        primarySwatch: <span class="hljs-type">Colors</span>.blue,<br>      ),<br>      home: <span class="hljs-type">SampleAppPage</span>(),<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SampleAppPage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  <span class="hljs-type">SampleAppPage</span>(&#123;<span class="hljs-type">Key</span> key&#125;) : <span class="hljs-keyword">super</span>(key: key);<br>  <span class="hljs-meta">@override</span><br>  _SampleAppPageState createState() =&gt; _SampleAppPageState();<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_SampleAppPageState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State&lt;SampleAppPage&gt;</span> </span>&#123;<br>  <span class="hljs-type">List</span> widgets = [];<br>  <span class="hljs-meta">@override</span><br>  void initState() &#123;<br>    <span class="hljs-keyword">super</span>.initState();<br>    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) &#123;<br>      widgets.add(getRow(i));<br>    &#125;<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Scaffold</span>(<br>      appBar: <span class="hljs-type">AppBar</span>(<br>        title: <span class="hljs-type">Text</span>(<span class="hljs-string">&quot;Sample App&quot;</span>),<br>      ),<br>      body: <span class="hljs-type">ListView</span>.builder(<br>        itemCount: widgets.length,<br>        itemBuilder: (<span class="hljs-type">BuildContext</span> context, int position) &#123;<br>          <span class="hljs-keyword">return</span> getRow(position);<br>        &#125;,<br>      ),<br>    );<br>  &#125;<br><br>  <span class="hljs-type">Widget</span> getRow(int i) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">GestureDetector</span>(<br>      child: <span class="hljs-type">Padding</span>(<br>        padding: <span class="hljs-type">EdgeInsets</span>.all(<span class="hljs-number">10.0</span>),<br>        child: <span class="hljs-type">Text</span>(<span class="hljs-string">&quot;Row $i&quot;</span>),<br>      ),<br>      onTap: () &#123;<br>        setState(() &#123;<br>          widgets.add(getRow(widgets.length + <span class="hljs-number">1</span>));<br>          print(<span class="hljs-symbol">&#x27;row</span> $i&#x27;);<br>        &#125;);<br>      &#125;,<br>    );<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>与创建一个 “ListView” 不同，创建一个<code>ListView.builder</code> 接受两个主要参数：列表的初始长度，和一个 ItemBuilder 方法。</p>
+<p>ItemBuilder 方法和 iOS的<code>cellForItemAt</code> 代理方法非常类似，它接受一个位置，并且返回在这个位置上你希望渲染的 cell。</p>
+<p>最后，也是最重要的，注意 <code>onTap()</code> 函数里并没有重新创建一个 <code>List</code>，而是 <code>add</code> 了一个 widget。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Flutter%E5%AD%A6%E4%B9%A0/">Flutter学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Dart/">Dart</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Flutter/">Flutter</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91/">混合开发</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/12/2019/7.%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">状态管理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/08/2019/4.%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E3%80%81%E8%B5%84%E6%BA%90%E3%80%81%E4%BE%9D%E8%B5%96%E5%92%8C%E6%9C%AC%E5%9C%B0%E5%8C%96/">
+                        <span class="hidden-mobile">项目结构、资源、依赖和本地化</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

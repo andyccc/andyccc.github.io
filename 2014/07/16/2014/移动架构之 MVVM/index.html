@@ -1,0 +1,465 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>移动架构之 MVVM - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="移动架构之 MVVM">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2014-07-16 21:22" pubdate>
+        2014年7月16日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      20
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">移动架构之 MVVM</h1>
+            
+            <div class="markdown-body">
+              <blockquote>
+<p>MVVM 关于 MVVM 就不多做介绍了, 这里通过一个 demo 来简单展示一下. 与 MVP 类似, View 持有 ViewModel，ViewModel 持有 Model. 最大的不同在于 MVVM 通常与双向绑定机制联系……</p>
+</blockquote>
+<h2 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a><a href="#MVVM" title="MVVM"></a>MVVM</h2><p>关于 MVVM 就不多做介绍了, 这里通过一个 demo 来简单展示一下.<br>与 MVP 类似, <strong><em>View 持有 ViewModel，ViewModel 持有 Model</em></strong>.</p>
+<p>最大的不同在于 MVVM 通常与双向绑定机制联系在一起. 而 iOS 中可以使用 CocoaReact 或 RxSwift 这些自带双向绑定功能的框架, 也可以自己使用 KVO 实现.</p>
+<p>[![][img-0]</p>
+<h3 id="Model"><a href="#Model" class="headerlink" title="Model"></a><a href="#Model" title="Model"></a>Model</h3><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@interface</span> <span class="hljs-attribute">ModelUserInfo </span>: NSObject<br><br><span class="hljs-variable">@property</span> (nonatomic, copy)     NSString    *name;<br><span class="hljs-variable">@property</span> (nonatomic, assign)   NSInteger   age;<br><span class="hljs-variable">@property</span> (nonatomic, copy)     NSString    *city;<br><br><span class="hljs-variable">@end</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="View"><a href="#View" class="headerlink" title="View"></a><a href="#View" title="View"></a>View</h3><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@interface</span> <span class="hljs-attribute">ViewUserInfo </span>: UIView<br><br><span class="hljs-variable">@property</span> (nonatomic, strong) UITextField *textFieldName;<br><span class="hljs-variable">@property</span> (nonatomic, strong) UITextField *textFieldAge;<br><span class="hljs-variable">@property</span> (nonatomic, strong) UITextField *textFieldCity;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> View持有ViewModel，ViewModel持有Model</span><br><span class="hljs-comment"> */</span><br><span class="hljs-variable">@property</span> (nonatomic, strong) ViewModelUserInfo *viewModelUserInfo;<br><br><span class="hljs-variable">@end</span><br></code></pre></td></tr></table></figure>
+
+<p>其实现文件如下, 其中通过 KVO 来实现了绑定机制.</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">// context of KVO</span><br><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSInteger</span> ctxKVOName     = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSInteger</span> ctxKVOAge      = <span class="hljs-number">1</span>;<br><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSInteger</span> ctxKVOCity     = <span class="hljs-number">2</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">ViewUserInfo</span></span><br><br>- (<span class="hljs-keyword">instancetype</span>)initWithFrame:(<span class="hljs-built_in">CGRect</span>)frame<br>&#123;<br>    <span class="hljs-keyword">self</span> = [<span class="hljs-keyword">super</span> initWithFrame:frame];<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>) &#123;<br>        <span class="hljs-keyword">self</span>.backgroundColor = [<span class="hljs-built_in">UIColor</span> lightGrayColor];<br>        <br>        <span class="hljs-keyword">self</span>.textFieldName = [[<span class="hljs-built_in">UITextField</span> alloc] initWithFrame:<span class="hljs-built_in">CGRectMake</span>(<span class="hljs-number">20</span>, <span class="hljs-number">50</span>, <span class="hljs-number">200</span>, <span class="hljs-number">30</span>)];<br>        <span class="hljs-keyword">self</span>.textFieldName.text = <span class="hljs-string">@&quot;name&quot;</span>;<br>        [<span class="hljs-keyword">self</span> addSubview:<span class="hljs-keyword">self</span>.textFieldName];<br>        <br>        <span class="hljs-keyword">self</span>.textFieldAge = [[<span class="hljs-built_in">UITextField</span> alloc] initWithFrame:<span class="hljs-built_in">CGRectMake</span>(<span class="hljs-number">20</span>, <span class="hljs-number">100</span>, <span class="hljs-number">200</span>, <span class="hljs-number">30</span>)];<br>        <span class="hljs-keyword">self</span>.textFieldAge.text = <span class="hljs-string">@&quot;age&quot;</span>;<br>        [<span class="hljs-keyword">self</span> addSubview:<span class="hljs-keyword">self</span>.textFieldAge];<br>        <br>        <span class="hljs-keyword">self</span>.textFieldCity = [[<span class="hljs-built_in">UITextField</span> alloc] initWithFrame:<span class="hljs-built_in">CGRectMake</span>(<span class="hljs-number">20</span>, <span class="hljs-number">150</span>, <span class="hljs-number">200</span>, <span class="hljs-number">30</span>)];<br>        <span class="hljs-keyword">self</span>.textFieldCity.text = <span class="hljs-string">@&quot;city&quot;</span>;<br>        [<span class="hljs-keyword">self</span> addSubview:<span class="hljs-keyword">self</span>.textFieldCity];<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;<br>&#125;<br><br>- (<span class="hljs-keyword">void</span>)setViewModelUserInfo:(ViewModelUserInfo *)viewModelUserInfo<br>&#123;<br>    _viewModelUserInfo = viewModelUserInfo;<br>    <br>    <span class="hljs-comment">// View -&gt; Model</span><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     Using UserEvent to bind</span><br><span class="hljs-comment">     */</span><br>    [<span class="hljs-keyword">self</span>.textFieldName addTarget:<span class="hljs-keyword">self</span><br>                           action:<span class="hljs-keyword">@selector</span>(actionViewTextFieldChanged:)<br>                 forControlEvents:<span class="hljs-built_in">UIControlEventEditingChanged</span>];<br>    [<span class="hljs-keyword">self</span>.textFieldAge addTarget:<span class="hljs-keyword">self</span><br>                          action:<span class="hljs-keyword">@selector</span>(actionViewTextFieldChanged:)<br>                forControlEvents:<span class="hljs-built_in">UIControlEventEditingChanged</span>];<br>    [<span class="hljs-keyword">self</span>.textFieldCity addTarget:<span class="hljs-keyword">self</span><br>                           action:<span class="hljs-keyword">@selector</span>(actionViewTextFieldChanged:)<br>                 forControlEvents:<span class="hljs-built_in">UIControlEventEditingChanged</span>];<br>    <br>    <br>    <span class="hljs-comment">// Model -&gt; View</span><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     Using KVO to bind</span><br><span class="hljs-comment">     */</span><br>    [_viewModelUserInfo.modelUserInfo addObserver:<span class="hljs-keyword">self</span><br>                     forKeyPath:<span class="hljs-string">@&quot;name&quot;</span><br>                        options:<span class="hljs-built_in">NSKeyValueObservingOptionNew</span> | <span class="hljs-built_in">NSKeyValueObservingOptionInitial</span><br>                        context:&amp;ctxKVOName];<br>    [_viewModelUserInfo.modelUserInfo addObserver:<span class="hljs-keyword">self</span><br>                     forKeyPath:<span class="hljs-string">@&quot;age&quot;</span><br>                        options:<span class="hljs-built_in">NSKeyValueObservingOptionNew</span> | <span class="hljs-built_in">NSKeyValueObservingOptionInitial</span><br>                        context:&amp;ctxKVOAge];<br>    [_viewModelUserInfo.modelUserInfo addObserver:<span class="hljs-keyword">self</span><br>                     forKeyPath:<span class="hljs-string">@&quot;city&quot;</span><br>                        options:<span class="hljs-built_in">NSKeyValueObservingOptionNew</span> | <span class="hljs-built_in">NSKeyValueObservingOptionInitial</span><br>                        context:&amp;ctxKVOCity];<br>&#125;<br><br>- (<span class="hljs-keyword">void</span>)actionViewTextFieldChanged:(<span class="hljs-built_in">UITextView</span> *)sender<br>&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;View -&gt; Model&quot;</span>);<br>    <br>    <span class="hljs-keyword">if</span> ([sender isEqual:<span class="hljs-keyword">self</span>.textFieldName]) &#123;<br>        <span class="hljs-keyword">self</span>.viewModelUserInfo.modelUserInfo.name = sender.text;<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ([sender isEqual:<span class="hljs-keyword">self</span>.textFieldAge]) &#123;<br>        <span class="hljs-keyword">self</span>.viewModelUserInfo.modelUserInfo.age = [sender.text integerValue];<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ([sender isEqual:<span class="hljs-keyword">self</span>.textFieldCity]) &#123;<br>        <span class="hljs-keyword">self</span>.viewModelUserInfo.modelUserInfo.city = sender.text;<br>    &#125;<br>&#125;<br><br>- (<span class="hljs-keyword">void</span>)observeValueForKeyPath:(<span class="hljs-built_in">NSString</span> *)keyPath ofObject:(<span class="hljs-keyword">id</span>)object change:(<span class="hljs-built_in">NSDictionary</span> *)change context:(<span class="hljs-keyword">void</span> *)context<br>&#123;<br>    <span class="hljs-keyword">if</span> (context == &amp;ctxKVOName) &#123;<br>        <br>        <span class="hljs-built_in">NSString</span> *newName = change[<span class="hljs-built_in">NSKeyValueChangeNewKey</span>];<br>        <span class="hljs-keyword">if</span> (![newName isKindOfClass:[<span class="hljs-built_in">NSNull</span> <span class="hljs-keyword">class</span>]] &amp;&amp; newName) &#123;<br>            <span class="hljs-built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;<br>                <span class="hljs-keyword">self</span>.textFieldName.text = newName;<br>            &#125;);<br>        &#125;<br>        <br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (context == &amp;ctxKVOAge) &#123;<br>        <br>        <span class="hljs-built_in">NSNumber</span> *newAge = change[<span class="hljs-built_in">NSKeyValueChangeNewKey</span>];<br>        <span class="hljs-keyword">if</span> (![newAge isKindOfClass:[<span class="hljs-built_in">NSNull</span> <span class="hljs-keyword">class</span>]] &amp;&amp; newAge) &#123;<br>            <span class="hljs-built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;<br>                <span class="hljs-keyword">self</span>.textFieldAge.text = [<span class="hljs-built_in">NSString</span> stringWithFormat:<span class="hljs-string">@&quot;%@&quot;</span>, newAge];<br>            &#125;);<br>        &#125;<br>        <br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (context == &amp;ctxKVOCity) &#123;<br>        <br>        <span class="hljs-built_in">NSString</span> *newCity = change[<span class="hljs-built_in">NSKeyValueChangeNewKey</span>];<br>        <span class="hljs-keyword">if</span> (![newCity isKindOfClass:[<span class="hljs-built_in">NSNull</span> <span class="hljs-keyword">class</span>]] &amp;&amp; newCity) &#123;<br>            <span class="hljs-built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;<br>                <span class="hljs-keyword">self</span>.textFieldCity.text = newCity;<br>            &#125;);<br>        &#125;<br>        <br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        [<span class="hljs-keyword">super</span> observeValueForKeyPath:keyPath ofObject:object change:change context:context];<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="ViewModel"><a href="#ViewModel" class="headerlink" title="ViewModel"></a><a href="#ViewModel" title="ViewModel"></a>ViewModel</h3><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@interface</span> <span class="hljs-attribute">ViewModelUserInfo </span>: NSObject<br><br><span class="hljs-variable">@property</span> (nonatomic, strong) ModelUserInfo *modelUserInfo;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> 模拟服务端等对Model进行修改</span><br><span class="hljs-comment"> */</span><br><span class="hljs-selector-tag">-</span> (void)<span class="hljs-selector-tag">updateModelFromMockWeb</span>;<br><br>@<span class="hljs-selector-tag">end</span><br></code></pre></td></tr></table></figure>
+
+<p>其实现文件:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">ViewModelUserInfo</span></span><br><br>- (<span class="hljs-keyword">instancetype</span>)init<br>&#123;<br>    <span class="hljs-keyword">self</span> = [<span class="hljs-keyword">super</span> init];<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>) &#123;<br>        <span class="hljs-keyword">self</span>.modelUserInfo = [[ModelUserInfo alloc] init];<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;<br>&#125;<br><br>- (<span class="hljs-keyword">void</span>)updateModelFromMockWeb<br>&#123;<br>    <span class="hljs-keyword">self</span>.modelUserInfo.name   = <span class="hljs-string">@&quot;Chris1&quot;</span>;<br>    <span class="hljs-keyword">self</span>.modelUserInfo.age    = <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">self</span>.modelUserInfo.city   = <span class="hljs-string">@&quot;Shanghai1&quot;</span>;<br>    <br>    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(<span class="hljs-number">3</span> * <span class="hljs-built_in">NSEC_PER_SEC</span>)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span class="hljs-number">0</span>), ^&#123;<br>        <span class="hljs-keyword">self</span>.modelUserInfo.name   = <span class="hljs-string">@&quot;Chris18&quot;</span>;<br>        <span class="hljs-keyword">self</span>.modelUserInfo.age    = <span class="hljs-number">18</span>;<br>        <span class="hljs-keyword">self</span>.modelUserInfo.city   = <span class="hljs-string">@&quot;Shanghai18&quot;</span>;<br>    &#125;);<br>    <br>    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(<span class="hljs-number">5</span> * <span class="hljs-built_in">NSEC_PER_SEC</span>)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span class="hljs-number">0</span>), ^&#123;<br>        <span class="hljs-keyword">self</span>.modelUserInfo.name   = <span class="hljs-string">@&quot;Chris28&quot;</span>;<br>        <span class="hljs-keyword">self</span>.modelUserInfo.age    = <span class="hljs-number">28</span>;<br>        <span class="hljs-keyword">self</span>.modelUserInfo.city   = <span class="hljs-string">@&quot;iloveShanghai28&quot;</span>;<br>    &#125;);<br>&#125;<br><br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a><a href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8" title="如何使用"></a>如何使用</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">ViewController</span> ()</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> View持有ViewModel，ViewModel持有Model</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) ViewUserInfo *viewUserInfo;<br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) ViewModelUserInfo *viewModelUserInfo;<br><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-built_in">UIButton</span> *btnUpdate;<br><br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">ViewController</span></span><br><br>- (<span class="hljs-keyword">void</span>)viewDidLoad &#123;<br>    [<span class="hljs-keyword">super</span> viewDidLoad];<br>    <br>    [<span class="hljs-keyword">self</span>.view addSubview:<span class="hljs-keyword">self</span>.viewUserInfo];<br>    <span class="hljs-keyword">self</span>.viewUserInfo.viewModelUserInfo = <span class="hljs-keyword">self</span>.viewModelUserInfo;<br>    <br>    [<span class="hljs-keyword">self</span>.view addSubview:<span class="hljs-keyword">self</span>.btnUpdate];<br>&#125;<br><br>- (ViewUserInfo *)viewUserInfo<br>&#123;<br>    <span class="hljs-keyword">if</span> (!_viewUserInfo) &#123;<br>        _viewUserInfo = [[ViewUserInfo alloc] initWithFrame:<span class="hljs-keyword">self</span>.view.bounds];<br>    &#125;<br>    <br>    <span class="hljs-keyword">return</span> _viewUserInfo;<br>&#125;<br><br>- (ViewModelUserInfo *)viewModelUserInfo<br>&#123;<br>    <span class="hljs-keyword">if</span> (!_viewModelUserInfo) &#123;<br>        _viewModelUserInfo = [[ViewModelUserInfo alloc] init];<br>    &#125;<br>    <br>    <span class="hljs-keyword">return</span> _viewModelUserInfo;<br>&#125;<br><br>- (<span class="hljs-built_in">UIButton</span> *)btnUpdate<br>&#123;<br>    <span class="hljs-keyword">if</span> (!_btnUpdate) &#123;<br>        _btnUpdate = [[<span class="hljs-built_in">UIButton</span> alloc] initWithFrame:<span class="hljs-built_in">CGRectMake</span>(<span class="hljs-number">100</span>, <span class="hljs-number">250</span>, <span class="hljs-number">100</span>, <span class="hljs-number">50</span>)];<br>        _btnUpdate.backgroundColor = [<span class="hljs-built_in">UIColor</span> greenColor];<br>        [_btnUpdate setTitle:<span class="hljs-string">@&quot;Update&quot;</span> forState:<span class="hljs-built_in">UIControlStateNormal</span>];<br>        [_btnUpdate addTarget:<span class="hljs-keyword">self</span> action:<span class="hljs-keyword">@selector</span>(actionUpdate:) forControlEvents:<span class="hljs-built_in">UIControlEventTouchUpInside</span>];<br>    &#125;<br>    <span class="hljs-keyword">return</span> _btnUpdate;<br>&#125;<br><br>- (<span class="hljs-keyword">void</span>)actionUpdate:(<span class="hljs-built_in">UIButton</span> *)sender<br>&#123;<br>    <span class="hljs-comment">// Model -&gt; View</span><br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;Model -&gt; View&quot;</span>);<br>    [<span class="hljs-keyword">self</span>.viewModelUserInfo updateModelFromMockWeb];<br>&#125;<br><br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a><a href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95" title="单元测试"></a>单元测试</h2><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">@interface DemoMVVMTests : XCTestCase<br><br>@property (nonatomic, strong) ViewModelUserInfo *viewModel;<br><br>@<span class="hljs-keyword">end</span><br><br>@implementation DemoMVVMTests<br><br>- (void)setUp &#123;<br>    <span class="hljs-literal">[<span class="hljs-identifier">super</span> <span class="hljs-identifier">setUp</span>]</span>;<br>    <span class="hljs-comment">// Put setup code here. This method is called before the invocation of each test method in the class.</span><br>    <br>    self.viewModel = <span class="hljs-literal">[[V<span class="hljs-identifier">iewModelUserInfo</span> <span class="hljs-identifier">alloc</span>]</span> init];<br>&#125;<br><br>- (void)tearDown &#123;<br>    <span class="hljs-comment">// Put teardown code here. This method is called after the invocation of each test method in the class.</span><br>    <span class="hljs-literal">[<span class="hljs-identifier">super</span> <span class="hljs-identifier">tearDown</span>]</span>;<br>&#125;<br><br>- (void)testExample &#123;<br>    <span class="hljs-comment">// This is an example of a functional test case.</span><br>    <span class="hljs-comment">// Use XCTAssert and related functions to verify your tests produce the correct results.</span><br>    <br>    <span class="hljs-literal">[<span class="hljs-identifier">self</span>.<span class="hljs-identifier">viewModel</span> <span class="hljs-identifier">updateModelFromMockWeb</span>]</span>;<br>    <br>    <span class="hljs-constructor">XCTAssert([<span class="hljs-params">self</span>.<span class="hljs-params">viewModel</span>.<span class="hljs-params">modelUserInfo</span>.<span class="hljs-params">name</span> <span class="hljs-params">isEqualToString</span>:@<span class="hljs-string">&quot;Chris1&quot;</span>], <span class="hljs-string">&quot;name等于Chris1&quot;</span>)</span>;<br>    <span class="hljs-constructor">XCTAssert(<span class="hljs-params">self</span>.<span class="hljs-params">viewModel</span>.<span class="hljs-params">modelUserInfo</span>.<span class="hljs-params">age</span> <span class="hljs-operator">==</span> 1, <span class="hljs-string">&quot;age等于1&quot;</span>)</span>;<br>    <span class="hljs-constructor">XCTAssert([<span class="hljs-params">self</span>.<span class="hljs-params">viewModel</span>.<span class="hljs-params">modelUserInfo</span>.<span class="hljs-params">city</span> <span class="hljs-params">isEqualToString</span>:@<span class="hljs-string">&quot;Shanghai1&quot;</span>], <span class="hljs-string">&quot;city等于Shanghai1&quot;</span>)</span>;<br>    <br>    sleep(<span class="hljs-number">4</span>);<br>    <span class="hljs-constructor">XCTAssert([<span class="hljs-params">self</span>.<span class="hljs-params">viewModel</span>.<span class="hljs-params">modelUserInfo</span>.<span class="hljs-params">name</span> <span class="hljs-params">isEqualToString</span>:@<span class="hljs-string">&quot;Chris18&quot;</span>], <span class="hljs-string">&quot;name等于Chris18&quot;</span>)</span>;<br>    <span class="hljs-constructor">XCTAssert(<span class="hljs-params">self</span>.<span class="hljs-params">viewModel</span>.<span class="hljs-params">modelUserInfo</span>.<span class="hljs-params">age</span> <span class="hljs-operator">==</span> 18, <span class="hljs-string">&quot;age等于18&quot;</span>)</span>;<br>    <span class="hljs-constructor">XCTAssert([<span class="hljs-params">self</span>.<span class="hljs-params">viewModel</span>.<span class="hljs-params">modelUserInfo</span>.<span class="hljs-params">city</span> <span class="hljs-params">isEqualToString</span>:@<span class="hljs-string">&quot;Shanghai18&quot;</span>], <span class="hljs-string">&quot;city等于Shanghai18&quot;</span>)</span>;<br>    <br>    sleep(<span class="hljs-number">6</span>);<br>    <span class="hljs-constructor">XCTAssert([<span class="hljs-params">self</span>.<span class="hljs-params">viewModel</span>.<span class="hljs-params">modelUserInfo</span>.<span class="hljs-params">name</span> <span class="hljs-params">isEqualToString</span>:@<span class="hljs-string">&quot;Chris28&quot;</span>], <span class="hljs-string">&quot;name等于Chris28&quot;</span>)</span>;<br>    <span class="hljs-constructor">XCTAssert(<span class="hljs-params">self</span>.<span class="hljs-params">viewModel</span>.<span class="hljs-params">modelUserInfo</span>.<span class="hljs-params">age</span> <span class="hljs-operator">==</span> 28, <span class="hljs-string">&quot;age等于28&quot;</span>)</span>;<br>    <span class="hljs-constructor">XCTAssert([<span class="hljs-params">self</span>.<span class="hljs-params">viewModel</span>.<span class="hljs-params">modelUserInfo</span>.<span class="hljs-params">city</span> <span class="hljs-params">isEqualToString</span>:@<span class="hljs-string">&quot;iloveShanghai28&quot;</span>], <span class="hljs-string">&quot;city等于iloveShanghai28&quot;</span>)</span>;<br>&#125;<br>@<span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<p>可以看出, MVVM 下的单元测试确实非常方便, 仅对代码逻辑进行测试即可, 而 UI 一般是事先绑定好的, 所以基本不会出现异常情况.</p>
+<p>但缺点也比较明显, 因为数据绑定使得调试不便, 项目复杂的时候, 数据绑定需要额外消耗比较多的内存资源.</p>
+<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a><a href="#%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81" title="示例代码"></a>示例代码</h2><p><a target="_blank" rel="noopener" href="https://github.com/andyccc/DemoMVVM">DemoMVVM</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%A7%BB%E5%8A%A8%E6%9E%B6%E6%9E%84/">移动架构</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%A7%BB%E5%8A%A8%E6%9E%B6%E6%9E%84/">移动架构</a>
+                    
+                      <a class="hover-with-bg" href="/tags/MVVM/">MVVM</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2015/06/18/2015/%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%20markdown%20%E4%B8%AA%E4%BA%BA%20github%20%E5%8D%9A%E5%AE%A2/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">快速搭建 markdown 个人 github 博客</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2014/06/22/2014/%E7%A7%BB%E5%8A%A8%E6%9E%B6%E6%9E%84%E4%B9%8B%20MVP/">
+                        <span class="hidden-mobile">移动架构之 MVP</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

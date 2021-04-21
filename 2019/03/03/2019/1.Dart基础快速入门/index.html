@@ -1,0 +1,536 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>Dart基础快速入门 - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Dart基础快速入门">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-03-03 20:11" pubdate>
+        2019年3月3日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      15
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Dart基础快速入门</h1>
+            
+            <div class="markdown-body">
+              <h3 id="Dart基础快速入门"><a href="#Dart基础快速入门" class="headerlink" title="Dart基础快速入门"></a>Dart基础快速入门</h3><p><img src="//upload-images.jianshu.io/upload_images/9404810-f5dc1a03789edf84.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1067/format/webp" srcset="/img/loading.gif" lazyload> image</p>
+<p>声明：Flutter专栏文档均来自慕课网<br><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://coding.imooc.com/class/321.html">https://coding.imooc.com/class/321.html</a></p>
+<h4 id="Dart基础知识"><a href="#Dart基础知识" class="headerlink" title="Dart基础知识"></a>Dart基础知识</h4><ul>
+<li>程序入口</li>
+<li>控制台输出</li>
+<li>变量</li>
+<li>检查null或零</li>
+<li>Functions</li>
+<li>异步编程</li>
+<li><ul>
+<li>Futures</li>
+<li>async 和 await</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>在本节中我们主要对标JavaScript来讲解Dart与JavaScript的异同，对JavaScript还不熟悉的小伙伴可以省略JavaScript部分，直接学习Flutter部分。</p>
+</blockquote>
+<h4 id="程序入口"><a href="#程序入口" class="headerlink" title="程序入口"></a>程序入口</h4><p>JavaScript没有预定义的入口函数，但在Dart中，每个app都必须有一个顶级的<code>main（）</code>函数作为应用程序的入口点。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"> <span class="hljs-comment">// Dart</span><br><br><span class="hljs-function"><span class="hljs-title">main</span>(<span class="hljs-params"></span>)</span> &#123;<br><br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p><strong>练一练<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://dartpad.dartlang.org/0df636e00f348bdec2bc1c8ebc7daeb1">DartPad</a>。</strong></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://dartpad.dartlang.org/"><strong>DartPad</strong></a>是<strong>Dart</strong>的一个线上<strong>playground</strong>，提供<strong>Dart</strong>线上<strong>playground</strong>还有：<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://www.tutorialspoint.com/execute_dart_online.php"><strong>Online Dart Compiler</strong></a>。</p>
+</blockquote>
+<h4 id="控制台输出"><a href="#控制台输出" class="headerlink" title="控制台输出"></a>控制台输出</h4><p>要在Dart中打印到控制台，可使用<code>print</code>：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk"> <span class="hljs-regexp">//</span> JavaScript<br><br>console.log(<span class="hljs-string">&quot;Hello world!&quot;</span>);<br><br><span class="hljs-regexp">//</span> Dart<br><br>print(<span class="hljs-string">&#x27;Hello world!&#x27;</span>); <br></code></pre></td></tr></table></figure>
+
+<p>练一练<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://dartpad.dartlang.org/0df636e00f348bdec2bc1c8ebc7daeb1"><strong>DartPad</strong></a>。</p>
+<h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><p><strong>Dart</strong>是类型安全的** - <strong>它使用静态类型检查和运行时的组合,检查以确保变量的值始终与变量的静态值匹配</strong> <strong>类型。尽管类型是必需的，但某些类型注释是可选的，因为</strong> Dart**会执行类型推断。</p>
+<h4 id="创建和分配变量"><a href="#创建和分配变量" class="headerlink" title="创建和分配变量"></a>创建和分配变量</h4><p>在JavaScript中，无法定义变量类型。</p>
+<p>在Dart中, 变量必须是明确的类型或系统能够解析的类型。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs awk"> <span class="hljs-regexp">//</span> JavaScript<br><br>var name = <span class="hljs-string">&quot;JavaScript&quot;</span>;<br><br><span class="hljs-regexp">//</span> Dart<br><br>String name = <span class="hljs-string">&#x27;dart&#x27;</span>; <span class="hljs-regexp">//</span> Explicitly typed as a string.<br><br>var otherName = <span class="hljs-string">&#x27;Dart&#x27;</span>; <span class="hljs-regexp">//</span> Inferred string.<br><br><span class="hljs-regexp">//</span> Both are acceptable <span class="hljs-keyword">in</span> Dart. <br></code></pre></td></tr></table></figure>
+
+<p>练一练<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://dartpad.dartlang.org/3f4625c16e05eec396d6046883739612"><strong>DartPad</strong></a>。</p>
+<p>有关更多信息,可参考**<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://www.dartlang.org/guides/language/sound-dart">Dart’s Type System</a>**。</p>
+<h4 id="默认值"><a href="#默认值" class="headerlink" title="默认值"></a>默认值</h4><p>在JavaScript中，未初始化的变量是<code>undefined</code>。</p>
+<p>在Dart中，未初始化的变量的初始值为<code>null</code>。</p>
+<blockquote>
+<p>注意：数字在<strong>Dart</strong>中也被当成对象，所以只要是带有数字类型的未初始化变量的值都是“<strong>null</strong>”。</p>
+</blockquote>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs awk"> <span class="hljs-regexp">//</span> JavaScript<br><br>var name; <span class="hljs-regexp">//</span> == undefined<br><br><span class="hljs-regexp">//</span> Dart<br><br>var name; <span class="hljs-regexp">//</span> == null<br><br>int x; <span class="hljs-regexp">//</span> == null <br></code></pre></td></tr></table></figure>
+
+<p>尝试一下<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://dartpad.dartlang.org/57ec21faa8b6fe2326ffd74e9781a2c7"><strong>DartPad</strong></a>。</p>
+<p>有关更多信息,** <strong>可参考</strong>Dart**官网关于<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://www.dartlang.org/guides/language/language-tour%23variables">变量</a>的介绍。</p>
+<h4 id="检查null或零"><a href="#检查null或零" class="headerlink" title="检查null或零"></a>检查<strong>null</strong>或零</h4><p>在JavaScript中，1或任何非null对象的值被视为true。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs javascript"> <span class="hljs-comment">// JavaScript</span><br><br><span class="hljs-keyword">var</span> myNull = <span class="hljs-literal">null</span>;<br><br><span class="hljs-keyword">if</span> (!myNull) &#123;<br><br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;null is treated as false&quot;</span>);<br><br>&#125;<br><br><span class="hljs-keyword">var</span> zero = <span class="hljs-number">0</span>;<br><br><span class="hljs-keyword">if</span> (!zero) &#123;<br><br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;0 is treated as false&quot;</span>);<br><br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>在<strong>Dart</strong>中，只有布尔值“<strong>true</strong>”被视为<strong>true</strong>。</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs smali"> // Dart<br><br>var myNull = null;<br><span class="hljs-built_in"></span><br><span class="hljs-built_in">if </span>(myNull == null) &#123;<br><br>  print(&#x27;use <span class="hljs-string">&quot;== null&quot;</span> to<span class="hljs-built_in"> check </span>null&#x27;);<br><br>&#125;<br><br>var zero = 0;<br><span class="hljs-built_in"></span><br><span class="hljs-built_in">if </span>(zero == 0) &#123;<br><br>  print(&#x27;use <span class="hljs-string">&quot;== 0&quot;</span> to<span class="hljs-built_in"> check </span>zero&#x27;);<br><br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>练一练<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://dartpad.dartlang.org/c85038ad677963cb6dc943eb1a0b72e6"><strong>DartPad</strong></a>。</p>
+<blockquote>
+<p><strong>前方高能</strong></p>
+</blockquote>
+<h4 id="Dart-null检查最佳实践"><a href="#Dart-null检查最佳实践" class="headerlink" title="Dart null检查最佳实践"></a><strong>Dart null</strong>检查最佳实践</h4><p>从<strong>Dart 1.12</strong>开始，<strong>null-aware</strong>运算符可用帮助我们做<strong>null</strong>检查：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"> <span class="hljs-built_in">bool</span> is<span class="hljs-constructor">Connected(<span class="hljs-params">a</span>, <span class="hljs-params">b</span>)</span> &#123;<br><br>  <span class="hljs-built_in">bool</span> outConn = outgoing<span class="hljs-literal">[<span class="hljs-identifier">a</span>]</span>?.contains(b) ?? <span class="hljs-literal">false</span>;<br><br>  <span class="hljs-built_in">bool</span> inConn = incoming<span class="hljs-literal">[<span class="hljs-identifier">a</span>]</span>?.contains(b) ?? <span class="hljs-literal">false</span>;<br><br>  return outConn<span class="hljs-operator"> || </span>inConn;<br><br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p><code>?.</code>运算符在左边为<strong>null</strong>的情况下会阻断右边的调用，<code>??</code> 运算符主要作用是在左侧表达式为 null 时为其设置默认值。</p>
+<p>对于表达式：</p>
+<p><code>outgoing[a]?.contains(b)</code></p>
+<p>如果outgoing为null或outgoing[a]为null或contains(b)的值为null，都会导致表达式为null。</p>
+<p>大家看一下下面预计的执行结果：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs routeros"> <span class="hljs-builtin-name">print</span>(<span class="hljs-literal">null</span> ?? <span class="hljs-literal">false</span>);<br><br><span class="hljs-builtin-name">print</span>(<span class="hljs-literal">false</span> ?? 11);<br><br><span class="hljs-builtin-name">print</span>(<span class="hljs-literal">true</span> ?? <span class="hljs-literal">false</span>); <br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://dartpad.dartlang.org/0df636e00f348bdec2bc1c8ebc7daeb1">练一练</a></p>
+<blockquote>
+<p>技巧：获取一个对象中数组的长度：<code>searchModel?.data?.length ?? 0</code>。</p>
+</blockquote>
+<h4 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a><strong>Functions</strong></h4><p>Dart和JavaScript函数类似。主要区别是声明：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs php"> <span class="hljs-comment">// JavaScript ES5</span><br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fn</span>(<span class="hljs-params"></span>) </span>&#123;<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br><br>&#125;<br><br><span class="hljs-comment">// Dart</span><br><br><span class="hljs-function"><span class="hljs-keyword">fn</span>(<span class="hljs-params"></span>) </span>&#123;<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br><br>&#125;<br><br><span class="hljs-comment">// can also be written as</span><br><br><span class="hljs-keyword">bool</span> <span class="hljs-function"><span class="hljs-keyword">fn</span>(<span class="hljs-params"></span>) </span>&#123;<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br><br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>练一练<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://dartpad.dartlang.org/5454e8bfadf3000179d19b9bc6be9918"><strong>DartPad</strong></a>。</p>
+<p>关于<strong>functions</strong>的更多内容可参考<strong>dart</strong>官方文档<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://www.dartlang.org/guides/language/language-tour%23functions"><strong>functions</strong></a>。</p>
+<h4 id="异步编程"><a href="#异步编程" class="headerlink" title="异步编程"></a>异步编程</h4><p><strong>Futures</strong></p>
+<p>与JavaScript一样，Dart支持单线程执行。在JavaScript中，Promise对象表示异步操作的最终完成（或失败）及其结果值，Dart使用 Future 来表示异步操作：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs javascript"> <span class="hljs-comment">// JavaScript</span><br><br>_getIPAddress = <span class="hljs-function">() =&gt;</span> &#123;<br><br>  <span class="hljs-keyword">const</span> url=<span class="hljs-string">&quot;https://httpbin.org/ip&quot;</span>;<br><br>  <span class="hljs-keyword">return</span> fetch(url)<br><br>    .then(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> response.json())<br><br>    .then(<span class="hljs-function"><span class="hljs-params">responseJson</span> =&gt;</span> &#123;<br><br>      <span class="hljs-built_in">console</span>.log(responseJson.origin);<br><br>    &#125;)<br><br>    .catch(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br><br>      <span class="hljs-built_in">console</span>.error(error);<br><br>    &#125;);<br><br>&#125;;<br><br><span class="hljs-comment">// Dart</span><br><br><span class="hljs-function"><span class="hljs-title">_getIPAddress</span>(<span class="hljs-params"></span>)</span> &#123;<br><br>  final url = <span class="hljs-string">&#x27;https://httpbin.org/ip&#x27;</span>;<br><br>  HttpRequest.request(url).then((value) &#123;<br><br>      print(json.decode(value.responseText)[<span class="hljs-string">&#x27;origin&#x27;</span>]);<br><br>  &#125;).catchError(<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> print(error));<br><br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>练一练：<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://dartpad.dartlang.org/5a0017d09b6823d0248d965b93133e2e"><strong>DartPad</strong></a>。</p>
+<p>关于<strong>Futures</strong>的更多内容可参考<strong>dart</strong>官方文档<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://www.dartlang.org/tutorials/language/futures"><strong>Futures</strong></a>。</p>
+<p><strong>async <strong>和</strong>await</strong></p>
+<p><code>async</code>函数声明定义了一个异步函数。</p>
+<p>在JavaScript中，<code>async</code>函数返回一个<code>Promise</code>。<code>await</code>运算符是用来等待<code>Promise</code>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"> <span class="hljs-comment">// JavaScript</span><br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-title">_getIPAddress</span>(<span class="hljs-params"></span>)</span> &#123;<br><br>  <span class="hljs-keyword">const</span> url=<span class="hljs-string">&quot;https://httpbin.org/ip&quot;</span>;<br><br>  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> fetch(url);<br><br>  <span class="hljs-keyword">const</span> json = <span class="hljs-keyword">await</span> response.json();<br><br>  <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> json.origin;<br><br>  <span class="hljs-built_in">console</span>.log(data);<br><br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>在Dart中，<code>async</code>函数返回一个<code>Future</code>，函数的主体是稍后执行。<code>await</code> 运算符用于等待<code>Future</code>:</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs dart"> <span class="hljs-comment">// Dart</span><br><br>_getIPAddress() <span class="hljs-keyword">async</span> &#123;<br><br>  <span class="hljs-keyword">final</span> url = <span class="hljs-string">&#x27;https://httpbin.org/ip&#x27;</span>;<br><br>  <span class="hljs-keyword">var</span> request = <span class="hljs-keyword">await</span> HttpRequest.request(url);<br><br>  <span class="hljs-built_in">String</span> ip = json.decode(request.responseText)[<span class="hljs-string">&#x27;origin&#x27;</span>];<br><br>  <span class="hljs-built_in">print</span>(ip);<br><br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>练一练<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://dartpad.dartlang.org/04bb4334985107cddcd021322398c918"><strong>DartPad</strong></a>。</p>
+<p>关于Futures的更多内容可参考dart官方文档<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://www.dartlang.org/guides/language/language-tour%23asynchrony-support"><strong>async and await</strong></a>。</p>
+<blockquote>
+<p>关于创建<strong>Dart</strong>的更多实战技巧与最佳实践可学习<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://coding.imooc.com/class/321.html">《基于<strong>Flutter1.x</strong>开发携程网<strong>App</strong>》</a>。</p>
+</blockquote>
+<hr>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Flutter%E5%AD%A6%E4%B9%A0/">Flutter学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Dart/">Dart</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Flutter/">Flutter</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91/">混合开发</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/05/2019/2.%E4%BB%80%E4%B9%88%E6%98%AF%E5%A3%B0%E6%98%8E%E5%BC%8FUI/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">什么是声明式**UI**？</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/02/2019/0.Flutter%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%BB%A5%E5%8F%8A%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/">
+                        <span class="hidden-mobile">Flutter学习笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

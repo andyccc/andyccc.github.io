@@ -1,0 +1,443 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>如何在 iOS 中进行面向测试驱动开发和面向行为驱动开发 - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="如何在 iOS 中进行面向测试驱动开发和面向行为驱动开发">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-04-15 23:55" pubdate>
+        2020年4月15日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      27
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">如何在 iOS 中进行面向测试驱动开发和面向行为驱动开发</h1>
+            
+            <div class="markdown-body">
+              <h1>如何在 iOS 中进行面向测试驱动开发和面向行为驱动开发</h1>
+
+<p>每当你编写完代码后，都会编译看看运行结果是否符合预期。如果这段代码的影响范围小，你很容易就能看出结果是否符合预期，而如果验证的结果是不符合预期，那么你就会检查刚才编写的代码是否有问题。</p><p>但是，如果这段代码的影响范围比较大，这时需要检查的地方就会非常多，相应地，人工检查的时间成本也会非常大。特别是团队成员多、工程代码量大时，判断这段代码的影响面都需要耗费很多时间。那么，每次编写完代码，先判断它的影响面，然后再手动编译进行检查的开发方式，效率就非常低了，会浪费大量时间。</p><p>虽说一般公司都会有专门的测试团队对产品进行大量测试，但是如果不能在开发阶段及时发现问题，当各团队代码集成到一起，把所有问题都堆积到测试阶段去发现、解决，就会浪费大量的沟通时间，不光是开发同学和测试同学之间的沟通时间，还有开发团队之间的沟通时间也会呈指数级增加。</p><p>那么，有没有什么好的开发方式，能够提高在编写代码后及时检验结果的效率呢？</p><p>所谓好的开发方式，就是开发、测试同步进行，尽早发现问题。从测试范围和开发模式的角度，我们还可以把这种开发模式细分出更多类型。</p><!-- [[[read_end]]] --><p><strong>从测试范围上来划分的话</strong>，软件测试可以分为单元测试、集成测试、系统测试。测试团队负责的是集成测试以及系统测试，而单元测试则是有开发者负责的。对于开发者来说，通过单元测试就可以有效提高编写代码后快速发现问题的效率。</p><p>概括来说，单元测试，也叫作模块测试，就是对单一的功能代码进行测试。这个功能代码，可能是一个类的方法，也可能是一个模块的某个函数。</p><p>单元测试会使用 Mock 方式模拟外部使用，通过编写的各种测试用例去检验代码的功能是否正常。一个系统都是由各个功能组合而成，功能模块划分得越小，功能职责就越清晰。清晰的功能职责可以确保单个功能的测试不会出现问题，是单元测试的基础。</p><p><strong>从开发模式划分的话，</strong>开发方式可以分为 TDD（Test-driven development，面向测试驱动开发）和 BDD（Behavior-driven development ，面向行为驱动开发）。</p><ul><li>TDD 的开发思路是，先编写测试用例，然后在不考虑代码优化的情况下快速编写功能实现代码，等功能开发完成后，在测试用例的保障下，再进行代码重构，以提高代码质量。</li><li>BDD 是 TDD 的进化，基于行为进行功能测试，使用 DSL（Domain Specific Language，领域特定语言）来描述测试用例，让测试用例看起来和文档一样，更易读、更好维护。</li></ul><p>TDD 编写的测试用例主要针对的是开发中最小单元进行测试，适合单元测试。而 BDD 的测试用例是对行为的描述，测试范围可以更大一些，在集成测试和系统测试时都可以使用。同时，不仅开发者可以使用BDD的测试用例高效地发现问题，测试团队也能够很容易参与编写。这，都得益于 BDD 可以使用易于编写行为功能测试的 DSL 语言。</p><p>接下来，我就和你详细聊聊 TDD 和 BDD。</p><h2>TDD</h2><p>我刚刚也已经提到了，TDD在确定功能需求后，首先就会开始编写测试用例，用来检验每次的代码更新，能够让我们更快地发现问题，并能保正不会漏掉问题。其实，这就是通过测试用例来推动开发。</p><p>在思想上，和拿到功能需求后直接开发功能的区别是，TDD会先考虑如何对功能进行测试，然后再去考虑如何编写代码，这就给优化代码提供了更多的时间和空间，即使几个版本过后再来优化，只要能够通过先前写好的测试用例，就能够保证代码质量。</p><p>所以说，TDD 非常适合快速迭代的节奏，先尽快实现功能，然后再进行重构和优化。如果我们不使用 TDD 来进行快速迭代开发，虽然在最开始的时候开发效率会比 TDD 高，但是过几个版本再进行功能更新时，就需要在功能验证上花费大量的时间，反而得不偿失。</p><p>其实，TDD 这种开发模式和画漫画的工作方式非常类似：草稿就类似 TDD 中的测试用例，漫画家先画草稿，细节由漫画家和助手一起完成，无论助手怎么换，有了草稿的保障，内容都不会有偏差。分镜的草稿没有细节，人物眼睛、鼻子都可能没有，场景也只需要几条透视线就可以。虽然没有细节，但是草稿基本就确定了漫画完成后要表达的所有内容。</p><h2>BDD</h2><p>相比 TDD，BDD更关注的是行为方式的设计，通过对行为的描述来验证功能的可用性。行为描述使用的 DSL，规范、标准而且可读性高，可以当作文档来使用。</p><p>BDD 的 Objective-C 框架有 <a target="_blank" rel="noopener" href="https://github.com/kiwi-bdd/Kiwi">Kiwi</a>、<a target="_blank" rel="noopener" href="https://github.com/specta/specta">Specta</a>、<a target="_blank" rel="noopener" href="https://github.com/specta/expecta">Expecta</a>等，Swift 框架有 <a target="_blank" rel="noopener" href="https://github.com/Quick/Quick">Quick</a>。</p><p>Kiwi框架不光有 Specta 的 DSL 模式，Expecta框架的期望语法，还有 Mocks 和 Stubs 这样的模拟存根能力。所以接下来，我就跟你说说这个iOS中非常有名并且好用的BDD框架，以及怎么用它来进行 BDD 开发。</p><h2>Kiwi</h2><p>将Kiwi集成到你的App里，只需要在 Podfile 里添加 pod ‘Kiwi’ 即可。下面这段代码，是 Kiwi 的使用示例：</p><pre><code>// describe 表示要测试的对象describe(@&quot;RSSListViewController&quot;, ^&#123;    // context 表示的是不同场景下的行为    context(@&quot;when get RSS data&quot;, ^&#123;        // 同一个 context 下每个 it 调用之前会调用一次 beforeEach        beforeEach(^&#123;            id dataStore = [DataStore new];        &#125;);        // it 表示测试内容，一个 context 可以有多个 it        it(@&quot;load data&quot;, ^&#123;            // Kiwi 使用链式调用，should 表示一个期待，用来验证对象行为是否满足期望            [[theValue(dataStore.count) shouldNot] beNil];        &#125;);    &#125;);&#125;);</code></pre><p>上面这代码描述的是在 RSS 列表页面，当获取 RSS 数据时去读取数据这个行为的测试用例。这段测试用例代码，包含了 Kiwi 的基本元素，也就是describe、context、it。这些元素间的关系可以表述为：</p><ul><li>describe 表示要测试的对象，context 表示的是不同场景下的行为，一个 describe 里可以包含多个 context。</li><li>it表示的是需要测试的内容，同一个场景下的行为会有多个需要测试的内容，也就是说一个 context 下可以有多个 it。</li></ul><p>测试内容使用的是 Kiwi 的 DSL 语法，采用的是链式调用。上面示例代码中 shouldNot 是期望语法，期望是用来验证对象行为是否满足期望。</p><p>期望语法可以是期望数值和数字，也可以是期望字符串的匹配，比如：</p><pre><code>[[string should] containString:@&quot;rss&quot;];</code></pre><p>should containString 语法表示的是，期望 string 包含了 rss 字符串。Kiwi 里的期望语法非常丰富，还有正则表达式匹配、数量变化、对象测试、集合、交互和消息、通知、异步调用、异常等。完整的期望语法描述，你可以查看Wiki的 <a target="_blank" rel="noopener" href="https://github.com/allending/Kiwi/wiki/Expectations">Expectations 部分</a>。</p><p>除了期望语法外，Kiwi 还支持模拟对象和存根语法。</p><p>模拟对象能够降低对象之间的依赖，可以模拟难以出现的情况。模拟对象包含了模拟 Null 对象、模拟类的实例、模拟协议的实例等。存根可以返回指定选择器或消息模式的请求，可以存根对象和模拟对象。</p><p>模拟对象和存根的详细语法定义，你可以查看Wiki 的 <a target="_blank" rel="noopener" href="https://github.com/allending/Kiwi/wiki/Mocks-and-Stubs">Mocks and Stubs 部分</a>。</p><h2>小结</h2><p>按照 TDD 和 BDD 方式开发，有助于更好地进行模块化设计，划清模块边界，让代码更容易维护。TDD 在测试用例的保障下更容易进行代码重构优化，减少 debug 时间。而使用 BDD 编写的测试用例，则更是好的文档，可读性非常强。通过这些测试用例，在修改代码时，我们能够更方便地了解开发 App 的工作状态。同时，修改完代码后还能够快速全面地测试验证问题。</p><p>无论是 TDD 还是 BDD，开发中对于每个实现的方法都要编写测试用例，而且要注意先编写测试用例代码，再编写方法实现代码。测试用例需要考虑到各种异常条件，以及输入输出的边界。编写完测试用例还需要检查如果输入为错时，测试用例是否会显示为错。</p><p>最后需要强调一点，好的模块化架构和 TDD 、BDD 是相辅相成的。TDD 和 BDD 开发方式会让你的代码更加模块化，而模块化的架构更容易使用 TDD 和 BDD 的方式进行开发。</p><p>在团队中推行 TDD 和 BDD 的最大困难，就是业务迭代太快时，没有时间去写测试用例。我的建议是，优先对基础能力的功能开发使用 TDD 和 BDD，保证了基础能力的稳定，业务怎么变，底子还都是稳固的；当有了业务迭代、有了间隙时，再考虑在核心业务上采用 BDD，最大程度的保证 App 核心功能的稳定。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/iOS%E8%BF%9B%E9%98%B6/">iOS进阶</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/iOS/">iOS</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/30/2020-2/26.%E5%A6%82%E4%BD%95%E5%88%B6%E5%AE%9A%E4%B8%80%E5%A5%97%E9%80%82%E5%90%88%E8%87%AA%E5%B7%B1%E5%9B%A2%E9%98%9F%E7%9A%84%20iOS%20%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">如何制定一套适合自己团队的 iOS 编码规范</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/27/2020-2/24.%E6%80%8E%E4%B9%88%E5%BA%94%E5%AF%B9%E5%90%84%E7%A7%8D%E5%AF%8C%E6%96%87%E6%9C%AC%E8%A1%A8%E7%8E%B0%E9%9C%80%E6%B1%82/">
+                        <span class="hidden-mobile">怎么应对各种富文本表现需求</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

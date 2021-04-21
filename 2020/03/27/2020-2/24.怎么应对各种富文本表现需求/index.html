@@ -1,0 +1,442 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>怎么应对各种富文本表现需求 - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="怎么应对各种富文本表现需求">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-03-27 23:11" pubdate>
+        2020年3月27日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      30
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">怎么应对各种富文本表现需求</h1>
+            
+            <div class="markdown-body">
+              <h1>怎么应对各种富文本表现需求</h1>
+<p>在iOS开发中，富文本的展示是一个非常常见的需求。为了帮助你更好地了解如何展示富文本，我在今天这篇文章中，会结合一个项目来跟你说说面对富文本展示需求时，要怎么考虑和实现。这样，你在自己的项目中，也可以借鉴今天这样的实现思路和方法。</p><p>简单来说，富文本就是一段有属性的字符串，可以包含不同字体、不同字号、不同背景、不同颜色、不同字间距的文字，还可以设置段落、图文混排等等属性。</p><p>我以前做过一个 RSS 阅读器，阅读器启动后，需要抓取最新的 RSS 内容进行展示。RSS 里面的文章内容属于富文本，是用HTML标签来描述的，包含了文字样式、链接和图片。</p><p>比如，RSS阅读器中的某篇文章内容如下：</p><pre><code>&lt;item&gt;&lt;title&gt;涉国资流失嫌疑 东方广益6亿元入股锤子科技被调查&lt;/title&gt;&lt;link&gt;https://www.cnbeta.com/articles/tech/841851.htm&lt;/link&gt;&lt;description&gt;&lt;![CDATA[&lt;p&gt;&lt;strong&gt;据虎嗅得到的独家消息，成都成华区监察委已立案调查“东方广益6亿元入股锤子科技（北京）股份有限公司”事宜，认为这个项目有国有资产流失嫌疑。&lt;/strong&gt;成华区监察委员会成立于2018年2月，按照管理权限对全区行使公权力的公职人员依法实行监察，履行监督、调查和处置职责。&lt;/p&gt; &lt;a href=&quot;https://www.cnbeta.com/articles/tech/841851.htm&quot; target=&quot;_blank&quot;&gt;&lt;strong&gt;阅读全文&lt;/strong&gt;&lt;/a&gt;]]&gt;&lt;/description&gt;&lt;author&gt;ugmbbc&lt;/author&gt;&lt;source&gt;cnBeta.COM&lt;/source&gt;&lt;pubDate&gt;Sat, 27 Apr 2019 09:46:45 GMT&lt;/pubDate&gt;&lt;guid&gt;https://www.cnbeta.com/articles/tech/841851.htm&lt;/guid&gt;&lt;/item&gt;</code></pre><p>文章的 HTML 代码就在上面 RSS 中的 description 标签里。解析出 RSS 中所有文章的 HTML 代码，并将它们保存到本地数据库中。</p><p>接下来，如何展示 HTML 内容呢？当时，我的第一反应就是使用 WebView 控件来展示。</p><h2>WebView</h2><p>使用 WebView 显示文章只需要创建一个 UIWebView 对象，进行一些基本滚动相关的设置，然后读取 HTML 字符串就可以了，具体实现代码如下：</p><!-- [[[read_end]]] --><pre><code>self.wbView = [[UIWebView alloc] init];self.wbView.delegate = self;[self.view addSubview:self.wbView];[self.wbView mas_makeConstraints:^(MASConstraintMaker *make) &#123;    make.top.left.right.bottom.equalTo(self.view);&#125;];self.wbView.scalesPageToFit = YES; // 确保网页的显示尺寸和屏幕大小相同self.wbView.scrollView.directionalLockEnabled = YES; // 只在一个方向滚动self.wbView.scrollView.showsHorizontalScrollIndicator = NO; // 不显示左右滑动[self.wbView setOpaque:NO]; // 默认是透明的// 读取文章 html 字符串进行展示[self.wbView loadHTMLString:articleString baseURL:nil];</code></pre><p>和 UIWebView 的 loadRequest 相比，UIWebView 通过 loadHTMLString 直接读取 HTML 代码，省去了网络请求的时间，展示的速度非常快。不过，HTML 里的图片资源还是需要通过网络请求来获取。所以，如果能够在文章展示之前就缓存下图片，那么无需等待，就能够快速完整地展示丰富的文章内容了。</p><p>那么，我应该使用什么方案来缓存文章中的图片呢？</p><p>在 Cocoa 层使用 NSURLProtocol 可以拦截所有 HTTP 的请求，因此我可以利用 NSURLProtocol 来缓存文章中的图片。</p><p>接下来，我再来和你说说，<strong>如何用我写的一个 Web 页面预加载库</strong> <strong>SSMURLCache</strong><strong>来预缓存 HTML 里的图片。</strong>这个库你也可以应用到自己项目中。</p><p><strong>首先</strong>，我需要从数据库中取出所有未缓存图片的文章内容 HTML。实现代码如下：</p><pre><code>[[[[[SMDB shareInstance] selectAllUnCachedFeedItems] subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityDefault]] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(NSMutableArray *x) &#123;    // 在数据库中获取所有未缓存的文章数据 x    NSMutableArray *urls = [NSMutableArray array];    if (x.count &gt; 0) &#123;        self.needCacheCount = x.count;        for (SMFeedItemModel *aModel in x) &#123;            // 将文章数据中的正文内容都存在 urls 数组中            [urls addObject:aModel.des];        &#125;    &#125;    ...    &#125;];</code></pre><p>如上面代码所示，在数据库中获取到所有未缓存文章的数据后，遍历所有数据，提取文章数据中的正文 HTML 内容保存到一个新的数组 urls 中。</p><p><strong>然后</strong>，使用 SSMURLCache 开始依次预下载文章中的图片进行缓存。实现代码如下：</p><pre><code>[[SSMURLCache create:^(SSMURLCacheMk *mk) &#123;    mk.whiteUserAgent(@&quot;gcdfetchfeed&quot;).diskCapacity(1000 * 1024 * 1024);&#125;] preloadByWebViewWithHtmls:[NSArray arrayWithArray:urls]].delegate = self;</code></pre><p>SSMURLCache 使用 preloadByWebViewWithHtmls 方法去预缓存所有图片，在 SSMURLCache 初始化时，会设置 UserAgent 白名单，目的是避免额外缓存了其他不相关 UIWebView 的图片。</p><p>缓存图片的核心技术还是 NSURLProtocol，SSMURLCache 最终也是使用 NSURLProtocol 来缓存图片的。NSURLProtocol 是一个抽象类，专门用来处理特定协议的 URL 数据加载。你可以使用自定义 URL 处理的方式，来重新定义系统 URL 加载。SSMURLCache 缓存图片的具体实现代码，可以在STMURLProtocol这个类里查看。</p><p>STMURLProtocol 会在所有网络请求的入口 canInitWithRequest 方法中加上过滤条件，比如 SSMURLCache 在初始化时设置 UserAgent 白名单，过滤代码如下：</p><pre><code>// User-Agent来过滤if (sModel.whiteUserAgent.length &gt; 0) &#123;    // 在 HTTP header 里取出 User Agent    NSString *uAgent = [request.allHTTPHeaderFields objectForKey:@&quot;User-Agent&quot;];    if (uAgent) &#123;        // 不在白名单中返回 NO，不会进行缓存        if (![uAgent hasSuffix:sModel.whiteUserAgent]) &#123;            return NO;        &#125;    &#125; else &#123;        return NO;    &#125;&#125;</code></pre><p>UserAgent 白名单过滤会通过 request 的 allHTTPHeaderFields 获取到当前网络请求的 UserAgent，然后和已经设置的 UserAgent 白名单做比较：如果在白名单中就进行缓存；否则，就不会缓存。</p><p>STMURLProtocol 还可以根据域名进行过滤，这样可以灵活、精确地控制缓存范围。如果你设置了域名白名单，那么只有在白名单里的域名下的网络请求才会执行缓存，过滤代码如下：</p><pre><code>//对于域名白名单的过滤if (sModel.whiteListsHost.count &gt; 0) &#123;    id isExist = [sModel.whiteListsHost objectForKey:request.URL.host];    // 如果当前请求的域名不在白名单中也会返回 NO    if (!isExist) &#123;        return NO;    &#125;&#125;</code></pre><p>如代码所示，当前网络请求的域名可以通过 request.URL.host 属性获取到，获取到网络请求的域名后，再去看域名白名单里是否有，如果有就缓存，没有就返回 NO，不进行缓存操作。</p><p>在 canInitWithRequest 方法中满足缓存条件后，开始缓存的方法是 startLoading。startLoading 方法会判断已缓存和未缓存的情况，如果没有缓存会发起网络请求，将请求到的数据保存在本地。如果有缓存，则会直接从本地读取缓存，实现代码如下：</p><pre><code>// 从缓存里读取数据NSData *data = [NSData dataWithContentsOfFile:self.filePath];NSURLResponse *response = [[NSURLResponse alloc] initWithURL:self.request.URL MIMEType:[otherInfo objectForKey:@&quot;MIMEType&quot;] expectedContentLength:data.length textEncodingName:[otherInfo objectForKey:@&quot;textEncodingName&quot;]];[self.client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];// 使用 NSURLProtocolClient 的 URLProtocol:didLoadData 方法加载本地数据[self.client URLProtocol:self didLoadData:data];[self.client URLProtocolDidFinishLoading:self];</code></pre><p>如代码所示，STMURLProtocol 先通过缓存的路径获取到缓存的数据，再使用 NSURLProtocolClient 的 URLProtocol:didLoadData 方法加载本地缓存数据，以减少网络请求。</p><p>显示文章内容时使用 NSURLProtocol，对于那些已经缓存过图片的文章就不用发起图片的网络请求，显示的速度跟本地加载显示速度一样快。</p><p>虽然通过 URLProtocol 重新定义系统 URL 加载的方式，来直接读取预缓存提升了加载速度，但在长列表的 Cell 上展示富文本，就需要性能更高、内存占用更小的方法。那么接下来，我们再看看除了 UIWebView 还有没有什么方法可以展示富文本呢？</p><p>当然还有了。</p><p>在长列表这种场景下，如果不用 HTML 来描述富文本的话，想要使用原生 iOS 代码来描述富文本的话，你还可以使用苹果官方的<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/appkit/textkit">TextKit</a>和 <a target="_blank" rel="noopener" href="https://github.com/ibireme/YYText">YYText</a>来展示。</p><p>其中，YYText 不仅兼容 UILabel 和 UITextView，在异步文字布局和渲染上的性能也非常好。所以接下来，我们就一起看看 YYText是如何展示富文本的吧。</p><h2>YYText</h2><p>集成 YYText 到你的App非常简单，只需要在 Podfile 中添加 pod ‘YYText’ 就可以了。下面代码展示了如何展示图文混排的富文本：</p><pre><code>NSMutableAttributedString *text = [NSMutableAttributedString new];UIFont *font = [UIFont systemFontOfSize:16];NSMutableAttributedString *attachment = nil;  // 嵌入 UIImageUIImage *image = [UIImage imageNamed:@&quot;dribbble64_imageio&quot;];attachment = [NSMutableAttributedString yy_attachmentStringWithContent:image contentMode:UIViewContentModeCenter attachmentSize:image.size alignToFont:font alignment:YYTextVerticalAlignmentCenter];[text appendAttributedString: attachment];  // 嵌入 UIViewUISwitch *switcher = [UISwitch new];[switcher sizeToFit];attachment = [NSMutableAttributedString yy_attachmentStringWithContent:switcher contentMode:UIViewContentModeBottom attachmentSize:switcher.size alignToFont:font alignment:YYTextVerticalAlignmentCenter];[text appendAttributedString: attachment];  // 嵌入 CALayerCASharpLayer *layer = [CASharpLayer layer];layer.path = ...attachment = [NSMutableAttributedString yy_attachmentStringWithContent:layer contentMode:UIViewContentModeBottom attachmentSize:switcher.size alignToFont:font alignment:YYTextVerticalAlignmentCenter];[text appendAttributedString: attachment];</code></pre><p>如代码所示，YYText 对于富文本的图文混排使用的是自定义的 NSMutableAttributedString 分类，自定义分类不光简化了 NSMutableAttributedString，还增加了功能，除了图片外，可以嵌入 UIView 和 CALayer。</p><p>通过上面 YYText 描述富文本的代码，你会发现原生代码描述富文本跟 HTML 比，既复杂又啰嗦。HTML 代码更易读、更容易维护，所以除了长列表外，我建议你都使用 HTML 来描述富文本。</p><p>对于 UIWebView 内存占用高的问题，你可以考虑使用 HTML 代码转原生代码的思路解决。</p><h2>小结</h2><p>今天我跟你介绍了如何通过 UIWebView 和 YYText 来展示富文本。</p><p>UIWebView 展示的是使用 HTML 描述的富文本。HTML 是描述富文本最简单和最常用的方式，相对于 YYText 或 TextKit 那样描述富文本的方式来说，更加简洁和标准。不过，UIWebView 的缺点也比较明显，同时创建多个 UIWebView 实例，对于内存的占用会非常大。</p><p>所以，我对于富文本展示的建议是，如果是列表展示富文本建议使用 TextKit 或者 YYText，其他情况可以选择使用 UIWebView 来展示富文本。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/iOS%E8%BF%9B%E9%98%B6/">iOS进阶</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/iOS/">iOS</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/15/2020-2/25.%E5%A6%82%E4%BD%95%E5%9C%A8%20iOS%20%E4%B8%AD%E8%BF%9B%E8%A1%8C%E9%9D%A2%E5%90%91%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%92%8C%E9%9D%A2%E5%90%91%E8%A1%8C%E4%B8%BA%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">如何在 iOS 中进行面向测试驱动开发和面向行为驱动开发</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/16/2020-2/23.%E5%A6%82%E4%BD%95%E7%94%A8%20Flexbox%20%E6%80%9D%E8%B7%AF%E5%BC%80%E5%8F%91%EF%BC%9F%E8%B7%9F%E8%87%AA%E5%8A%A8%E5%B8%83%E5%B1%80%E6%AF%94%EF%BC%8CFlexbox%20%E5%A5%BD%E5%9C%A8%E5%93%AA/">
+                        <span class="hidden-mobile">如何用 Flexbox 思路开发？跟自动布局比，Flexbox 好在哪</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

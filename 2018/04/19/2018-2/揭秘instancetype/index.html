@@ -1,0 +1,458 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>揭秘instancetype - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="揭秘instancetype">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2018-04-19 14:37" pubdate>
+        2018年4月19日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      15
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">揭秘instancetype</h1>
+            
+            <div class="markdown-body">
+              <p>苹果官方会建议我们用 <code>instancetype</code> 类型代替 <code>id</code> 类型作为某个类的初始化方法的返回值。以下内容摘自<a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/releasenotes/ObjectiveC/ModernizationObjC/AdoptingModernObjective-C/AdoptingModernObjective-C.html#//apple_ref/doc/uid/TP40014150-CH1-SW11">Adopting Modern Objective-C</a>:</p>
+<blockquote>
+<p>Use the instancetype keyword as the return type of methods that return an instance of the class they are called on (or a subclass of that class). These methods include alloc, init, and class factory methods.</p>
+</blockquote>
+<h3 id="一、初始化方法为什么用id类型而不是-类名-类型作为返回值类型"><a href="#一、初始化方法为什么用id类型而不是-类名-类型作为返回值类型" class="headerlink" title="一、初始化方法为什么用id类型而不是 [类名] 类型作为返回值类型"></a>一、初始化方法为什么用id类型而不是 [类名] 类型作为返回值类型</h3><p>在 <code>instancetype</code> 关键字出现之前，我们会用 <code>id</code> 作为类初始化方法的返回类型，在 <code>instancetype</code> 关键字出现之后，编译器会主动将 <code>alloc</code> <code>init</code> <code>new</code> 开头的方法的返回值类型替换为 <code>instancetype</code>， 那么在 <code>instancetype</code> 出现之前，为什么不用该类自身的类型而是用 <code>id</code> 类型作为初始化方法的返回值。答案是 OC 的类继承体系。</p>
+<p>假如，有一个类 <code>SuperClass</code>的初始化方法返回类型为它自己的类型，并且不会被编译器替换为 <code>instancetype</code> ：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs objc">- (SuperClass *)init;<br></code></pre></td></tr></table></figure>
+<p>那么当它的子类重写这个初始化方法的时候，只能返回它自身的实例，而无法返回子类的实例。因为重写父类方法， 必须和被重写的方法有相同的返回类型。所以子类永远无法通过重写这个父类初始化方法初始化自身。所以为了实现重写初始化方法（用父类初始化自身）的继承体系，必须要用一种通用类型，既能表述子类实例也能表述父类实例的类型，刚好 <code>NSObject</code> 是所有类的根类，由于 OC 的多态性，<code>id</code> 类型的变量可以指向任意类型的对象，因此，用 <code>id</code> 类型作为初始化方法的返回类型可以很好的解决类继承的问题。</p>
+<h3 id="二、instancetype-取代-id"><a href="#二、instancetype-取代-id" class="headerlink" title="二、instancetype 取代 id"></a>二、instancetype 取代 id</h3><p>有的人会认为 <code>instancetype</code>类型和 <code>id</code> 类型是一种类型的不同表达方式，其实并不是。 <code>instancetype</code> 顾名思义是当前类的实例类型，听起来好像和类名类型并没有上面区别，实则，它更严谨的遵循 OC 的继承体系。<code>instancetype</code> 类型只表述当前类的继承线，例如 <code>NSMutableString -&gt; NSString -&gt;...-&gt; NSObject</code>，而 <code>id</code> 类型相对来说更博爱一点。</p>
+<p>在适当的地方使用 <code>instancetype</code> 关键字可以提高代码的类型安全。例如：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs objc">interface MyObject : <span class="hljs-built_in">NSObject</span><br>+ (<span class="hljs-keyword">instancetype</span>)factoryMethodA;<br>+ (<span class="hljs-keyword">id</span>)factoryMethodB;<br><span class="hljs-keyword">@end</span><br> <br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">MyObject</span></span><br>+ (<span class="hljs-keyword">instancetype</span>)factoryMethodA &#123; <span class="hljs-keyword">return</span> [[[<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>] alloc] init]; &#125;<br>+ (<span class="hljs-keyword">id</span>)factoryMethodB &#123; <span class="hljs-keyword">return</span> [[[<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>] alloc] init]; &#125;<br><span class="hljs-keyword">@end</span><br> <br><span class="hljs-keyword">void</span> doSomething() &#123;<br>    <span class="hljs-built_in">NSUInteger</span> x, y;<br> <br>    x = [[MyObject factoryMethodA] count]; <span class="hljs-comment">// Return type of +factoryMethodA is taken to be &quot;MyObject *&quot;</span><br>    y = [[MyObject factoryMethodB] count]; <span class="hljs-comment">// Return type of +factoryMethodB is &quot;id&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>类 <code>MyObject</code> 声明并实现了两个相同类工厂方法，用来返回初始化后的 <code>MyObject</code> 对象，只是返回的类型一个是 <code>instancetype</code>，一个是 <code>id</code>。编译器在代码 <code>y</code> 处不会提示任何警告和错误，并且在编译期也没有任何错误，但是当到了运行期就会崩溃。因为此时的 <code>MyObject</code> 实例可能是任意一个类的实例，只要某个类中有 <code>-count</code> 这个方法存在，那么编译器就会认为返回的实例可能是这个有 <code>-count</code> 方法的类，所以它不会报错。但是，当运行期去 <code>MyObject</code> 类中查找这个方法的时候，才会出现找不到这个方法并且发送和转发失败的crash。关于<a target="_blank" rel="noopener" href="https://juejin.im/post/5a4c40a35188257d1718e447">运行时</a>。</p>
+<p>而代码 <code>y</code> 处，该类工厂方法返回的是 <code>instancetype</code> 类型，该类型即为 <code>MyObject</code> 类型，编译器会去它和它的父类中去寻找调用的方法，如果找不到那么就会报错，并且编译失败。</p>
+<p>因此，<code>instancetype</code> 类型比 <code>id</code> 类型有更好的类型安全性，让隐患和错误的暴露提前到代码的编写期，避免了应用的运行时crash。</p>
+<h3 id="三、类工厂方法使用-self-class-实例化而不是类名"><a href="#三、类工厂方法使用-self-class-实例化而不是类名" class="headerlink" title="三、类工厂方法使用[self class]实例化而不是类名"></a>三、类工厂方法使用[self class]实例化而不是类名</h3><p>例如：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs objc"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">SuperClass</span> : <span class="hljs-title">NSObject</span></span><br>+ (<span class="hljs-keyword">instancetype</span>)factor;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">SuperClass</span></span><br><br>+ (<span class="hljs-keyword">instancetype</span>)factor &#123;<br>    <span class="hljs-keyword">return</span> [[SuperClass alloc] init];<br>&#125;<br><br><span class="hljs-keyword">@end</span><br><br></code></pre></td></tr></table></figure>
+
+<p>由于类的继承体系，子类也可以调用父类方法，当子类调用父类的这个类工厂方法初始化自身的时候，实际上返回的实例还是父类的实例，而不是子类自身的实例，但是编译器没有办法判断这些，因为它根据类继承体系找到了正确的方法。当向此实例发送子类的消息的时候，会在运行时crash，因为它会从父类实例方法列表中查找这个子类的方法，然而父类并没有这个方法。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs objc"><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%@&quot;</span>, <span class="hljs-built_in">NSStringFromClass</span>([[SubClass factor] <span class="hljs-keyword">class</span>]));<br><span class="hljs-comment">// log: SuperClass</span><br></code></pre></td></tr></table></figure>
+
+<p>因此，当我们用类工厂方法初始化自身的时候，一定要用 <code>[self class]</code> 实例化自身，而不是类名：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs objc">+ (<span class="hljs-keyword">instancetype</span>)factor &#123;<br>    <span class="hljs-keyword">return</span> [[[<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>] alloc] init];<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这样子类就可以通过调用这个父类的类工厂方法初始化自己：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs objc"><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%@&quot;</span>, <span class="hljs-built_in">NSStringFromClass</span>([[SubClass factor] <span class="hljs-keyword">class</span>]));<br><span class="hljs-comment">// log: SubClass</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="四、单例返回类型用类名"><a href="#四、单例返回类型用类名" class="headerlink" title="四、单例返回类型用类名"></a>四、单例返回类型用类名</h3><p>某种程度上来说，单例的初始化方法也是一个类工厂方法，单例使用【类名】类型，而不是 <code>instancetype</code> 的原因是：一般情况下，不会有其他类继承自单例类，因此，单例类在初始化的时候不用考虑对其子类的影响，因此单例类可以肆无忌惮的使用类名类型作为初始化方法的返回值类型。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/iOS-API-%E8%AF%A6%E8%A7%A3/">iOS API 详解</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/05/31/2018-2/%E4%BB%8E%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90block%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">从源码分析block的底层实现</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/03/23/2018-2/%E5%93%88%E5%B8%8C%E8%A1%A8/">
+                        <span class="hidden-mobile">哈希表</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

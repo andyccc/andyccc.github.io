@@ -1,0 +1,506 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>路由与导航 - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="路由与导航">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-03-14 23:11" pubdate>
+        2019年3月14日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      22
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">路由与导航</h1>
+            
+            <div class="markdown-body">
+              <h3 id="路由与导航"><a href="#路由与导航" class="headerlink" title="路由与导航"></a>路由与导航</h3><p>声明：Flutter专栏文档均来自慕课网<br><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://coding.imooc.com/class/321.html">https://coding.imooc.com/class/321.html</a></p>
+<h4 id="路由与导航-1"><a href="#路由与导航-1" class="headerlink" title="路由与导航"></a>路由与导航</h4><ul>
+<li>  Flutter中Intent等价于什么？(Android)</li>
+<li>  在Flutter中如何实现不同页面跳转（导航）？</li>
+<li>  如何获取路由跳转返回的结果？</li>
+<li>  如何在Flutter中处理来自外部应用程序传入的Intents？(Android)</li>
+<li>  怎么跳转到其他 App？</li>
+</ul>
+<h4 id="Flutter中Intent-等价于什么？-Android"><a href="#Flutter中Intent-等价于什么？-Android" class="headerlink" title="Flutter中Intent**等价于什么？(**Android)"></a>Flutter<strong>中</strong>Intent**等价于什么？(**Android)</h4><p>在Android中，Intents主要有两种使用场景：在Activity之间切换，以及调用外部组件。 Flutter不具有Intents的概念，但如果需要的话，Flutter可以通过Native整合来触发Intents。</p>
+<blockquote>
+<p>Intent还有一个作用是调用外部组件如：相机、文件选择器等，在Flutter中为了实现类似的功能我们需要借助第三方插件，推荐参考：<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://pub.dartlang.org/flutter/">Flutter现有插件</a>，也可以学习<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://flutter.io/docs/development/packages-and-plugins/developing-packages">如何构建Flutter插件</a>；</p>
+</blockquote>
+<h4 id="在Flutter中如何实现不同页面跳转（导航）？"><a href="#在Flutter中如何实现不同页面跳转（导航）？" class="headerlink" title="在Flutter中如何实现不同页面跳转（导航）？"></a>在<strong>Flutter</strong>中如何实现不同页面跳转（导航）？</h4><blockquote>
+<p>Android：</p>
+</blockquote>
+<p>要在Flutter中切换屏幕，我们可以访问路由以绘制新的Widget。 管理多个屏幕有两个核心概念和类：Route 和 Navigator。Route是应用程序的“屏幕”或“页面”的抽象（可以认为是Activity）， Navigator是管理Route的Widget。Navigator可以通过push和pop route以实现页面切换。</p>
+<p>和Android相似，我们可以在AndroidManifest.xml中声明Activities，在Flutter中，我们可以将具有指定Route的Map传递到顶层MaterialApp实例，但这不是必须的。</p>
+<blockquote>
+<p>iOS：</p>
+</blockquote>
+<p>在 iOS 中，可以使用管理了 view controller 栈的 UINavigationController 来在不同的 view controller 之间跳转。</p>
+<blockquote>
+<p>React Native：</p>
+</blockquote>
+<p>在React Native中，可以使用react-navigation来实现页面之间的导航。</p>
+<p>Flutter 也有类似的实现，使用了 Navigator 和 Routes。一个路由是 App 中“屏幕”或“页面”的抽象，而一个 Navigator 是管理多个路由的 widget 。你可以粗略地把一个路由对应到一个 UIViewController。Navigator 的工作原理和 iOS 中 UINavigationController 非常相似，当你想跳转到新页面或者从新页面返回时，它可以 push() 和 pop() 路由。</p>
+<p>在Flutter中，有两个主要的widget用于在页面之间导航：</p>
+<ul>
+<li>  <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/widgets/Route-class.html">Route</a> 是一个应用程序抽象的屏幕或页面；</li>
+<li>  <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.flutter.io/flutter/widgets/Route-class.html">Navigator</a> 是一个管理路由的widget；</li>
+</ul>
+<p>以上两种widget对应Flutter中实现页面导航的有两种选择：</p>
+<ul>
+<li>  具体指定一个由路由名构成的 Map。（MaterialApp）</li>
+<li>  直接跳转到一个路由。（WidgetApp）</li>
+</ul>
+<p>下面是构建一个 Map 的例子：</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript"><span class="hljs-keyword">void</span> main() &#123;<br>  runApp(MaterialApp(<br>    home: MyAppHome(), <span class="hljs-regexp">//</span> becomes the route named <span class="hljs-string">&#x27;/&#x27;</span><br>    routes: &lt;<span class="hljs-built_in">String</span>, WidgetBuilder&gt; &#123;<br>      <span class="hljs-string">&#x27;/a&#x27;</span>: <span class="hljs-function"><span class="hljs-params">(BuildContext context)</span> =&gt;</span> MyPage(title: <span class="hljs-string">&#x27;page A&#x27;</span>),<br>      <span class="hljs-string">&#x27;/b&#x27;</span>: <span class="hljs-function"><span class="hljs-params">(BuildContext context)</span> =&gt;</span> MyPage(title: <span class="hljs-string">&#x27;page B&#x27;</span>),<br>      <span class="hljs-string">&#x27;/c&#x27;</span>: <span class="hljs-function"><span class="hljs-params">(BuildContext context)</span> =&gt;</span> MyPage(title: <span class="hljs-string">&#x27;page C&#x27;</span>),<br>    &#125;,<br>  ));<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>通过把路由的名字<code>push</code> 给一个 <code>Navigator</code> 来跳转：</p>
+<p><code>Navigator.of(context).pushNamed(&#39;/b&#39;);</code></p>
+<p>您还可以使用<code>Navigator</code>的<code>push</code>方法，该方法将给定<code>route</code>添加到导航器的历史记录中。 在以下示例中，MaterialPageRoute widget是一种模版路由，它根据平台自适应替换整个页面。 在以下示例中，widget是一种模版路由，它使用平台自适应替换整个页面。它需要一个WidgetBuilder作为必需参数。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Navigator</span>.</span></span>push(context, <span class="hljs-constructor">MaterialPageRoute(<span class="hljs-params">builder</span>: (BuildContext <span class="hljs-params">context</span>)</span><br> =&gt; <span class="hljs-constructor">UsualNavscreen()</span>)); <br></code></pre></td></tr></table></figure>
+
+<h4 id="如何获取路由跳转返回的结果？"><a href="#如何获取路由跳转返回的结果？" class="headerlink" title="如何获取路由跳转返回的结果？"></a>如何获取路由跳转返回的结果？</h4><p>在Android中有<code>startActivityForResult</code>来获取跳转页面后返回的结果，那么在Flutter中<code>Navigator</code> 类不仅用来处理 Flutter 中的路由，还被用来获取你刚 <code>push</code> 到栈中的路由返回的结果。通过 <code>await</code>等待路由返回的结果来达到这点。</p>
+<p>举个例子，要跳转到“位置”路由来让用户选择一个地点，你可能要这么做：</p>
+<p><code>Map coordinates = await Navigator.of(context).pushNamed(&#39;/location&#39;);</code></p>
+<p>之后，在 location 路由中，一旦用户选择了地点，携带结果一起 pop() 出栈：</p>
+<p><code>Navigator.of(context).pop(&#123;&quot;lat&quot;:43.821757,&quot;long&quot;:-79.226392&#125;);</code></p>
+<h4 id="如何在Flutter中处理来自外部应用程序传入的Intents？-Android"><a href="#如何在Flutter中处理来自外部应用程序传入的Intents？-Android" class="headerlink" title="如何在Flutter中处理来自外部应用程序传入的Intents？(Android)"></a>如何在<strong>Flutter</strong>中处理来自外部应用程序传入的<strong>Intents</strong>？(<strong>Android</strong>)</h4><p>Flutter可以通过直接与Android层通信并请求共享的数据来处理来自Android的Intents</p>
+<p>在这个例子中，我们注册文本共享<code>Intent</code>，所以其他应用程序可以共享文本到我们的Flutter应用程序</p>
+<p>这个应用程序的基本流程是我们首先处理Android端的共享文本数据，然后等待Flutter请求数据，然后通过<code>MethodChannel</code>发送。</p>
+<p>首先在在<code>AndroidManifest.xml</code>中注册我们想要处理的<code>Intent</code>：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">activity</span></span><br><span class="hljs-tag">  <span class="hljs-attr">android:</span></span><br><span class="hljs-tag">  <span class="hljs-attr">android:launchMode</span>=<span class="hljs-string">&quot;singleTop&quot;</span></span><br><span class="hljs-tag">  <span class="hljs-attr">android:theme</span>=<span class="hljs-string">&quot;@style/LaunchTheme&quot;</span></span><br><span class="hljs-tag"> <span class="hljs-attr">android:configChanges</span>=<span class="hljs-string">&quot;orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection&quot;</span></span><br><span class="hljs-tag">  <span class="hljs-attr">android:hardwareAccelerated</span>=<span class="hljs-string">&quot;true&quot;</span></span><br><span class="hljs-tag">  <span class="hljs-attr">android:windowSoftInputMode</span>=<span class="hljs-string">&quot;adjustResize&quot;</span>&gt;</span><br>  <span class="hljs-comment">&lt;!-- ... --&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">intent-filter</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">action</span> <span class="hljs-attr">android:</span> /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">category</span> <span class="hljs-attr">android:</span> /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">data</span> <span class="hljs-attr">android:mimeType</span>=<span class="hljs-string">&quot;text/plain&quot;</span> /&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">intent-filter</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">activity</span>&gt;</span> <br></code></pre></td></tr></table></figure>
+
+<p>然后，在MainActivity中，您可以处理intent，一旦我们从intent中获得共享文本数据，我们就会持有它，直到Flutter在完成准备就绪时请求它。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs typescript">package com.example.shared;<br><span class="hljs-keyword">import</span> android.content.Intent;<br><span class="hljs-keyword">import</span> android.os.Bundle;<br><span class="hljs-keyword">import</span> java.nio.ByteBuffer;<br><span class="hljs-keyword">import</span> io.flutter.app.FlutterActivity;<br><span class="hljs-keyword">import</span> io.flutter.plugin.common.ActivityLifecycleListener;<br><span class="hljs-keyword">import</span> io.flutter.plugin.common.MethodCall;<br><span class="hljs-keyword">import</span> io.flutter.plugin.common.MethodChannel;<br><span class="hljs-keyword">import</span> io.flutter.plugins.GeneratedPluginRegistrant;<br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MainActivity</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">FlutterActivity</span> </span>&#123;<br>  <span class="hljs-keyword">private</span> <span class="hljs-built_in">String</span> sharedText;<br>  <span class="hljs-meta">@Override</span><br>  <span class="hljs-keyword">protected</span> <span class="hljs-built_in">void</span> <span class="hljs-function"><span class="hljs-title">onCreate</span>(<span class="hljs-params">Bundle savedInstanceState</span>)</span> &#123;<br>    <span class="hljs-built_in">super</span>.onCreate(savedInstanceState);<br>    GeneratedPluginRegistrant.registerWith(<span class="hljs-built_in">this</span>);<br>    Intent intent = getIntent();<br>    <span class="hljs-built_in">String</span> action = intent.getAction();<br>    <span class="hljs-built_in">String</span> <span class="hljs-keyword">type</span> = intent.getType();<br>    <span class="hljs-keyword">if</span> (Intent.ACTION_SEND.equals(action) &amp;&amp; <span class="hljs-keyword">type</span> != <span class="hljs-literal">null</span>) &#123;<br>      <span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;text/plain&quot;</span>.equals(<span class="hljs-keyword">type</span>)) &#123;<br>        handleSendText(intent); <span class="hljs-comment">// Handle text being sent</span><br>      &#125;<br>    &#125;<br>    <span class="hljs-keyword">new</span> MethodChannel(getFlutterView(), <span class="hljs-string">&quot;app.channel.shared.data&quot;</span>).setMethodCallHandler(<br>      <span class="hljs-keyword">new</span> <span class="hljs-function"><span class="hljs-title">MethodCallHandler</span>(<span class="hljs-params"></span>)</span> &#123;<br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">void</span> <span class="hljs-function"><span class="hljs-title">onMethodCall</span>(<span class="hljs-params">MethodCall call, MethodChannel.Result result</span>)</span> &#123;<br>          <span class="hljs-keyword">if</span> (call.method.contentEquals(<span class="hljs-string">&quot;getSharedText&quot;</span>)) &#123;<br>            result.success(sharedText);<br>            sharedText = <span class="hljs-literal">null</span>;<br>          &#125;<br>        &#125;<br>      &#125;);<br>  &#125;<br>  <span class="hljs-built_in">void</span> <span class="hljs-function"><span class="hljs-title">handleSendText</span>(<span class="hljs-params">Intent intent</span>)</span> &#123;<br>    sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>最后，在Flutter中，您可以在渲染Flutter视图时请求数据。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;package</span>:flutter/material.dart&#x27;;<br><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;package</span>:flutter/services.dart&#x27;;<br>void main() &#123;<br>  runApp(<span class="hljs-type">SampleApp</span>());<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SampleApp</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-comment">// This widget is the root of your application.</span><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">MaterialApp</span>(<br>      title: <span class="hljs-symbol">&#x27;Sample</span> <span class="hljs-type">Shared</span> <span class="hljs-type">App</span> <span class="hljs-type">Handler</span>&#x27;,<br>      theme: <span class="hljs-type">ThemeData</span>(<br>        primarySwatch: <span class="hljs-type">Colors</span>.blue,<br>      ),<br>      home: <span class="hljs-type">SampleAppPage</span>(),<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SampleAppPage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  <span class="hljs-type">SampleAppPage</span>(&#123;<span class="hljs-type">Key</span> key&#125;) : <span class="hljs-keyword">super</span>(key: key);<br>  <span class="hljs-meta">@override</span><br>  _SampleAppPageState createState() =&gt; _SampleAppPageState();<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_SampleAppPageState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State&lt;SampleAppPage&gt;</span> </span>&#123;<br>  static const platform = const <span class="hljs-type">MethodChannel</span>(<span class="hljs-symbol">&#x27;app</span>.channel.shared.data&#x27;);<br>  <span class="hljs-type">String</span> dataShared = <span class="hljs-string">&quot;No data&quot;</span>;<br>    <br>  <span class="hljs-meta">@override</span><br>  void initState() &#123;<br>    <span class="hljs-keyword">super</span>.initState();<br>    getSharedText();<br>  &#125;<br>    <br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">Scaffold</span>(body: <span class="hljs-type">Center</span>(child: <span class="hljs-type">Text</span>(dataShared)));<br>  &#125;<br>   <br>  getSharedText() async &#123;<br>    <span class="hljs-keyword">var</span> sharedData = await platform.invokeMethod(<span class="hljs-string">&quot;getSharedText&quot;</span>);<br>    <span class="hljs-keyword">if</span> (sharedData != <span class="hljs-literal">null</span>) &#123;<br>      setState(() &#123;<br>        dataShared = sharedData;<br>      &#125;);<br>    &#125;<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>怎么跳转到其他** App**？</p>
+<p>在 iOS 中，要跳转到其他 App，你需要一个特定的 URL Scheme。对系统级别的 App 来说，这个 scheme 取决于 App。为了在 Flutter 中实现这个功能，你可以创建一个原生平台的整合层，或者使用现有的 plugin，例如 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://pub.dartlang.org/packages/url_launcher">url_launcher</a>。</p>
+<p>大家可以通过<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://coding.imooc.com/class/321.html">《路由、Navigator与页面导航开发指南》</a>来学习Flutter页面导航与路由的更多技巧和实战经验。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Flutter%E5%AD%A6%E4%B9%A0/">Flutter学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Dart/">Dart</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Flutter/">Flutter</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91/">混合开发</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/16/2019/9.%E6%89%8B%E5%8A%BF%E6%A3%80%E6%B5%8B%E5%8F%8A%E8%A7%A6%E6%91%B8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">路由与导航</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/12/2019/7.%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">
+                        <span class="hidden-mobile">状态管理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

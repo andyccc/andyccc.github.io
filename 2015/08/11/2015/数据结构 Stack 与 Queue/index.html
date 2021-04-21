@@ -1,0 +1,457 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>数据结构 Stack 与 Queue - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="数据结构 Stack 与 Queue">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2015-08-11 21:20" pubdate>
+        2015年8月11日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      720 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      10
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数据结构 Stack 与 Queue</h1>
+            
+            <div class="markdown-body">
+              <blockquote>
+<p>StackStack 是一个后进先出的数据结构, LIFO(Last In First Out). 其内部可以使用 Array 来实现. push/pop 操作分别从 Array 的尾部添加 / 删除元素, 时间复杂度均……</p>
+</blockquote>
+<h2 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a><a href="#Stack" title="Stack"></a>Stack</h2><p>Stack 是一个后进先出的数据结构, LIFO(Last In First Out). 其内部可以使用 Array 来实现.<br>push/pop 操作分别从 Array 的尾部添加 / 删除元素, 时间复杂度均为 O(1).<br>注意: 不能从 Array 的首部进行操作, 因为首部插入数据需要移动整个数组中的元素, 时间复杂度比较高.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Stack</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;<br>    <span class="hljs-keyword">fileprivate</span> <span class="hljs-keyword">var</span> array <span class="hljs-operator">=</span> [<span class="hljs-type">T</span>]()<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> isEmpty: <span class="hljs-type">Bool</span> &#123;<br>        <span class="hljs-keyword">return</span> array.isEmpty<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> count: <span class="hljs-type">Int</span> &#123;<br>        <span class="hljs-keyword">return</span> array.count<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">mutating</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">push</span>(<span class="hljs-keyword">_</span> <span class="hljs-params">newElement</span>: <span class="hljs-type">T</span>)</span> &#123;<br>        array.append(newElement)<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">mutating</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">pop</span>()</span> -&gt; <span class="hljs-type">T</span> &#123;<br>        <span class="hljs-keyword">return</span> array.remove(at: array.count <span class="hljs-operator">-</span> <span class="hljs-number">1</span>)<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> top: <span class="hljs-type">T</span>? &#123;<br>        <span class="hljs-keyword">return</span> array.last<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a><a href="#Queue" title="Queue"></a>Queue</h2><p>Queue 是先进先出的结构, FIFO(First In First Out), 内部也可采用 Array 来实现.<br>enqueue 将元素加入队列, 可直接将元素放在 Array 的尾部, 时间复杂度为 O(1).<br>dequeue 将首元素移出队列, 将 Array 的首元素移出, 其他元素的位置均需调整 (向前 shift), 因此 dequeue 操作的时间复杂度为 O(n).</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Queue</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;<br>    <span class="hljs-keyword">fileprivate</span> <span class="hljs-keyword">var</span> array <span class="hljs-operator">=</span> [<span class="hljs-type">T</span>]()<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> isEmpty: <span class="hljs-type">Bool</span> &#123;<br>        <span class="hljs-keyword">return</span> array.isEmpty<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> count: <span class="hljs-type">Int</span> &#123;<br>        <span class="hljs-keyword">return</span> array.count<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">mutating</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">enqueue</span>(<span class="hljs-keyword">_</span> <span class="hljs-params">newElement</span>: <span class="hljs-type">T</span>)</span> &#123;<br>        array.append(newElement)<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">mutating</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">dequeue</span>()</span> -&gt; <span class="hljs-type">T</span>? &#123;<br>        <span class="hljs-keyword">if</span> isEmpty &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">return</span> array.remove(at: <span class="hljs-number">0</span>)<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> front: <span class="hljs-type">T</span>? &#123;<br>        <span class="hljs-keyword">return</span> array.first<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="dequeue-操作的优化"><a href="#dequeue-操作的优化" class="headerlink" title="dequeue 操作的优化"></a><a href="#dequeue%E6%93%8D%E4%BD%9C%E7%9A%84%E4%BC%98%E5%8C%96" title="dequeue操作的优化"></a>dequeue 操作的优化</h3><p>Queue 的 enqueue 操作非常高效, 但 dequeue 操作却有很多优化的空间.<br>dequeue 之后, 并不将内部 Array 的其他元素依次向前 shift, 而是将 dequeue 之后的空位留着, 定期将所有空位移除即可. (即 Array 中可以存储空值).<br>这样, 尽管定期移除所有空位的操作的时间复杂度为 O(n), 但 dequeue 操作的平均时间复杂度却降为了 O(1).<br>这种优化方法需要引入一个变量 head, 用于存储当前的实际首元素的索引位置.</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Queue_Optimized</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;<br>    <span class="hljs-keyword">fileprivate</span> <span class="hljs-keyword">var</span> array <span class="hljs-operator">=</span> [<span class="hljs-type">T</span>?]()<br>    <span class="hljs-keyword">fileprivate</span> <span class="hljs-keyword">var</span> head <span class="hljs-operator">=</span> <span class="hljs-number">0</span> <span class="hljs-comment">// 真正的首元素所在的index</span><br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> isEmpty: <span class="hljs-type">Bool</span> &#123;<br>        <span class="hljs-keyword">return</span> count <span class="hljs-operator">==</span> <span class="hljs-number">0</span><br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> count: <span class="hljs-type">Int</span> &#123;<br>        <span class="hljs-keyword">if</span> head <span class="hljs-operator">&lt;</span> array.count &#123;<br>            <span class="hljs-keyword">return</span> array.count <span class="hljs-operator">-</span> head<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">mutating</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">enqueue</span>(<span class="hljs-keyword">_</span> <span class="hljs-params">newElement</span>: <span class="hljs-type">T</span>)</span> &#123;<br>        array.append(newElement)<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">mutating</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">dequeue</span>()</span> -&gt; <span class="hljs-type">T</span>? &#123;<br>        <span class="hljs-keyword">guard</span> count <span class="hljs-operator">&gt;</span> <span class="hljs-number">0</span>, <span class="hljs-keyword">let</span> headElement <span class="hljs-operator">=</span> array[head] <span class="hljs-keyword">else</span> &#123; <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span> &#125;<br><br>        array[head] <span class="hljs-operator">=</span> <span class="hljs-literal">nil</span><br>        head <span class="hljs-operator">=</span> head <span class="hljs-operator">+</span> <span class="hljs-number">1</span><br><br>        <span class="hljs-comment">// remove nil elements</span><br>        <span class="hljs-keyword">let</span> p <span class="hljs-operator">=</span> <span class="hljs-type">Double</span>(head) <span class="hljs-operator">/</span> <span class="hljs-type">Double</span>(array.count)<br>        <span class="hljs-keyword">if</span> array.count <span class="hljs-operator">&gt;</span> <span class="hljs-number">100</span> <span class="hljs-operator">&amp;&amp;</span> p <span class="hljs-operator">&gt;</span> <span class="hljs-number">0.25</span> &#123;<br>            <span class="hljs-comment">// removeFirst(_:) Removes the specified number of elements from the beginning of the collection.</span><br>            array.removeFirst(head)<br>            head <span class="hljs-operator">=</span> <span class="hljs-number">0</span><br>        &#125;<br><br>        <span class="hljs-keyword">return</span> headElement<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> front: <span class="hljs-type">T</span>? &#123;<br>        <span class="hljs-keyword">return</span> array[head]<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a><a href="#%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81" title="示例代码"></a>示例代码</h2><p><a target="_blank" rel="noopener" href="https://github.com/andyccc/swift_algorithm">swift_algorithm</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a><a href="#%E5%8F%82%E8%80%83" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://github.com/raywenderlich/swift-algorithm-club">swift-algorithm-club</a></p>
+<p>坚持原创技术分享，您的支持将鼓励我继续创作！ So，来杯咖啡？</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Stack/">Stack</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Queue/">Queue</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2015/08/21/2015-2/NSURLSession/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">NSURLSession</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2015/07/11/2015/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20Hash%20Table/">
+                        <span class="hidden-mobile">数据结构 Hash Table</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

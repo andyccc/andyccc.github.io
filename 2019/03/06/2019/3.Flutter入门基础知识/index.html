@@ -1,0 +1,523 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>Flutter入门基础知识 - Hello</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Flutter入门基础知识">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-03-06 23:30" pubdate>
+        2019年3月6日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      18
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Flutter入门基础知识</h1>
+            
+            <div class="markdown-body">
+              <h3 id="Flutter入门基础知识"><a href="#Flutter入门基础知识" class="headerlink" title="Flutter入门基础知识"></a>Flutter入门基础知识</h3><p>声明：Flutter专栏文档均来自慕课网<br><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://coding.imooc.com/class/321.html">https://coding.imooc.com/class/321.html</a></p>
+<h3 id="Flutter入门基础知识-1"><a href="#Flutter入门基础知识-1" class="headerlink" title="Flutter入门基础知识"></a>Flutter入门基础知识</h3><ul>
+<li>  如何创建Flutter 项目?</li>
+<li>  如何运行Flutter 项目?</li>
+<li>  如何导入Widget?</li>
+<li>  如何写一个Hello world?</li>
+<li>  如何使用Widget并将其嵌套以形成Widget树?</li>
+<li>  如何创建可重用Widget?</li>
+</ul>
+<blockquote>
+<p>在本节中我们主要对标React Native来讲解Flutter的一些入门基础知识，Android、iOS或web开发者可以省略React Native部分，直接学习Flutter部分。</p>
+</blockquote>
+<h4 id="如何创建Flutter项目"><a href="#如何创建Flutter项目" class="headerlink" title="如何创建Flutter项目**?**"></a>如何创建<strong>Flutter</strong>项目**?**</h4><p>以React Native为例，要创建一个React Native 项目，我们可以通过create-react-native-app脚手架来完成：</p>
+<p><code>$ create-react-native-app &lt;projectname&gt;</code></p>
+<p>要创建一个Flutter 项目有以下两种方式：</p>
+<ul>
+<li>  从命令行使用<code>flutter create</code>命令。确保Flutter SDK配置了环境变量。</li>
+<li>  使用安装了Flutter和Dart插件的IDE。</li>
+</ul>
+<p><code>$ flutter create &lt;projectname&gt;</code></p>
+<p><img src="//upload-images.jianshu.io/upload_images/9404810-01ddef232b650bb5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1200/format/webp" srcset="/img/loading.gif" lazyload> image</p>
+<blockquote>
+<p>关于创建Flutter项目的更多内容可学习<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://coding.imooc.com/class/321.html">《基于Flutter1.x开发携程网App》</a>。</p>
+</blockquote>
+<h4 id="如何运行Flutter-项目"><a href="#如何运行Flutter-项目" class="headerlink" title="如何运行Flutter 项目?"></a>如何运行<strong>Flutter <strong>项目</strong>?</strong></h4><p>在React Native中，我们可以通过一下命令来运行项目：</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs actionscript">$ react-<span class="hljs-keyword">native</span> run-ios<br><span class="hljs-comment">//或</span><br>$ react-<span class="hljs-keyword">native</span> run-android <br></code></pre></td></tr></table></figure>
+
+<p>那么在Flutter中，我们通过一下两种方式来运行项目：</p>
+<ul>
+<li>  从项目的根目录使用<code>flutter run</code>。</li>
+<li>  在带有Flutter和Dart插件的IDE中使用“run”选项。</li>
+</ul>
+<p>``$ flutter run -d ‘iPhone X’`</p>
+<blockquote>
+<p>-d后面跟的是具体的设备名称，可以是Android或iOS模拟器的名字，也可以一台已经连接到电脑上的Android或iOS的设备。</p>
+</blockquote>
+<p> image</p>
+<blockquote>
+<p>关于运行Flutter项目的更多内容可学习<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://coding.imooc.com/class/321.html">《基于Flutter1.x开发携程网App》</a>。</p>
+</blockquote>
+<h4 id="如何导入Widget"><a href="#如何导入Widget" class="headerlink" title="如何导入Widget?"></a>如何导入<strong>Widget?</strong></h4><p>在React Native中，您需要导入每个必需的组件：</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs clean"><span class="hljs-comment">//React Native</span><br><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; StyleSheet, Text, View &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-native&quot;</span>;<span class="hljs-comment">//导入系统组件</span><br><span class="hljs-keyword">import</span> NavigationBar <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../common/NavigationBar&#x27;</span>;<span class="hljs-comment">//导入自己的组件 </span><br></code></pre></td></tr></table></figure>
+
+<p>在Flutter中，要使用<code>Material Design</code>库中的小部件，则需要导入<code>material.dart</code>包。要使用iOS样式widget，请导入Cupertino库。要使用更基本的窗口widget集，请导widget 库。或者，当然，也可以导入自己编写的widget：</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs aspectj"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/material.dart&#x27;</span>;<span class="hljs-comment">//导入系统material widget 库</span><br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/cupertino.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/widgets.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/my_widgets.dart&#x27;</span>;<span class="hljs-comment">//导入自己的widget </span><br></code></pre></td></tr></table></figure>
+
+<p>无论您导入哪个widget包，Dart都只会导入在您的应用中使用的widget。</p>
+<blockquote>
+<p>想知道Flutter都有哪些Widget可以学习<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://coding.imooc.com/class/321.html">《认识Flutter Widget》</a>。</p>
+</blockquote>
+<h4 id="如何写一个Hello-world"><a href="#如何写一个Hello-world" class="headerlink" title="如何写一个Hello world?"></a>如何写一个<strong>Hello world?</strong></h4><p> image</p>
+<p>在React Native中，我们通过如下代码来实现这个需求：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// React Native</span><br><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; StyleSheet, Text, View &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-native&quot;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>&#123;<br>  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <span class="hljs-keyword">return</span> (<br>      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&#123;styles.container&#125;</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Text</span>&gt;</span>Hello world!<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span></span><br><span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">View</span>&gt;</span></span><br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> styles = StyleSheet.create(&#123;<br>  <span class="hljs-attr">container</span>: &#123;<br>    <span class="hljs-attr">flex</span>: <span class="hljs-number">1</span>,<br>    <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&quot;#fff&quot;</span>,<br>    <span class="hljs-attr">alignItems</span>: <span class="hljs-string">&quot;center&quot;</span>,<br>    <span class="hljs-attr">justifyContent</span>: <span class="hljs-string">&quot;center&quot;</span><br>  &#125;<br>&#125;); <br></code></pre></td></tr></table></figure>
+
+<p>在Flutter中，您可以创建一个完全相同的“Hello world！”应用程序使用核心窗口小部件库中的Center和Text窗口小部件。Center窗口小部件成为窗口小部件树的根，并且有一个子窗口，即“Text”窗口小部件:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// Flutter</span><br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/material.dart&#x27;</span>;<br><br><span class="hljs-keyword">void</span> <span class="hljs-function"><span class="hljs-title">main</span>(<span class="hljs-params"></span>)</span> &#123;<br>  runApp(<br>    Center(<br>      child: Text(<br>        <span class="hljs-string">&#x27;Hello, world!&#x27;</span>,<br>        <span class="hljs-attr">textDirection</span>: TextDirection.ltr,<br>      ),<br>    ),<br>  );<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>得益于Flutter强大的封装能力，我们不难发现实现相同的功能，Flutter要比RN少很多代码。</p>
+<h4 id="如何使用Widget并将其嵌套以形成Widget树"><a href="#如何使用Widget并将其嵌套以形成Widget树" class="headerlink" title="如何使用Widget并将其嵌套以形成Widget树**?**"></a>如何使用<strong>Widget</strong>并将其嵌套以形成<strong>Widget</strong>树**?**</h4><p>在Flutter中，几乎所有东西都是widget。</p>
+<p>widget是用户界面的基本构建块，您将widget组成一个层次结构，调用widget树。每个窗口widget都嵌套在父窗口widget中，并从其父窗口继承属性。甚至应用程序对象本身也是一个组件，没有单独的“应用程序”对象。相反，根widget担任此角色。</p>
+<p>Widget可以定义:</p>
+<ul>
+<li>  结构元素 - 如按钮或菜单</li>
+<li>  文体元素 - 像字体或颜色主题</li>
+<li>  类似布局的填充或对齐的一个方向</li>
+</ul>
+<p>以下示例使用<code>Material</code>库中的Widget显示“Hello world！”应用程序。在此示例中，widget树嵌套在MaterialApp的根widget中。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-comment">// Flutter</span><br><span class="hljs-keyword">import</span> <span class="hljs-symbol">&#x27;package</span>:flutter/material.dart&#x27;;<br><br>void main() =&gt; runApp(<span class="hljs-type">MyApp</span>());<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyApp</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-type">Widget</span> build(<span class="hljs-type">BuildContext</span> context) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-type">MaterialApp</span>(<br>      title: <span class="hljs-symbol">&#x27;Welcome</span> to <span class="hljs-type">Flutter</span>&#x27;,<br>      home: <span class="hljs-type">Scaffold</span>(<br>        appBar: <span class="hljs-type">AppBar</span>(<br>          title: <span class="hljs-type">Text</span>(<span class="hljs-symbol">&#x27;Welcome</span> to <span class="hljs-type">Flutter</span>&#x27;),<br>        ),<br><br>        body: <span class="hljs-type">Center</span>(<br>          child: <span class="hljs-type">Text</span>(<span class="hljs-symbol">&#x27;Hello</span> world&#x27;),<br>        ),<br>      ),<br>    );<br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>以下图片显示了使用Material Design小部件构建的“Hello world！”。</p>
+<p> image</p>
+<h4 id="如何创建可重用的Widget"><a href="#如何创建可重用的Widget" class="headerlink" title="如何创建可重用的Widget?"></a>如何创建可重用的<strong>Widget?</strong></h4><p>在React Native中，我们可以定义一个类来创建可重用的组件，然后使用<code>props</code>方法来设置或返回所选元素的属性和值，在下面的示例中，定义了<code>CustomCard</code>类，然后在父类中使用：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-comment">// React Native</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomCard</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>&#123;<br>  render() &#123;<br>    <span class="hljs-keyword">return</span> (<br>      &lt;<span class="hljs-type">View</span>&gt;<br>        &lt;<span class="hljs-type">Text</span> &gt; <span class="hljs-type">Card</span> &#123;<span class="hljs-keyword">this</span>.props.index&#125; &lt;/<span class="hljs-type">Text</span>&gt;<br>        &lt;<span class="hljs-type">Button</span><br>          title=<span class="hljs-string">&quot;Press&quot;</span><br>          onPress=&#123;() =&gt; <span class="hljs-keyword">this</span>.props.onPress(<span class="hljs-keyword">this</span>.props.index)&#125;<br>        /&gt;<br>      &lt;/<span class="hljs-type">View</span>&gt;<br>    );<br>  &#125;<br>&#125;<br><span class="hljs-comment">// Usage</span><br><br>&lt;<span class="hljs-type">CustomCard</span> onPress=&#123;<span class="hljs-keyword">this</span>.onPress&#125; index=&#123;item.key&#125; /&gt; <br></code></pre></td></tr></table></figure>
+
+<p>在Flutter中，同样需要定义一个类来创建自定义widget，然后重用widget。您还可以定义和调用返回可重用小部件的函数，如以下示例中的构建函数所示。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-comment">// Flutter</span><br><span class="hljs-selector-tag">class</span> <span class="hljs-selector-tag">CustomCard</span> <span class="hljs-selector-tag">extends</span> <span class="hljs-selector-tag">StatelessWidget</span> &#123;<br>  <span class="hljs-selector-tag">CustomCard</span>(&#123;<span class="hljs-variable">@required</span> this.index, <span class="hljs-variable">@required</span> this.onPress&#125;);<br>  <span class="hljs-selector-tag">final</span> <span class="hljs-selector-tag">index</span>;<br>  <span class="hljs-selector-tag">final</span> <span class="hljs-selector-tag">Function</span> <span class="hljs-selector-tag">onPress</span>;<br><br>  @<span class="hljs-selector-tag">override</span><br>  <span class="hljs-selector-tag">Widget</span> <span class="hljs-selector-tag">build</span>(BuildContext context) &#123;<br>    <span class="hljs-selector-tag">return</span> <span class="hljs-selector-tag">Card</span>(<br>      <span class="hljs-attribute">child</span>: Column(<br>        <span class="hljs-attribute">children</span>: &lt;Widget&gt;[<br>          Text(<span class="hljs-string">&#x27;Card $index&#x27;</span>),<br>          FlatButton(<br>            <span class="hljs-attribute">child</span>: const Text(<span class="hljs-string">&#x27;Press&#x27;</span>),<br>            <span class="hljs-attribute">onPressed</span>: this.onPress,<br>          ),<br>        ],<br>      )<br>    );<br>  &#125;<br>&#125;<br>   ...<br><span class="hljs-comment">// Usage</span><br><span class="hljs-selector-tag">CustomCard</span>(<br>  <span class="hljs-attribute">index</span>: index,<br>  <span class="hljs-attribute">onPress</span>: () &#123; <br>    <span class="hljs-selector-tag">print</span>(<span class="hljs-string">&#x27;Card $index&#x27;</span>);<br>  &#125;,<br>)<br>    ... <br></code></pre></td></tr></table></figure>
+
+<p>在前面的例子中, <code>CustomCard</code>类的构造函数使用Dart的大括号语法{}来配置 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://www.dartlang.org/guides/language/language-tour%23optional-parameters">可选参数</a>。</p>
+<p>如果要标识必须的字段，请从构造函数中删除花括号，或者 将@ required添加到构造函数中。</p>
+<p>以下屏幕截图显示了可重用的<code>CustomCard</code>类的示例：</p>
+<p> image</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Flutter%E5%AD%A6%E4%B9%A0/">Flutter学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Dart/">Dart</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Flutter/">Flutter</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91/">混合开发</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/08/2019/4.%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E3%80%81%E8%B5%84%E6%BA%90%E3%80%81%E4%BE%9D%E8%B5%96%E5%92%8C%E6%9C%AC%E5%9C%B0%E5%8C%96/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">项目结构、资源、依赖和本地化</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/05/2019/2.%E4%BB%80%E4%B9%88%E6%98%AF%E5%A3%B0%E6%98%8E%E5%BC%8FUI/">
+                        <span class="hidden-mobile">什么是声明式**UI**？</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
