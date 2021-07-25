@@ -182,23 +182,19 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/09/20/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2005%E3%80%81%E5%B1%9E%E6%80%A7%E3%80%81%E6%88%90%E5%91%98%E3%80%81%E5%AE%9E%E4%BE%8B%E5%8F%98%E9%87%8F%E7%AE%80%E6%9E%90/" target="_self">
-          属性、成员、实例变量简析
+        <a href="/2020/05/26/2020-2/28.iOS%20%E9%BB%91%E9%AD%94%E6%B3%95%20Runtime%20Method%20Swizzling%20%E8%83%8C%E5%90%8E%E7%9A%84%E5%8E%9F%E7%90%86/" target="_self">
+          iOS 黑魔法 Runtime Method Swizzling 背后的原理
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/09/20/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2005%E3%80%81%E5%B1%9E%E6%80%A7%E3%80%81%E6%88%90%E5%91%98%E3%80%81%E5%AE%9E%E4%BE%8B%E5%8F%98%E9%87%8F%E7%AE%80%E6%9E%90/" target="_self">
+        <a href="/2020/05/26/2020-2/28.iOS%20%E9%BB%91%E9%AD%94%E6%B3%95%20Runtime%20Method%20Swizzling%20%E8%83%8C%E5%90%8E%E7%9A%84%E5%8E%9F%E7%90%86/" target="_self">
           
           
             
           
-          本文探索属性、成员、实例变量。
-一、简介1、属性变量1@property (nonatomic, copy) NSString *propName;
-
-@property：做了什么事？文章后面探索。
-为 propName 生成了 set/get 方法的声明和实现，同时为其生成了私有的 ivar 成员变量  _propName；
-2、成员变量1234@interface MyPerson : NSO
+          iOS 黑魔法 Runtime Method Swizzling 背后的原理
+提到Object-C中的Runtime，你可能一下就想到了iOS的黑魔法Method Swizzling。毕竟，这个黑魔法可以帮助我们在运行时进行方法交换，或者在原方法执行之前插入自定义方法，以保证在业务面向对象编程方式不被改变的情况下，进行切面功能的开发。但是，运行时进行方法交换同时也会带来一定的风险。所以，今天我就来
         </a>
       </p>
 
@@ -206,28 +202,12 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-20 23:16" pubdate>
-              2020-09-20
+            <time datetime="2020-05-26 23:38" pubdate>
+              2020-05-26
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -239,24 +219,21 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/09/14/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2004%E3%80%81%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%20&%20isa%20&%20bits/" target="_self">
-          类的结构分析 &amp; isa &amp; bits
+        <a href="/2020/05/11/2020-2/27.iOS%20%E7%B3%BB%E7%BB%9F%E5%86%85%E6%A0%B8%20XNU%EF%BC%9AApp%20%E5%A6%82%E4%BD%95%E5%8A%A0%E8%BD%BD/" target="_self">
+          iOS 系统内核 XNU：App 如何加载
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/09/14/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2004%E3%80%81%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%20&%20isa%20&%20bits/" target="_self">
+        <a href="/2020/05/11/2020-2/27.iOS%20%E7%B3%BB%E7%BB%9F%E5%86%85%E6%A0%B8%20XNU%EF%BC%9AApp%20%E5%A6%82%E4%BD%95%E5%8A%A0%E8%BD%BD/" target="_self">
           
           
             
           
-          本文内容主要对 isa 指向流程 和 类的结构以及类中 bits 进行探索。
-一、类与 isa运行 objc 源码工程，main.m 文件中断点打在 objc2，读取对象 objc2 的内存如下：
+          iOS 系统内核 XNU：App 如何加载
+今天来说说App 如何加载。
 
-图中，我们发现两个不同的 地址，他们的值都是 MyPerson。这是为何呢？–&gt; 元类
-我们继续读取内存，如下图：
-
-结合以上内容，我们可以得出 objc2 –&gt; MyPerson –&g
+iOS 系统架构iOS 系统是基于 ARM 架构的，大致可以分为四层：最上层是用户体验层，主要是提供用户界面。这一层包含了 SpringBoard、Spotlight、Accessibility。第二层是应用框架层，是开发者会用到的。这一层包含了开发框架 Cocoa Touch。第三层是核心框架层，是系统核心功能的框架层。
         </a>
       </p>
 
@@ -264,28 +241,12 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-14 00:01" pubdate>
-              2020-09-14
+            <time datetime="2020-05-11 23:34" pubdate>
+              2020-05-11
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -297,21 +258,20 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/09/13/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2003%E3%80%81%E5%AF%B9%E8%B1%A1%E6%9C%AC%E8%B4%A8%20&%20isa%20%E7%BB%93%E6%9E%84/" target="_self">
-          对象本质 &amp; isa 结构
+        <a href="/2020/05/08/%E7%BC%96%E8%AF%91%E3%80%81%E6%B1%87%E7%BC%96%E3%80%81%E9%93%BE%E6%8E%A5%E3%80%81%E5%8A%A0%E8%BD%BD%E3%80%81%E6%98%BE%E7%A4%BA/" target="_self">
+          编译、汇编、链接、加载、显示
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/09/13/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2003%E3%80%81%E5%AF%B9%E8%B1%A1%E6%9C%AC%E8%B4%A8%20&%20isa%20%E7%BB%93%E6%9E%84/" target="_self">
+        <a href="/2020/05/08/%E7%BC%96%E8%AF%91%E3%80%81%E6%B1%87%E7%BC%96%E3%80%81%E9%93%BE%E6%8E%A5%E3%80%81%E5%8A%A0%E8%BD%BD%E3%80%81%E6%98%BE%E7%A4%BA/" target="_self">
           
           
             
           
-          本文开始探索 OC 对象的本质是什么？
-一、对象 
-对象的本质 - 结构体1、编译后的对象1、我们在 main.m 文件中做简单代码如下：
-1234567891011121314151617#import &lt;Foundation/Foundation.h&gt;#import &lt;objc/runtime.h&gt;@interface MyPerson : NSObject@prope
+          之前写过关于链接的文章dyld 和链接，链接对我们了解组件化和模块化具有重要的意义。
+我们写完的文本代码，点击了编译器上 run 按钮之后，是怎么在机器上运行的呢？另外以 iOS APP 为例的可视化应用，又是怎么将 UIView 实例在手机上显示的呢？
+前言  计算机的思考方式和人脑的思考方式程序 = 数据结构 + 算法，这个公式是计算机界的定理，不管使用多么高级的语言，cpp 还是 php，不
         </a>
       </p>
 
@@ -319,28 +279,12 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-13 23:59" pubdate>
-              2020-09-13
+            <time datetime="2020-05-08 10:11" pubdate>
+              2020-05-08
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -352,23 +296,19 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/09/09/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2002%E3%80%81%E5%BC%80%E8%BE%9F%E7%A9%BA%E9%97%B4%20-%20%E5%AD%97%E8%8A%82%E5%AF%B9%E9%BD%90%20+%20%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/" target="_self">
-          开辟空间 - 字节对齐 + 内存对齐
+        <a href="/2020/04/30/2020-2/26.%E5%A6%82%E4%BD%95%E5%88%B6%E5%AE%9A%E4%B8%80%E5%A5%97%E9%80%82%E5%90%88%E8%87%AA%E5%B7%B1%E5%9B%A2%E9%98%9F%E7%9A%84%20iOS%20%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/" target="_self">
+          如何制定一套适合自己团队的 iOS 编码规范
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/09/09/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2002%E3%80%81%E5%BC%80%E8%BE%9F%E7%A9%BA%E9%97%B4%20-%20%E5%AD%97%E8%8A%82%E5%AF%B9%E9%BD%90%20+%20%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/" target="_self">
+        <a href="/2020/04/30/2020-2/26.%E5%A6%82%E4%BD%95%E5%88%B6%E5%AE%9A%E4%B8%80%E5%A5%97%E9%80%82%E5%90%88%E8%87%AA%E5%B7%B1%E5%9B%A2%E9%98%9F%E7%9A%84%20iOS%20%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/" target="_self">
           
           
             
           
-          一、字节对齐
-1、为什么要进行字节对齐处理呢？
-性能，快，以空间换取时间。
-可以想象 2 个场景，场景 1：当我们的 CPU 去读取内存时，每次读取的大小如果是不确定的 (8、7、3、9… …)，那么除非每次读取都要重新改变自己的读取方式否则读取的数据就会读错到其他数据上去。
-场景 2，如果我们所存储的对象以固定的大小存储时，8/16，那么读取数据时，只需要按部就班去取 不必反复改变读取方式。
-场
+          如何制定一套适合自己团队的 iOS 编码规范
+如果团队成员的编码规范各不相同，那么你在接收其他人的代码时是不是总会因为无法认同他的代码风格，而想着去重写呢。但是，重写这个事儿不只会增加梳理逻辑和开发成本，而且重写后出现问题的风险也会相应增加。那么，这个问题应该如何解决呢？在我看来，如果出现这种情况，你的团队急需制定出一套适合自己团队的编码规范。有了统一的编码规范，就能有效避免团队成员由于代码风格不
         </a>
       </p>
 
@@ -376,28 +316,12 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-09 21:13" pubdate>
-              2020-09-09
+            <time datetime="2020-04-30 22:36" pubdate>
+              2020-04-30
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -409,22 +333,20 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/09/08/%E4%BB%8E%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91%E5%88%B0%E5%A4%9A%E7%BB%A7%E6%89%BF/" target="_self">
-          从消息转发到多继承
+        <a href="/2020/04/15/2020-2/25.%E5%A6%82%E4%BD%95%E5%9C%A8%20iOS%20%E4%B8%AD%E8%BF%9B%E8%A1%8C%E9%9D%A2%E5%90%91%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%92%8C%E9%9D%A2%E5%90%91%E8%A1%8C%E4%B8%BA%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/" target="_self">
+          如何在 iOS 中进行面向测试驱动开发和面向行为驱动开发
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/09/08/%E4%BB%8E%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91%E5%88%B0%E5%A4%9A%E7%BB%A7%E6%89%BF/" target="_self">
+        <a href="/2020/04/15/2020-2/25.%E5%A6%82%E4%BD%95%E5%9C%A8%20iOS%20%E4%B8%AD%E8%BF%9B%E8%A1%8C%E9%9D%A2%E5%90%91%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%92%8C%E9%9D%A2%E5%90%91%E8%A1%8C%E4%B8%BA%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/" target="_self">
           
           
             
           
-          从消息转发到多继承0x0 消息的动态派发Objective-C 中函数的调用是在运行时确定的，编译期确定的函数调用和运行时的区别，举个例子：
-定义两个函数，如下：
-1234567void foo() &#123;    print(&quot;foo&quot;);&#125;void bar() &#123;    print(&quot;bar&quot;);&#125;
+          如何在 iOS 中进行面向测试驱动开发和面向行为驱动开发
 
-假如编译期确定的 
+每当你编写完代码后，都会编译看看运行结果是否符合预期。如果这段代码的影响范围小，你很容易就能看出结果是否符合预期，而如果验证的结果是不符合预期，那么你就会检查刚才编写的代码是否有问题。但是，如果这段代码的影响范围比较大，这时需要检查的地方就会非常多，相应地，人工检查的时间成本也会非常大。特别是团队成员多、工程代码量大时，判断这段代码的影响
         </a>
       </p>
 
@@ -432,28 +354,12 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-08 10:11" pubdate>
-              2020-09-08
+            <time datetime="2020-04-15 23:55" pubdate>
+              2020-04-15
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -465,21 +371,19 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/09/08/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2001%E3%80%81%E5%A6%82%E4%BD%95%E6%8E%A2%E7%B4%A2%E5%BA%95%E5%B1%82%20+%20alloc%20%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/" target="_self">
-          如何探索底层 + alloc 做了什么
+        <a href="/2020/03/27/2020-2/24.%E6%80%8E%E4%B9%88%E5%BA%94%E5%AF%B9%E5%90%84%E7%A7%8D%E5%AF%8C%E6%96%87%E6%9C%AC%E8%A1%A8%E7%8E%B0%E9%9C%80%E6%B1%82/" target="_self">
+          怎么应对各种富文本表现需求
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/09/08/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2001%E3%80%81%E5%A6%82%E4%BD%95%E6%8E%A2%E7%B4%A2%E5%BA%95%E5%B1%82%20+%20alloc%20%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/" target="_self">
+        <a href="/2020/03/27/2020-2/24.%E6%80%8E%E4%B9%88%E5%BA%94%E5%AF%B9%E5%90%84%E7%A7%8D%E5%AF%8C%E6%96%87%E6%9C%AC%E8%A1%A8%E7%8E%B0%E9%9C%80%E6%B1%82/" target="_self">
           
           
             
           
-          本文介绍 如何探索 alloc 和 alloc 做了什么？
-objc 可编译源码 
-从最简单的代码开始：
-1234567MyPerson *p1 = [MyPerson alloc];    MyPerson *p2 = [p1 init];    MyPerson *p3 = [p1 init];        NSLog(@&quot;%@ - %p - %p&quot;,p1,p1,&amp
+          怎么应对各种富文本表现需求
+在iOS开发中，富文本的展示是一个非常常见的需求。为了帮助你更好地了解如何展示富文本，我在今天这篇文章中，会结合一个项目来跟你说说面对富文本展示需求时，要怎么考虑和实现。这样，你在自己的项目中，也可以借鉴今天这样的实现思路和方法。简单来说，富文本就是一段有属性的字符串，可以包含不同字体、不同字号、不同背景、不同颜色、不同字间距的文字，还可以设置段落、图文混排等等属性。我
         </a>
       </p>
 
@@ -487,28 +391,12 @@ objc 可编译源码
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-08 10:11" pubdate>
-              2020-09-08
+            <time datetime="2020-03-27 23:11" pubdate>
+              2020-03-27
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -520,19 +408,20 @@ objc 可编译源码
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/08/26/2020-2/37.%E5%89%96%E6%9E%90%E4%BD%BF%20App%20%E5%85%B7%E6%9C%89%E5%8A%A8%E6%80%81%E5%8C%96%E5%92%8C%E7%83%AD%E6%9B%B4%E6%96%B0%E8%83%BD%E5%8A%9B%E7%9A%84%E6%96%B9%E6%A1%88/" target="_self">
-          剖析使 App 具有动态化和热更新能力的方案
+        <a href="/2020/03/16/2020-2/23.%E5%A6%82%E4%BD%95%E7%94%A8%20Flexbox%20%E6%80%9D%E8%B7%AF%E5%BC%80%E5%8F%91%EF%BC%9F%E8%B7%9F%E8%87%AA%E5%8A%A8%E5%B8%83%E5%B1%80%E6%AF%94%EF%BC%8CFlexbox%20%E5%A5%BD%E5%9C%A8%E5%93%AA/" target="_self">
+          如何用 Flexbox 思路开发？跟自动布局比，Flexbox 好在哪
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/08/26/2020-2/37.%E5%89%96%E6%9E%90%E4%BD%BF%20App%20%E5%85%B7%E6%9C%89%E5%8A%A8%E6%80%81%E5%8C%96%E5%92%8C%E7%83%AD%E6%9B%B4%E6%96%B0%E8%83%BD%E5%8A%9B%E7%9A%84%E6%96%B9%E6%A1%88/" target="_self">
+        <a href="/2020/03/16/2020-2/23.%E5%A6%82%E4%BD%95%E7%94%A8%20Flexbox%20%E6%80%9D%E8%B7%AF%E5%BC%80%E5%8F%91%EF%BC%9F%E8%B7%9F%E8%87%AA%E5%8A%A8%E5%B8%83%E5%B1%80%E6%AF%94%EF%BC%8CFlexbox%20%E5%A5%BD%E5%9C%A8%E5%93%AA/" target="_self">
           
           
             
           
-          剖析使 App 具有动态化和热更新能力的方案
-今天，聊聊iOS开发中的动态化和热更新方案。热更新能力的初衷是，能够及时修复线上问题，减少Bug 对用户的伤害。而动态化的目的，除了修复线上问题外，还要能够灵活更新App 版本。要实现动态化，就需要具备在运行时动态执行程序的能力。同时，实现了动态化，也就具备了热更新能力。通常情况下，实现动态化的方案有三种，分别是 JavaScriptCore 解释器方
+          如何用 Flexbox 思路开发？跟自动布局比，Flexbox 好在哪
+
+你很有可能不知道Flexbox 是啥，但一定不会对 React Native、Weex 和 Texture（AsyncDisplayKit） 感到陌生，而Flexbox就是这些知名布局库采用的布局思路。不可小觑的是，苹果公司官方的UIStackView，也是采用Flexbox思路来实现布局的。接下来，我们就一起来看看Flex
         </a>
       </p>
 
@@ -540,28 +429,12 @@ objc 可编译源码
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-08-26 23:11" pubdate>
-              2020-08-26
+            <time datetime="2020-03-16 22:22" pubdate>
+              2020-03-16
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/iOS%E8%BF%9B%E9%98%B6/">iOS进阶</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/iOS/">iOS</a>
-            
-              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
-            
-          </div>
         
       </div>
     </article>
@@ -573,19 +446,20 @@ objc 可编译源码
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/08/01/2020-2/36.iOS%E5%8E%9F%E7%94%9F%E3%80%81%E5%A4%A7%E5%89%8D%E7%AB%AF%E5%92%8CFlutter%E5%88%86%E5%88%AB%E6%98%AF%E6%80%8E%E4%B9%88%E6%B8%B2%E6%9F%93%E7%9A%84/" target="_self">
-          iOS原生、大前端和Flutter分别是怎么渲染的
+        <a href="/2020/02/23/2020-2/22.A%E3%80%81B%20%E6%B5%8B%E8%AF%95%EF%BC%9A%E9%AA%8C%E8%AF%81%E5%86%B3%E7%AD%96%E6%95%88%E6%9E%9C%E7%9A%84%E5%88%A9%E5%99%A8/" target="_self">
+          A/B 测试：验证决策效果的利器
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/08/01/2020-2/36.iOS%E5%8E%9F%E7%94%9F%E3%80%81%E5%A4%A7%E5%89%8D%E7%AB%AF%E5%92%8CFlutter%E5%88%86%E5%88%AB%E6%98%AF%E6%80%8E%E4%B9%88%E6%B8%B2%E6%9F%93%E7%9A%84/" target="_self">
+        <a href="/2020/02/23/2020-2/22.A%E3%80%81B%20%E6%B5%8B%E8%AF%95%EF%BC%9A%E9%AA%8C%E8%AF%81%E5%86%B3%E7%AD%96%E6%95%88%E6%9E%9C%E7%9A%84%E5%88%A9%E5%99%A8/" target="_self">
           
           
             
           
-          iOS原生、大前端和Flutter分别是怎么渲染的
-用户在使用 App 时，界面的设计、流畅程度是最直接的体验。为此，苹果公司提供了各个层级的库，比如 SwiftUI、UIKit、Core Animation、Core Graphic、OpenGL ，以方便App界面的开发。说起来，即使你不了解这些库的实现原理，也可以通过它们提供的易用接口上手去开发 App，特别是 SwiftUI 大大简化了界面
+          A/B 测试：验证决策效果的利器
+
+现在App Store中的应用，就像商场中的商品一样琳琅满目，可以解决用户各个方面的需求。这时，你要想创新，或者做出比竞品更优秀的功能，是越来越不容易。所以，很多公司都必须去做一些实验，看看有哪些功能可以增强自己App的竞争力，又有哪些功能可以废弃掉。而进行这样的实验的主要方法，就是A/B 测试。A/B测试，也叫桶测试或分流测试，指的是针对一个变量的两个版本 A
         </a>
       </p>
 
@@ -593,28 +467,12 @@ objc 可编译源码
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-08-01 22:54" pubdate>
-              2020-08-01
+            <time datetime="2020-02-23 21:38" pubdate>
+              2020-02-23
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/iOS%E8%BF%9B%E9%98%B6/">iOS进阶</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/iOS/">iOS</a>
-            
-              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
-            
-          </div>
         
       </div>
     </article>
@@ -626,19 +484,20 @@ objc 可编译源码
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/07/25/2020-2/35.%E5%8E%9F%E7%94%9F%E5%B8%83%E5%B1%80%E8%BD%AC%E5%88%B0%E5%89%8D%E7%AB%AF%E5%B8%83%E5%B1%80%EF%BC%8C%E5%BC%80%E5%8F%91%E6%80%9D%E8%B7%AF%E6%9C%89%E5%93%AA%E4%BA%9B%E8%BD%AC%E5%8F%98/" target="_self">
-          原生布局转到前端布局，开发思路有哪些转变
+        <a href="/2020/01/19/2020-2/21.%E5%A6%82%E4%BD%95%E6%9E%84%E9%80%A0%E9%85%B7%E7%82%AB%E7%9A%84%E7%89%A9%E7%90%86%E6%95%88%E6%9E%9C%E5%92%8C%E8%BF%87%E5%9C%BA%E5%8A%A8%E7%94%BB%E6%95%88%E6%9E%9C/" target="_self">
+          如何构造酷炫的物理效果和过场动画效果
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/07/25/2020-2/35.%E5%8E%9F%E7%94%9F%E5%B8%83%E5%B1%80%E8%BD%AC%E5%88%B0%E5%89%8D%E7%AB%AF%E5%B8%83%E5%B1%80%EF%BC%8C%E5%BC%80%E5%8F%91%E6%80%9D%E8%B7%AF%E6%9C%89%E5%93%AA%E4%BA%9B%E8%BD%AC%E5%8F%98/" target="_self">
+        <a href="/2020/01/19/2020-2/21.%E5%A6%82%E4%BD%95%E6%9E%84%E9%80%A0%E9%85%B7%E7%82%AB%E7%9A%84%E7%89%A9%E7%90%86%E6%95%88%E6%9E%9C%E5%92%8C%E8%BF%87%E5%9C%BA%E5%8A%A8%E7%94%BB%E6%95%88%E6%9E%9C/" target="_self">
           
           
             
           
-          原生布局转到前端布局，开发思路有哪些转变
-今天，我来跟你聊聊原生布局转到前端布局的过程中，开发思路会有哪些转变。最开始的时候，iOS 原生布局只支持通过横纵坐标和宽高确定布局的方式，后来引入了 Auto Layout 来优化布局。但，Auto Layout 的写法繁琐，开发者需要编写大量的代码，无法将精力集中在界面布局本身。再后来，苹果公司意识到 Auto Layout的这个问题，于是推出了VFL
+          如何构造酷炫的物理效果和过场动画效果
+
+不论是iOS开发，还是Android开发，现在的动画库差不多都需要手动去编写动画代码。这样的话，iOS 和 Android 开发者就需要分别去编写适合自己系统的代码。而且，手动编写动画的代码也非常复杂，不容易维护，很多动画细节的调整还需要和动画设计师不断沟通打磨，尤其是千行以上的动画代码编写、维护、沟通的成本巨大。手动编写动画代码，除了会影响到开发者外，动画
         </a>
       </p>
 
@@ -646,28 +505,12 @@ objc 可编译源码
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-25 22:38" pubdate>
-              2020-07-25
+            <time datetime="2020-01-19 23:59" pubdate>
+              2020-01-19
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/iOS%E8%BF%9B%E9%98%B6/">iOS进阶</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/iOS/">iOS</a>
-            
-              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
-            
-          </div>
         
       </div>
     </article>
@@ -679,19 +522,19 @@ objc 可编译源码
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/07/03/2020-2/33.%E6%89%93%E9%80%9A%E5%89%8D%E7%AB%AF%E4%B8%8E%E5%8E%9F%E7%94%9F%E7%9A%84%E6%A1%A5%E6%A2%81%EF%BC%9AJavaScriptCore%20%E8%83%BD%E5%B9%B2%E5%93%AA%E4%BA%9B%E4%BA%8B%E6%83%85/" target="_self">
-          打通前端与原生的桥梁：JavaScriptCore 能干哪些事情
+        <a href="/2019/12/23/2020-2/20.%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98%20JSON%20%E8%A7%A3%E6%9E%90%E7%9A%84%E6%80%A7%E8%83%BD/" target="_self">
+          如何提高 JSON 解析的性能
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/07/03/2020-2/33.%E6%89%93%E9%80%9A%E5%89%8D%E7%AB%AF%E4%B8%8E%E5%8E%9F%E7%94%9F%E7%9A%84%E6%A1%A5%E6%A2%81%EF%BC%9AJavaScriptCore%20%E8%83%BD%E5%B9%B2%E5%93%AA%E4%BA%9B%E4%BA%8B%E6%83%85/" target="_self">
+        <a href="/2019/12/23/2020-2/20.%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98%20JSON%20%E8%A7%A3%E6%9E%90%E7%9A%84%E6%80%A7%E8%83%BD/" target="_self">
           
           
             
           
-          打通前端与原生的桥梁：JavaScriptCore 能干哪些事情
-聊聊前端和原生之间的桥梁 JavaScriptCore，看看它是什么、能做哪些事儿。总结来说，JavaScriptCore 为原生编程语言 Objective-C、Swift 提供调用 JavaScript 程序的动态能力，还能为 JavaScript 提供原生能力来弥补前端所缺能力。正是因为JavaScriptCore的这种桥梁作
+          如何提高 JSON 解析的性能
+在iOS 开发中，我们都会碰到这样的问题：不同团队开发的库需要进行数据通信，而通信数据规范通常很难确定。今天，我们就来聊聊如何高效地解决这个问题吧。同一个编程语言之间的数据通信非常简单，因为数据的规范都是相同的，所以输入和输出不需要做任何转换。但是，在不同编程语言之间进行数据通信，就会比较麻烦了。比如，一种语言按照自身的标准规范输出了一份数据，另一门语言接收到时需要
         </a>
       </p>
 
@@ -699,28 +542,12 @@ objc 可编译源码
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-03 22:22" pubdate>
-              2020-07-03
+            <time datetime="2019-12-23 23:44" pubdate>
+              2019-12-23
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/iOS%E8%BF%9B%E9%98%B6/">iOS进阶</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/iOS/">iOS</a>
-            
-              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
-            
-          </div>
         
       </div>
     </article>

@@ -1,0 +1,524 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>类的加载 3 - 分类的加载 - andyccc</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>andyccc</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="类的加载 3 - 分类的加载">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2018-10-26 00:27" pubdate>
+        2018年10月26日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      33
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">类的加载 3 - 分类的加载</h1>
+            
+            <div class="markdown-body">
+              <p>本文继续衔接 [OC 底层探索 14、类的加载 2]探索分类的加载。<a target="_blank" rel="noopener" href="https://github.com/andyccc/objc">调试源码</a></p>
+<h1 id="一、分类的本质"><a href="#一、分类的本质" class="headerlink" title="一、分类的本质"></a>一、分类的本质</h1><h3 id="分类的结构查看方法"><a href="#分类的结构查看方法" class="headerlink" title="分类的结构查看方法"></a>分类的结构查看方法</h3><h4 id="1）-cpp-文件"><a href="#1）-cpp-文件" class="headerlink" title="1）.cpp 文件"></a>1）.cpp 文件</h4><p>在 main.m 中任意添加一个分类信息的 .h .m 文件信息，编译生成 cpp 文件 clang -rewrite-objc main.m -o main.cpp  </p>
+<p>如下 tu：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201020221551804-434136430.png" srcset="/img/loading.gif" lazyload></p>
+<p>category_t 结构:</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>struct _category_t &#123;<br><span class="hljs-symbol">2 </span>    const char *<span class="hljs-keyword">name</span>;<br><span class="hljs-symbol">3 </span>    struct _class_t *<span class="hljs-keyword">cls</span>;<br><span class="hljs-symbol">4 </span>    const struct _method_list_t *instance_methods;<br><span class="hljs-symbol">5 </span>    const struct _method_list_t *class_methods;<br><span class="hljs-symbol">6 </span>    const struct _protocol_list_t *protocols;<br><span class="hljs-symbol">7 </span>    const struct _prop_list_t *properties;<br><span class="hljs-symbol">8 </span>&#125;;<br></code></pre></td></tr></table></figure>
+
+
+<p>有 2 个 _method_list_t 分类的方法是要 <strong>attach 到本类 cls 上</strong>由本类进行调用的，分类是不存在元类的说法的。</p>
+<h4 id="2）objc-源码搜索-category-t"><a href="#2）objc-源码搜索-category-t" class="headerlink" title="2）objc 源码搜索 category_t"></a>2）objc 源码搜索 category_t</h4><p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201020224015006-1769615607.png" srcset="/img/loading.gif" lazyload> </p>
+<h3 id="2、分类的方法-list"><a href="#2、分类的方法-list" class="headerlink" title="2、分类的方法 list"></a>2、分类的方法 list</h3><p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201020223020580-968372305.png" srcset="/img/loading.gif" lazyload></p>
+<p>分类添加的属性系统不会给其生成 set/get 方法，我们可通过 runtime 的 associate 进行 set/get 方法的动态关联。</p>
+<h1 id="二、分类的加载"><a href="#二、分类的加载" class="headerlink" title="二、分类的加载"></a>二、分类的加载</h1><h2 id="1、源码分析"><a href="#1、源码分析" class="headerlink" title="1、源码分析"></a>1、源码分析</h2><p>继续 <a href="">OC 底层探索 14、类的加载 2</a> 对 <a href="#define03">methodizeClass()</a> 源码分析，首先给 MyPerson 添加分类，并添加如下方法：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201020225939481-239189895.png" srcset="/img/loading.gif" lazyload> </p>
+<p>1、运行工程，方法 list 中只有本类的 2 个方法，并没有分类中的方法，见下图：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201020230024609-479521053.png" srcset="/img/loading.gif" lazyload></p>
+<p>继续执行代码到 <a href="#define03">源码 2</a> 的 47 行起，category 分类的 attach，此时 list 仍是有 2 个方法：</p>
+<p>2、objc::unattachedCategories.attachToClass() 代码如下，源码 1：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-number">1</span>     void attach<span class="hljs-constructor">ToClass(Class <span class="hljs-params">cls</span>, Class <span class="hljs-params">previously</span>, <span class="hljs-params">int</span> <span class="hljs-params">flags</span>)</span><br> <span class="hljs-number">2</span>     &#123;<br> <span class="hljs-number">3</span>         runtimeLock.<span class="hljs-keyword">assert</span><span class="hljs-constructor">Locked()</span>;<br> <span class="hljs-number">4</span>         <span class="hljs-constructor">ASSERT((<span class="hljs-params">flags</span> &amp; ATTACH_CLASS)</span><span class="hljs-operator"> ||</span><br><span class="hljs-operator"> </span><span class="hljs-number">5</span>                (flags &amp; ATTACH_METACLASS)<span class="hljs-operator"> ||</span><br><span class="hljs-operator"> </span><span class="hljs-number">6</span>                (flags &amp; ATTACH_CLASS_AND_METACLASS));<br> <span class="hljs-number">9</span>         <span class="hljs-comment">// 我加的调试代码</span><br><span class="hljs-number">10</span>         const <span class="hljs-built_in">char</span> *mangledName = cls-&gt;mangled<span class="hljs-constructor">Name()</span>;<br><span class="hljs-number">11</span>         const <span class="hljs-built_in">char</span> *myPersonName = <span class="hljs-string">&quot;MyPerson&quot;</span>;<br><span class="hljs-number">12</span>         <span class="hljs-keyword">if</span> (strcmp(mangledName, myPersonName)<span class="hljs-operator"> == </span><span class="hljs-number">0</span>) &#123;<br><span class="hljs-number">13</span>             printf(<span class="hljs-string">&quot;%s 函数 func: %s\n&quot;</span>,__func__,mangledName);<br><span class="hljs-number">14</span>         &#125;<br><span class="hljs-number">16</span>         auto &amp;map = get<span class="hljs-literal">()</span>;<br><span class="hljs-number">17</span>         auto it = map.find(previously);<br><span class="hljs-number">19</span>         <span class="hljs-keyword">if</span> (it != map.<span class="hljs-keyword">end</span><span class="hljs-literal">()</span>) &#123;<br><span class="hljs-number">20</span>             category_list &amp;<span class="hljs-built_in">list</span> = it-&gt;second;<br><span class="hljs-number">21</span>             <span class="hljs-keyword">if</span> (flags &amp; ATTACH_CLASS_AND_METACLASS) &#123;<br><span class="hljs-number">22</span>                 <span class="hljs-built_in">int</span> otherFlags = flags &amp; ~ATTACH_CLASS_AND_METACLASS;<br><span class="hljs-number">23</span>                 attach<span class="hljs-constructor">Categories(<span class="hljs-params">cls</span>, <span class="hljs-params">list</span>.<span class="hljs-params">array</span>()</span>, <span class="hljs-built_in">list</span>.count<span class="hljs-literal">()</span>, otherFlags <span class="hljs-pattern-match">| <span class="hljs-constructor">ATTACH_CLASS</span>);</span><br><span class="hljs-pattern-match">24                 attach<span class="hljs-constructor">Categories(<span class="hljs-params">cls</span>-&gt;ISA()</span>, <span class="hljs-built_in">list</span>.<span class="hljs-built_in">array</span>(), <span class="hljs-built_in">list</span>.count(), other<span class="hljs-constructor">Flags</span> | <span class="hljs-constructor">ATTACH_METACLASS</span>);</span><br><span class="hljs-pattern-match">25             &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="hljs-pattern-match">26                 attach<span class="hljs-constructor">Categories(<span class="hljs-params">cls</span>, <span class="hljs-params">list</span>.<span class="hljs-params">array</span>()</span>, <span class="hljs-built_in">list</span>.count(), flags);</span><br><span class="hljs-pattern-match">27             &#125;</span><br><span class="hljs-pattern-match">28             map.erase(it);</span><br><span class="hljs-pattern-match">29         &#125;</span><br><span class="hljs-pattern-match">30     &#125;</span><br></code></pre></td></tr></table></figure>
+
+
+<p>但是运行并未走进 attachCategories 源码 1 的 20 行代码，我们跳进 attachCategories() 方法并对其进行断点 (下面源码 2 的第 41 行)：</p>
+<p>3、attachCategories() 源码 2：</p>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><code class="hljs xl"><span class="hljs-number">1</span> <span class="hljs-comment">// Attach method lists and properties and protocols from categories to a class.</span><br> <span class="hljs-number">2</span> <span class="hljs-comment">// Assumes the categories in cats are all loaded and sorted by load order, </span><br> <span class="hljs-number">3</span> <span class="hljs-comment">// oldest categories first.</span><br> <span class="hljs-number">4</span> static void<br> <span class="hljs-number">5</span> attachCategories(Class cls, const locstamped_category_t *cats_list, uint32_t cats_count,<br> <span class="hljs-number">6</span>                  int flags)<br> <span class="hljs-number">7</span> &#123;<br> <span class="hljs-number">8</span>     <span class="hljs-keyword">if</span> (slowpath(PrintReplacedMethods)) &#123;<br> <span class="hljs-number">9</span>         printReplacements(cls, cats_list, cats_count);<br><span class="hljs-number">10</span>     &#125;<br><span class="hljs-number">11</span>     <span class="hljs-keyword">if</span> (slowpath(PrintConnecting)) &#123;<br><span class="hljs-number">12</span>         _objc_inform(<span class="hljs-string">&quot;CLASS: attaching %d categories to%s class &#x27;%s&#x27;%s&quot;</span>,<br><span class="hljs-number">13</span>                      cats_count, (flags &amp; ATTACH_EXISTING) ? <span class="hljs-string">&quot; existing&quot;</span> : <span class="hljs-string">&quot;&quot;</span>,<br><span class="hljs-number">14</span>                      <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>nameForLogging(), (flags &amp; ATTACH_METACLASS) ? <span class="hljs-string">&quot; (meta)&quot;</span> : <span class="hljs-string">&quot;&quot;</span>);<br><span class="hljs-number">15</span>     &#125;<br><span class="hljs-number">17</span>     <span class="hljs-comment">/*</span><br><span class="hljs-comment">18      * Only a few classes have more than 64 categories during launch.</span><br><span class="hljs-comment">19      * This uses a little stack, and avoids malloc.</span><br><span class="hljs-comment">20      *</span><br><span class="hljs-comment">21      * Categories must be added in the proper order, which is back</span><br><span class="hljs-comment">22      * to front. To do that with the chunking, we iterate cats_list</span><br><span class="hljs-comment">23      * from front to back, build up the local buffers backwards,</span><br><span class="hljs-comment">24      * and call attachLists on the chunks. attachLists prepends the</span><br><span class="hljs-comment">25      * lists, so the final result is in the expected order.</span><br><span class="hljs-comment">26      */</span><br><span class="hljs-number">27</span>     constexpr uint32_t ATTACH_BUFSIZ = <span class="hljs-number">64</span>;<br><span class="hljs-number">28</span>     method_list_t   *mlists[ATTACH_BUFSIZ];<br><span class="hljs-number">29</span>     property_list_t *proplists[ATTACH_BUFSIZ];<br><span class="hljs-number">30</span>     protocol_list_t *protolists[ATTACH_BUFSIZ];<br><span class="hljs-number">32</span>     uint32_t mcount = <span class="hljs-number">0</span>;<br><span class="hljs-number">33</span>     uint32_t propcount = <span class="hljs-number">0</span>;<br><span class="hljs-number">34</span>     uint32_t protocount = <span class="hljs-number">0</span>;<br><span class="hljs-number">35</span>     bool fromBundle = NO;<br><span class="hljs-number">36</span>     bool isMeta = (flags &amp; ATTACH_METACLASS);<br><span class="hljs-number">37</span>     <span class="hljs-function"><span class="hljs-title">auto</span> rwe = cls-&gt;</span><span class="hljs-function"><span class="hljs-title">data</span>()-&gt;</span><span class="hljs-function"><span class="hljs-title">extAllocIfNeeded</span>();// rwe 初始化 --&gt;</span> 要对copy出的干净内存进行方法插入操作<br><span class="hljs-number">40</span>     <span class="hljs-comment">// 我加的调试代码</span><br><span class="hljs-number">41</span>     <span class="hljs-function"><span class="hljs-title">const</span> char *mangledName = cls-&gt;</span>mangledName();<br><span class="hljs-number">42</span>     const char *myPersonName = <span class="hljs-string">&quot;MyPerson&quot;</span>;<br><span class="hljs-number">43</span>     <span class="hljs-keyword">if</span> (strcmp(mangledName, myPersonName) == <span class="hljs-number">0</span>) &#123;<br><span class="hljs-number">44</span>         printf(<span class="hljs-string">&quot;%s 函数 func: %s\n&quot;</span>,__func__,mangledName);<br><span class="hljs-number">45</span>     &#125;<br><span class="hljs-number">47</span>     <span class="hljs-comment">// 遍历 分类数据的准备(method property protocol)</span><br><span class="hljs-number">48</span>     <span class="hljs-keyword">for</span> (uint32_t i = <span class="hljs-number">0</span>; i &lt; cats_count; i++) &#123;<br><span class="hljs-number">49</span>         auto&amp; entry = cats_list[i];<br><span class="hljs-number">51</span>         <span class="hljs-function"><span class="hljs-title">method_list_t</span> *mlist = entry.cat-&gt;</span>methodsForMeta(isMeta);<br><span class="hljs-number">52</span>         <span class="hljs-keyword">if</span> (mlist) &#123;<br><span class="hljs-number">53</span>             <span class="hljs-keyword">if</span> (mcount == ATTACH_BUFSIZ) &#123;<br><span class="hljs-number">54</span>                 prepareMethodLists(cls, mlists, mcount, NO, fromBundle);<br><span class="hljs-number">55</span>                 <span class="hljs-function"><span class="hljs-title">rwe</span>-&gt;</span>methods.attachLists(mlists, mcount);<br><span class="hljs-number">56</span>                 mcount = <span class="hljs-number">0</span>;<br><span class="hljs-number">57</span>             &#125;<br><span class="hljs-number">58</span>             <span class="hljs-function"><span class="hljs-title">mlists</span>[ATTACH_BUFSIZ - ++mcount] = mlist;// mlists 添加数据 mlist --&gt;</span> 从后向前 倒序插入 <span class="hljs-number">64</span>-<span class="hljs-number">1</span> <span class="hljs-number">64</span>-<span class="hljs-number">2</span>... (二维数组)<br><span class="hljs-number">59</span>             <span class="hljs-function"><span class="hljs-title">fromBundle</span> |= entry.hi-&gt;</span>isBundle();<br><span class="hljs-number">60</span>         &#125;<br><span class="hljs-number">62</span>         property_list_t *proplist =<br><span class="hljs-number">63</span>             <span class="hljs-function"><span class="hljs-title">entry</span>.cat-&gt;</span>propertiesForMeta(isMeta, entry.hi);<br><span class="hljs-number">64</span>         <span class="hljs-keyword">if</span> (proplist) &#123;<br><span class="hljs-number">65</span>             <span class="hljs-keyword">if</span> (propcount == ATTACH_BUFSIZ) &#123;<br><span class="hljs-number">66</span>                 <span class="hljs-function"><span class="hljs-title">rwe</span>-&gt;</span>properties.attachLists(proplists, propcount);<br><span class="hljs-number">67</span>                 propcount = <span class="hljs-number">0</span>;<br><span class="hljs-number">68</span>             &#125;<br><span class="hljs-number">69</span>             proplists[ATTACH_BUFSIZ - ++propcount] = proplist;<br><span class="hljs-number">70</span>         &#125;<br><span class="hljs-number">72</span>         <span class="hljs-function"><span class="hljs-title">protocol_list_t</span> *protolist = entry.cat-&gt;</span>protocolsForMeta(isMeta);<br><span class="hljs-number">73</span>         <span class="hljs-keyword">if</span> (protolist) &#123;<br><span class="hljs-number">74</span>             <span class="hljs-keyword">if</span> (protocount == ATTACH_BUFSIZ) &#123;<br><span class="hljs-number">75</span>                 <span class="hljs-function"><span class="hljs-title">rwe</span>-&gt;</span>protocols.attachLists(protolists, protocount);<br><span class="hljs-number">76</span>                 protocount = <span class="hljs-number">0</span>;<br><span class="hljs-number">77</span>             &#125;<br><span class="hljs-number">78</span>             protolists[ATTACH_BUFSIZ - ++protocount] = protolist;<br><span class="hljs-number">79</span>         &#125;<br><span class="hljs-number">80</span>     &#125;<br><span class="hljs-number">81</span>     <span class="hljs-comment">// 分类方法的 排序、附着关联</span><br><span class="hljs-number">82</span>     <span class="hljs-keyword">if</span> (mcount &gt; <span class="hljs-number">0</span>) &#123;<br><span class="hljs-number">83</span>         prepareMethodLists(cls, mlists + ATTACH_BUFSIZ - mcount, mcount, NO, fromBundle);<span class="hljs-comment">// 排序</span><br><span class="hljs-number">84</span>         <span class="hljs-function"><span class="hljs-title">rwe</span>-&gt;</span>methods.attachLists(mlists + ATTACH_BUFSIZ - mcount, mcount);<span class="hljs-comment">// attach</span><br><span class="hljs-number">85</span>         <span class="hljs-keyword">if</span> (flags &amp; ATTACH_EXISTING) flushCaches(cls);<br><span class="hljs-number">86</span>     &#125;<br><span class="hljs-number">88</span>     <span class="hljs-function"><span class="hljs-title">rwe</span>-&gt;</span>properties.attachLists(proplists + ATTACH_BUFSIZ - propcount, propcount);<br><span class="hljs-number">90</span>     <span class="hljs-function"><span class="hljs-title">rwe</span>-&gt;</span>protocols.attachLists(protolists + ATTACH_BUFSIZ - protocount, protocount);<br><span class="hljs-number">91</span> &#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>tip：rwe 的初始化 开辟：extAllocIfNeeded()，在以下几种场景 (我们可操作的)：</p>
+<ol>
+<li><strong>static IMP addMethod()</strong></li>
+<li> <strong>static SEL * addMethods()</strong></li>
+<li><strong>BOOL class_addProtocol()</strong></li>
+<li><strong>static bool _class_addProperty()</strong></li>
+<li> <strong>分类</strong></li>
+</ol>
+<p>4、继续源码分析</p>
+<p><strong>attachLists()</strong> 源码 3：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-number">1</span> <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">attachLists</span><span class="hljs-params">(List* <span class="hljs-keyword">const</span> * addedLists, <span class="hljs-keyword">uint32_t</span> addedCount)</span> </span>&#123;<br> <span class="hljs-number">2</span>         <span class="hljs-keyword">if</span> (addedCount == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;<br> <span class="hljs-number">4</span>         <span class="hljs-keyword">if</span> (<span class="hljs-built_in">hasArray</span>()) &#123;<br> <span class="hljs-number">5</span>             <span class="hljs-comment">// many lists -&gt; many lists 多+多</span><br> <span class="hljs-number">6</span>             <span class="hljs-keyword">uint32_t</span> oldCount = <span class="hljs-built_in">array</span>()-&gt;count;<br> <span class="hljs-number">7</span>             <span class="hljs-keyword">uint32_t</span> newCount = oldCount + addedCount;<br> <span class="hljs-number">8</span>             <span class="hljs-built_in">setArray</span>((<span class="hljs-keyword">array_t</span> *)<span class="hljs-built_in">realloc</span>(<span class="hljs-built_in">array</span>(), <span class="hljs-keyword">array_t</span>::<span class="hljs-built_in">byteSize</span>(newCount)));<span class="hljs-comment">// 扩容</span><br> <span class="hljs-number">9</span>             <span class="hljs-built_in">array</span>()-&gt;count = newCount;<br><span class="hljs-number">10</span>             <span class="hljs-built_in">memmove</span>(<span class="hljs-built_in">array</span>()-&gt;lists + addedCount, <span class="hljs-built_in">array</span>()-&gt;lists, <br><span class="hljs-number">11</span>                     oldCount * <span class="hljs-built_in"><span class="hljs-keyword">sizeof</span></span>(<span class="hljs-built_in">array</span>()-&gt;lists[<span class="hljs-number">0</span>]));<span class="hljs-comment">// 移动旧的去后面</span><br><span class="hljs-number">12</span>             <span class="hljs-built_in">memcpy</span>(<span class="hljs-built_in">array</span>()-&gt;lists, addedLists, <br><span class="hljs-number">13</span>                    addedCount * <span class="hljs-built_in"><span class="hljs-keyword">sizeof</span></span>(<span class="hljs-built_in">array</span>()-&gt;lists[<span class="hljs-number">0</span>]));<span class="hljs-comment">// cpy 新的在前面</span><br><span class="hljs-number">14</span>         &#125;<br><span class="hljs-number">15</span>         <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!list  &amp;&amp;  addedCount == <span class="hljs-number">1</span>) &#123;<br><span class="hljs-number">16</span>             <span class="hljs-comment">// 0 lists -&gt; 1 list</span><br><span class="hljs-number">17</span>             <span class="hljs-comment">// 0到1 - list 没有数据第一次 - 第0个元素给list，此时 list 是一维的</span><br><span class="hljs-number">18</span>             list = addedLists[<span class="hljs-number">0</span>];<br><span class="hljs-number">19</span>         &#125; <br><span class="hljs-number">20</span>         <span class="hljs-keyword">else</span> &#123;<br><span class="hljs-number">21</span>             <span class="hljs-comment">// 1 list -&gt; many lists</span><br><span class="hljs-number">22</span>             <span class="hljs-comment">// 1+many - 举例 many lists 是3个</span><br><span class="hljs-number">23</span>             List* oldList = list;<br><span class="hljs-number">24</span>             <span class="hljs-keyword">uint32_t</span> oldCount = oldList ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;<br><span class="hljs-number">25</span>             <span class="hljs-keyword">uint32_t</span> newCount = oldCount + addedCount;<span class="hljs-comment">// 容量计算，旧+新的和 1+3=4</span><br><span class="hljs-number">26</span>             <span class="hljs-built_in">setArray</span>((<span class="hljs-keyword">array_t</span> *)<span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">array_t</span>::<span class="hljs-built_in">byteSize</span>(newCount)));<span class="hljs-comment">// 开辟总大小的空间 newCount</span><br><span class="hljs-number">27</span>             <span class="hljs-built_in">array</span>()-&gt;count = newCount;<span class="hljs-comment">// array 的数量：是新的添加 manylists 后的数量</span><br><span class="hljs-number">28</span>             <span class="hljs-keyword">if</span> (oldList) <span class="hljs-built_in">array</span>()-&gt;lists[addedCount] = oldList;<span class="hljs-comment">// 旧的list 放最后面 第3个位置</span><br><span class="hljs-number">29</span>             <span class="hljs-comment">// memcpy(位置, 放谁, 大小)</span><br><span class="hljs-number">30</span>             <span class="hljs-comment">// 把新的 lists 从起始位置0开始放</span><br><span class="hljs-number">31</span>             <span class="hljs-built_in">memcpy</span>(<span class="hljs-built_in">array</span>()-&gt;lists, addedLists, <br><span class="hljs-number">32</span>                    addedCount * <span class="hljs-built_in"><span class="hljs-keyword">sizeof</span></span>(<span class="hljs-built_in">array</span>()-&gt;lists[<span class="hljs-number">0</span>]));<br><span class="hljs-number">33</span>         &#125;<br><span class="hljs-number">34</span>     &#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>分类的 attachLists 过程:</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021132653390-495427317.png" srcset="/img/loading.gif" lazyload></p>
+<p>这里其实也可验证，为何我们天津爱的分类方法会优于本类方法调用 –&gt; 本类方法并非被覆盖而是在后面了。 </p>
+<h2 id="2、源码验证"><a href="#2、源码验证" class="headerlink" title="2、源码验证"></a>2、源码验证</h2><p>运行工程验证，如何走进 attachCategories() 呢？</p>
+<p>给分类也添加 +load 方法，运行可以走了进去：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021141942143-20308659.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="1、何时调用-attachCategories-呢？"><a href="#1、何时调用-attachCategories-呢？" class="headerlink" title="1、何时调用 attachCategories() 呢？"></a>1、何时调用 attachCategories() 呢？</h3><h4 id="1-1-断点-看堆栈信息"><a href="#1-1-断点-看堆栈信息" class="headerlink" title="1.1. 断点 - 看堆栈信息"></a>1.1. 断点 - 看堆栈信息</h4><p>可以看到 load_categories_nolock() 之后走进了 attachCategories()，搜索 load_categories_nolock:</p>
+<p>_read_images() 和 loadAllCategories() 两处 调了 load_categories_nolock(hi); 断点，重新运行工程，断点只走了 loadAllCategories()：</p>
+<p>–&gt; loadAllCategories() 是在 load_images() 时调用，map_images 已经走完了。</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021151900160-122039471.png" srcset="/img/loading.gif" lazyload> </p>
+<h4 id="1-2-反推"><a href="#1-2-反推" class="headerlink" title="1.2. 反推"></a>1.2. 反推</h4><p>已知必然会调 attachCategories()，全局搜索 attachCategories，找到下面两处进行了调用：</p>
+<ol>
+<li> attachToClass()</li>
+<li> load_categories_nolock()</li>
+</ol>
+<p>通过断点调试发现走到了 load_categories_nolock().</p>
+<p><strong>attachCategories 调用流程图</strong>：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021164502872-1095337973.png" srcset="/img/loading.gif" lazyload></p>
+<p>问题：我们创建多个分类，只在 本类和其中一个分类中添加 load 方法 其他分类不加，那么不加 load 方法的分类是懒加载还是非懒加载处理呢？–&gt; 下面的 <a href="#define_04">‘3’</a> 进行分析。</p>
+<h3 id="2、attachList-源码执行"><a href="#2、attachList-源码执行" class="headerlink" title="2、attachList 源码执行"></a>2、attachList 源码执行</h3><p>执行到上面<a href="#define_01">源码 2</a> 的 84 行 (同时见下图源码)：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021142327688-1886494345.png" srcset="/img/loading.gif" lazyload></p>
+<p>ATTACH_BUFSIZ = 64  mcount = 1 –&gt; 内存平移 –&gt; 平移到最后位置。</p>
+<p>分类的 attachLists()，走进了条件 1 + 多 : </p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021144952033-107869958.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="3、分类加载的几种情况"><a href="#3、分类加载的几种情况" class="headerlink" title="3、分类加载的几种情况"></a>3、分类加载的几种情况</h3><h4 id="1）本类、分类均实现-load"><a href="#1）本类、分类均实现-load" class="headerlink" title="1）本类、分类均实现 load"></a>1）本类、分类均实现 load</h4><p>上面的流程即使如此，全部走了 load_images() 加载到数据，文章上面的过程已可验证。</p>
+<h4 id="2）本类实现-load-方法非懒加载，分类都不实现-load"><a href="#2）本类实现-load-方法非懒加载，分类都不实现-load" class="headerlink" title="2）本类实现 load 方法非懒加载，分类都不实现 load"></a>2）本类实现 load 方法非懒加载，分类都不实现 load</h4><p>运行见下图，methodizeClass() 方法执行，2 个分类的方法数据都在 data() 里面了。(rwe 为 NULL 未开辟脏内存，data 在 macho 中)</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021165729720-1365272132.png" srcset="/img/loading.gif" lazyload></p>
+<p>上图 lldb 出的信息，排序：对 3 者相同的方法名的排序 - 后加的分类 方法在前，本类在最后。</p>
+<h4 id="3）本类和分类都懒加载-不实现-load-方法"><a href="#3）本类和分类都懒加载-不实现-load-方法" class="headerlink" title="3）本类和分类都懒加载 不实现 load 方法"></a>3）本类和分类都懒加载 不实现 load 方法</h4><p>在第一次方法调用时加载到数据：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021175204452-456131795.png" srcset="/img/loading.gif" lazyload></p>
+<p>执行过程: _read_images() –&gt; readClass(). readClass 中 baseMethodList 的 count 也是 13 个，数据也是从 data() 里面拿到的:</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021180845463-1166392824.png" srcset="/img/loading.gif" lazyload></p>
+<p>方法排序和 ‘1）’ 中相同。</p>
+<h4 id="4）主类不实现-load-分类实现-load"><a href="#4）主类不实现-load-分类实现-load" class="headerlink" title="4）主类不实现 load 分类实现 load"></a>4）主类不实现 load 分类实现 load</h4><p>通过堆栈信息查看加载流程:</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021185404485-554756574.png" srcset="/img/loading.gif" lazyload></p>
+<p>methodList 一直到 执行到 attachToClass() 仍是只有 9 个方法:</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021190105098-1686213823.png" srcset="/img/loading.gif" lazyload></p>
+<p>attachToClass() –&gt; 走进了 attachCategories() –&gt; attachLists() .</p>
+<p>可得结论：**分类实现了 load 方法会迫使主类进行提前加载数据 (但这里本类仍并非是非懒加载，只是被迫使提前加载了而已)**。 </p>
+<h4 id="5）主类和分类-cateMore-非懒加载-cateTwo-懒加载不实现-load-方法"><a href="#5）主类和分类-cateMore-非懒加载-cateTwo-懒加载不实现-load-方法" class="headerlink" title="5）主类和分类 cateMore 非懒加载 - cateTwo 懒加载不实现 load 方法:"></a>5）主类和分类 cateMore 非懒加载 - cateTwo 懒加载不实现 load 方法:</h4><p>1、运行工程，MyPerson 类<strong>第一次</strong>进入 attachCategories() –&gt;</p>
+<p>cateTwo 的方法加载在 data 中 (ro-&gt;baseMethods()) 取出，rwe 为 null 未开辟脏内存.</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022093520122-102329797.png" srcset="/img/loading.gif" lazyload></p>
+<p>2、继续执行 MyPerson 类第二次进入 load_categories_nolock() –&gt; attachCategories() –&gt;</p>
+<p>attachLists()，rew 非 NULL，分类 cateMore 的方法会 attachLists 进来:</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022095654738-1975355961.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022094118769-1580877883.png" srcset="/img/loading.gif" lazyload></p>
+<p>所有分类都会走非懒加载！！！<strong>对于同一个本类，只要有一个分类是非懒加载，其他所有分类都会非懒加载的</strong>。</p>
+<p>总结：</p>
+<ul>
+<li>  <strong>分类懒加载： 分类的数据信息是从 data 中读取的；</strong></li>
+<li>  <strong>有一 or 多个分类非懒加载：主类会提前加载 (早于 main 函数)，并 attach 到所有非懒加载分类的信息；</strong></li>
+<li>  <strong>都为</strong>懒加载<strong>：在第一次方法调用时从 data() 中取出数据</strong>。</li>
+</ul>
+<p>问题回顾：通过 <a href="">OC 底层探索 14</a> 对方法排序源码的分析已知，方法排序：</p>
+<p>1、<strong>首先根据方法名的地址进行排序 - name 的 address</strong></p>
+<p>2、若<strong>方法重名则根据 sel 排序：</strong></p>
+<p> <strong>1. sel 混乱则进行 fixedUp  2. sel 没有混乱则根据 imp 排序</strong>。 </p>
+<p><strong>验证</strong>：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022110819805-1454474090.png" srcset="/img/loading.gif" lazyload></p>
+<p>文章上面的流程也可得验证。</p>
+<p>以上。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/10/31/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2016%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%20-%20%E7%B1%BB%E7%9A%84%E6%89%A9%E5%B1%95%20&amp;%20%E5%88%86%E7%B1%BB%E5%85%B3%E8%81%94%E5%AF%B9%E8%B1%A1/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">类的加载 - 类的扩展 & 分类关联对象</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/10/23/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2014%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%202%20-%20%E7%B1%BB%E7%9A%84%20data_%20/">
+                        <span class="hidden-mobile">类的加载 2 - 类的 data_</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

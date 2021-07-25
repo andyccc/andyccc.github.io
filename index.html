@@ -182,32 +182,20 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/10/22/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2016%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%20-%20%E7%B1%BB%E7%9A%84%E6%89%A9%E5%B1%95%20&%20%E5%88%86%E7%B1%BB%E5%85%B3%E8%81%94%E5%AF%B9%E8%B1%A1/" target="_self">
-          类的加载 - 类的扩展 &amp; 分类关联对象
+        <a href="/2021/07/25/2021/iOS%2015%20UI%20%E9%80%82%E9%85%8D/" target="_self">
+          iOS 15 UI 适配
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/22/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2016%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%20-%20%E7%B1%BB%E7%9A%84%E6%89%A9%E5%B1%95%20&%20%E5%88%86%E7%B1%BB%E5%85%B3%E8%81%94%E5%AF%B9%E8%B1%A1/" target="_self">
+        <a href="/2021/07/25/2021/iOS%2015%20UI%20%E9%80%82%E9%85%8D/" target="_self">
           
           
             
           
-          一、类扩展1、类扩展与分类category：
-
-  准用来给类添加新方法；
-  不能添加成员变量，即使添加了也无法取到；
-  属性可添加，但只会生成 setter/getter 的声明而没有相应的实现 –&gt; 可通过 runtime 进行关联实现。
-
-extension：
-
-  可看做匿名分类；
-  可以给类添加成员属性，但是私有的；
-  可以给类添加方法，也是私有的。
-
-类扩展：
-
-类的扩展
+          前言iOS 15 在 2021 WWDC 会后发布，就勇猛的把水果全家桶都升级了最新系统。两个 iOS 15 beta 版本过后，系统稳定性整体还不错。也随之发现了几个 iOS 适配上的 bug，在此整理记录下来。后续有发现再继续补充。Xcode Version 13.0 betaiOS 15 Developer Beta2
+1. UINavigationBar
+  在 iOS 15 中，UINa
         </a>
       </p>
 
@@ -215,28 +203,12 @@ extension：
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-22 12:01" pubdate>
-              2020-10-22
+            <time datetime="2021-07-25 13:48" pubdate>
+              2021-07-25
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -248,23 +220,22 @@ extension：
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/10/18/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2015%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%203%20-%20%E5%88%86%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD/" target="_self">
-          类的加载 3 - 分类的加载
+        <a href="/2020/09/08/%E4%BB%8E%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91%E5%88%B0%E5%A4%9A%E7%BB%A7%E6%89%BF/" target="_self">
+          从消息转发到多继承
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/18/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2015%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%203%20-%20%E5%88%86%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD/" target="_self">
+        <a href="/2020/09/08/%E4%BB%8E%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91%E5%88%B0%E5%A4%9A%E7%BB%A7%E6%89%BF/" target="_self">
           
           
             
           
-          本文继续衔接 [OC 底层探索 14、类的加载 2]探索分类的加载。调试源码
-一、分类的本质分类的结构查看方法1）.cpp 文件在 main.m 中任意添加一个分类信息的 .h .m 文件信息，编译生成 cpp 文件 clang -rewrite-objc main.m -o main.cpp  
-如下 tu：
+          从消息转发到多继承0x0 消息的动态派发Objective-C 中函数的调用是在运行时确定的，编译期确定的函数调用和运行时的区别，举个例子：
+定义两个函数，如下：
+1234567void foo() &#123;    print(&quot;foo&quot;);&#125;void bar() &#123;    print(&quot;bar&quot;);&#125;
 
-category_t 结构:
-123456781 struct _category_
+假如编译期确定的 
         </a>
       </p>
 
@@ -272,28 +243,12 @@ category_t 结构:
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-18 00:27" pubdate>
-              2020-10-18
+            <time datetime="2020-09-08 10:11" pubdate>
+              2020-09-08
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -305,20 +260,19 @@ category_t 结构:
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/10/17/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2014%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%202%20-%20%E7%B1%BB%E7%9A%84%20data_%20/" target="_self">
-          类的加载 2 - 类的 data_
+        <a href="/2020/08/26/2020-2/37.%E5%89%96%E6%9E%90%E4%BD%BF%20App%20%E5%85%B7%E6%9C%89%E5%8A%A8%E6%80%81%E5%8C%96%E5%92%8C%E7%83%AD%E6%9B%B4%E6%96%B0%E8%83%BD%E5%8A%9B%E7%9A%84%E6%96%B9%E6%A1%88/" target="_self">
+          剖析使 App 具有动态化和热更新能力的方案
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/17/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2014%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%202%20-%20%E7%B1%BB%E7%9A%84%20data_%20/" target="_self">
+        <a href="/2020/08/26/2020-2/37.%E5%89%96%E6%9E%90%E4%BD%BF%20App%20%E5%85%B7%E6%9C%89%E5%8A%A8%E6%80%81%E5%8C%96%E5%92%8C%E7%83%AD%E6%9B%B4%E6%96%B0%E8%83%BD%E5%8A%9B%E7%9A%84%E6%96%B9%E6%A1%88/" target="_self">
           
           
             
           
-          本文衔接 OC 底层探索 13 继续探索类的加载，我们已知通过 readClass() 读取了编译器写的类 (or 元类)，同时给 cls 赋了 name 和把 cls 插入到了类 / 元类的表中，此时 cls 不仅有了地址还有了 name。此时的类是什么样子的呢？我们读取一下 cls 的内存情况，见下图：
-
-通过上面 lldb 调试，我们发现 cls 的 bits 是 0000，并无数据. 继续
+          剖析使 App 具有动态化和热更新能力的方案
+今天，聊聊iOS开发中的动态化和热更新方案。热更新能力的初衷是，能够及时修复线上问题，减少Bug 对用户的伤害。而动态化的目的，除了修复线上问题外，还要能够灵活更新App 版本。要实现动态化，就需要具备在运行时动态执行程序的能力。同时，实现了动态化，也就具备了热更新能力。通常情况下，实现动态化的方案有三种，分别是 JavaScriptCore 解释器方
         </a>
       </p>
 
@@ -326,28 +280,12 @@ category_t 结构:
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-17 19:35" pubdate>
-              2020-10-17
+            <time datetime="2020-08-26 23:11" pubdate>
+              2020-08-26
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -359,20 +297,19 @@ category_t 结构:
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/10/12/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2013%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%201%20-%20dyld%20%E5%92%8C%20objc%20%E7%9A%84%E5%85%B3%E8%81%94/" target="_self">
-          类的加载 1 - dyld 和 objc 的关联
+        <a href="/2020/08/01/2020-2/36.iOS%E5%8E%9F%E7%94%9F%E3%80%81%E5%A4%A7%E5%89%8D%E7%AB%AF%E5%92%8CFlutter%E5%88%86%E5%88%AB%E6%98%AF%E6%80%8E%E4%B9%88%E6%B8%B2%E6%9F%93%E7%9A%84/" target="_self">
+          iOS原生、大前端和Flutter分别是怎么渲染的
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/12/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2013%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%201%20-%20dyld%20%E5%92%8C%20objc%20%E7%9A%84%E5%85%B3%E8%81%94/" target="_self">
+        <a href="/2020/08/01/2020-2/36.iOS%E5%8E%9F%E7%94%9F%E3%80%81%E5%A4%A7%E5%89%8D%E7%AB%AF%E5%92%8CFlutter%E5%88%86%E5%88%AB%E6%98%AF%E6%80%8E%E4%B9%88%E6%B8%B2%E6%9F%93%E7%9A%84/" target="_self">
           
           
             
           
-          本文开始探索类的加载。调试源码 objc 源码工程
-_objc_init 函数：
-12345678910111213141516171819202122231 /*********************************************************************** 2 * _objc_init 3 * Bootstrap initialization. Re
+          iOS原生、大前端和Flutter分别是怎么渲染的
+用户在使用 App 时，界面的设计、流畅程度是最直接的体验。为此，苹果公司提供了各个层级的库，比如 SwiftUI、UIKit、Core Animation、Core Graphic、OpenGL ，以方便App界面的开发。说起来，即使你不了解这些库的实现原理，也可以通过它们提供的易用接口上手去开发 App，特别是 SwiftUI 大大简化了界面
         </a>
       </p>
 
@@ -380,28 +317,12 @@ _objc_init 函数：
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-12 23:07" pubdate>
-              2020-10-12
+            <time datetime="2020-08-01 22:54" pubdate>
+              2020-08-01
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -413,23 +334,19 @@ _objc_init 函数：
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/10/05/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2012%E3%80%81%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%8A%A0%E8%BD%BD/" target="_self">
-          应用程序加载
+        <a href="/2020/07/25/2020-2/35.%E5%8E%9F%E7%94%9F%E5%B8%83%E5%B1%80%E8%BD%AC%E5%88%B0%E5%89%8D%E7%AB%AF%E5%B8%83%E5%B1%80%EF%BC%8C%E5%BC%80%E5%8F%91%E6%80%9D%E8%B7%AF%E6%9C%89%E5%93%AA%E4%BA%9B%E8%BD%AC%E5%8F%98/" target="_self">
+          原生布局转到前端布局，开发思路有哪些转变
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/05/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2012%E3%80%81%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%8A%A0%E8%BD%BD/" target="_self">
+        <a href="/2020/07/25/2020-2/35.%E5%8E%9F%E7%94%9F%E5%B8%83%E5%B1%80%E8%BD%AC%E5%88%B0%E5%89%8D%E7%AB%AF%E5%B8%83%E5%B1%80%EF%BC%8C%E5%BC%80%E5%8F%91%E6%80%9D%E8%B7%AF%E6%9C%89%E5%93%AA%E4%BA%9B%E8%BD%AC%E5%8F%98/" target="_self">
           
           
             
           
-          方法等是如何加载到内存中的呢，或者说类的加载都做了什么？在此之前，我们先探索 APP 从响应用户点击到完全启动的过程 即 应用程序加载 都做了什么事情。
-首先我们准备一个 iOS 的 APP 工程，ViewController.m 中添加 load 方法，main.m 中添加一个 C++ 的 方法，代码如下图：
-
-执行流程： load –&gt; C++ –&gt;  main() .
-
-为何 l
+          原生布局转到前端布局，开发思路有哪些转变
+今天，我来跟你聊聊原生布局转到前端布局的过程中，开发思路会有哪些转变。最开始的时候，iOS 原生布局只支持通过横纵坐标和宽高确定布局的方式，后来引入了 Auto Layout 来优化布局。但，Auto Layout 的写法繁琐，开发者需要编写大量的代码，无法将精力集中在界面布局本身。再后来，苹果公司意识到 Auto Layout的这个问题，于是推出了VFL
         </a>
       </p>
 
@@ -437,28 +354,12 @@ _objc_init 函数：
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-05 14:57" pubdate>
-              2020-10-05
+            <time datetime="2020-07-25 22:38" pubdate>
+              2020-07-25
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -470,25 +371,19 @@ _objc_init 函数：
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/09/26/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2011%E3%80%81objc_msgSend%20%E6%B5%81%E7%A8%8B%203%20-%20%E5%8A%A8%E6%80%81%E6%96%B9%E6%B3%95%E5%86%B3%E8%AE%AE%20&%20%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91/" target="_self">
-          objc_msgSend 流程 3 - 动态方法决议 &amp; 消息转发
+        <a href="/2020/07/03/2020-2/33.%E6%89%93%E9%80%9A%E5%89%8D%E7%AB%AF%E4%B8%8E%E5%8E%9F%E7%94%9F%E7%9A%84%E6%A1%A5%E6%A2%81%EF%BC%9AJavaScriptCore%20%E8%83%BD%E5%B9%B2%E5%93%AA%E4%BA%9B%E4%BA%8B%E6%83%85/" target="_self">
+          打通前端与原生的桥梁：JavaScriptCore 能干哪些事情
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/09/26/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2011%E3%80%81objc_msgSend%20%E6%B5%81%E7%A8%8B%203%20-%20%E5%8A%A8%E6%80%81%E6%96%B9%E6%B3%95%E5%86%B3%E8%AE%AE%20&%20%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91/" target="_self">
+        <a href="/2020/07/03/2020-2/33.%E6%89%93%E9%80%9A%E5%89%8D%E7%AB%AF%E4%B8%8E%E5%8E%9F%E7%94%9F%E7%9A%84%E6%A1%A5%E6%A2%81%EF%BC%9AJavaScriptCore%20%E8%83%BD%E5%B9%B2%E5%93%AA%E4%BA%9B%E4%BA%8B%E6%83%85/" target="_self">
           
           
             
           
-          我们已经知道 objc_msgSend 的消息查找流程首先是 缓存 cache 查找，然后是去方法列表递归查找，若一直没有找到消息一般则会 crash 报错找不到该消息。
-但是直接 crash 太过不友好，下面就进行探究苹果给我们的 3 次机会。
-消息处理的流程图：
-一、动态方法决议1、通过简单代码切入简单运行下面代码
-
-运行崩溃：
-
-在 MyPerson.m 中添加 resolveInstanc
+          打通前端与原生的桥梁：JavaScriptCore 能干哪些事情
+聊聊前端和原生之间的桥梁 JavaScriptCore，看看它是什么、能做哪些事儿。总结来说，JavaScriptCore 为原生编程语言 Objective-C、Swift 提供调用 JavaScript 程序的动态能力，还能为 JavaScript 提供原生能力来弥补前端所缺能力。正是因为JavaScriptCore的这种桥梁作
         </a>
       </p>
 
@@ -496,28 +391,12 @@ _objc_init 函数：
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-26 23:59" pubdate>
-              2020-09-26
+            <time datetime="2020-07-03 22:22" pubdate>
+              2020-07-03
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -529,20 +408,19 @@ _objc_init 函数：
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/09/25/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2010%E3%80%81objc_msgSend%20%E6%B5%81%E7%A8%8B%202%20-%20%E6%85%A2%E9%80%9F%E6%9F%A5%E6%89%BE/" target="_self">
-          objc_msgSend 流程 2 - 慢速查找
+        <a href="/2020/06/30/2020-2/32.React%20Native%E3%80%81Flutter%20%E7%AD%89%EF%BC%8C%E8%BF%99%E4%BA%9B%E8%B7%A8%E7%AB%AF%E6%96%B9%E6%A1%88%E6%80%8E%E4%B9%88%E9%80%89/" target="_self">
+          React Native、Flutter 等，这些跨端方案怎么选
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/09/25/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2010%E3%80%81objc_msgSend%20%E6%B5%81%E7%A8%8B%202%20-%20%E6%85%A2%E9%80%9F%E6%9F%A5%E6%89%BE/" target="_self">
+        <a href="/2020/06/30/2020-2/32.React%20Native%E3%80%81Flutter%20%E7%AD%89%EF%BC%8C%E8%BF%99%E4%BA%9B%E8%B7%A8%E7%AB%AF%E6%96%B9%E6%A1%88%E6%80%8E%E4%B9%88%E9%80%89/" target="_self">
           
           
             
           
-          我们已经知道消息发送流程首先会走到缓存 cache 里面，那么当缓存中没有查询到消息时 __objc_msgSend_uncached，后续怎么继续执行呢？
-一、切入口__objc_msgSend_uncached –&gt; MethodTableLookup –&gt; _lookUpImpOrForward.
-我们通过源码可以看到缓存中找不到会进入 _lookUpImpOrForward 的
+          React Native、Flutter 等，这些跨端方案怎么选
+为了一份代码能够运行在多个平台，从而节省开发和沟通成本，各公司都开始关注和使用跨端方案。目前，主流的跨端方案，主要分为两种：一种是，将 JavaScriptCore 引擎当作虚拟机的方案，代表框架是 React Native；另一种是，使用非 JavaScriptCore 虚拟机的方案，代表框架是 Flutter。使用跨端方案进行开
         </a>
       </p>
 
@@ -550,28 +428,12 @@ _objc_init 函数：
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-25 22:38" pubdate>
-              2020-09-25
+            <time datetime="2020-06-30 23:55" pubdate>
+              2020-06-30
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -583,22 +445,20 @@ _objc_init 函数：
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/09/23/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2009%E3%80%81objc_msgSend%20%E6%B5%81%E7%A8%8B%201%20-%20%E7%BC%93%E5%AD%98%E6%9F%A5%E6%89%BE/" target="_self">
-          objc_msgSend 流程 1 - 缓存查找
+        <a href="/2020/06/18/2020-2/31.%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99%20Clang%20%E6%8F%92%E4%BB%B6/" target="_self">
+          libffi：如何编写 Clang 插件
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/09/23/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2009%E3%80%81objc_msgSend%20%E6%B5%81%E7%A8%8B%201%20-%20%E7%BC%93%E5%AD%98%E6%9F%A5%E6%89%BE/" target="_self">
+        <a href="/2020/06/18/2020-2/31.%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99%20Clang%20%E6%8F%92%E4%BB%B6/" target="_self">
           
           
             
           
-          本文对 Runtime 进行简单介绍 和对 objc_msgSend 的发消息流程中的缓存查找进行探索。
-更新 (流程图概览)：缓存查找流程图
+          如何编写 Clang 插件
 
-我们知道类结构中包含了很多信息：isa superclass cache bits，cache 中缓存了我们调用的方法，具体流程见 OC 底层探索 07. 但是方法具体时间什么时候缓存的，需要继续探究。
-源码 objc_cache.mm 文件，Metho
+Clang 使用的是模块化设计，可以将自身功能以库的方式来供上层应用来调用。比如，编码规范检查、IDE 中的语法高亮、语法检查等上层应用，都是使用 Clang 库的接口开发出来的。Clang 库对接上层应用有三个接口库，分别是 LibClang、Clang 插件、LibTooling。其中，LibClang 为了兼容更多 Clang 版本，相比Clang少了很多功能；
         </a>
       </p>
 
@@ -606,28 +466,12 @@ _objc_init 函数：
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-23 23:56" pubdate>
-              2020-09-23
+            <time datetime="2020-06-18 23:08" pubdate>
+              2020-06-18
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -639,24 +483,19 @@ _objc_init 函数：
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/09/22/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2007%E3%80%81%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%202%20-%20cache_t/" target="_self">
-          类的结构分析 2 - cache_t
+        <a href="/2020/06/12/2020-2/30.iOS%20%E6%98%AF%E6%80%8E%E4%B9%88%E7%AE%A1%E7%90%86%E5%86%85%E5%AD%98%E7%9A%84/" target="_self">
+          libffi：iOS 是怎么管理内存的
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/09/22/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2007%E3%80%81%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%202%20-%20cache_t/" target="_self">
+        <a href="/2020/06/12/2020-2/30.iOS%20%E6%98%AF%E6%80%8E%E4%B9%88%E7%AE%A1%E7%90%86%E5%86%85%E5%AD%98%E7%9A%84/" target="_self">
           
           
             
           
-          本文来探索类结构中 cache_t. 之前的文章 OC 底层探索 04 中，已知如何找到类信息。本文我们对类信息中的 cache_t 进行探索。
-objc_class 结构 :
-
-从 OC 底层探索 04 中的指针和内存偏移，我们已知可通过指针平移获取相应位置信息，cache_t 的位置 = 8 + 8 =16
-一、cache_t 简析cache_t 的源码分析：
-
-CACHE_MASK_STOR
+          iOS 是怎么管理内存的
+今天，聊聊 iOS 是怎么管理内存的。不同的系统版本对 App 运行时占用内存的限制不同，你可以利用我在第14篇文章中提到的方法，去查看不同版本系统对App占用内存的具体限制是多少。另外，系统版本的升级也会增加占用的内存，同时App功能的增多也会要求越来越多的内存。然而，移动设备的内存资源是有限的，当App运行时占用的内存大小超过了限制后，就会被强杀掉，从而导致用户体验被
         </a>
       </p>
 
@@ -664,28 +503,12 @@ CACHE_MASK_STOR
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-22 21:26" pubdate>
-              2020-09-22
+            <time datetime="2020-06-12 00:18" pubdate>
+              2020-06-12
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -697,25 +520,19 @@ CACHE_MASK_STOR
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/09/21/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2006%E3%80%81%20isa%202%20%E4%B8%AA%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" target="_self">
-          isa 2 个经典问题分析
+        <a href="/2020/06/03/2020-2/29.libffi%EF%BC%9A%E5%8A%A8%E6%80%81%E8%B0%83%E7%94%A8%E5%92%8C%E5%AE%9A%E4%B9%89%20C%20%E5%87%BD%E6%95%B0/" target="_self">
+          libffi：动态调用和定义 C 函数
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/09/21/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2006%E3%80%81%20isa%202%20%E4%B8%AA%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" target="_self">
+        <a href="/2020/06/03/2020-2/29.libffi%EF%BC%9A%E5%8A%A8%E6%80%81%E8%B0%83%E7%94%A8%E5%92%8C%E5%AE%9A%E4%B9%89%20C%20%E5%87%BD%E6%95%B0/" target="_self">
           
           
             
           
-          isa 2 个经典问题分析
-一、类的归属问题1、2 个 API objc_getMetaClass() –&gt; 获取元类
-
-class_getMethodImplementation() –&gt; 获取 IMP
-
-2、实例方法 和 类方法 分析1. 实例方法class_getInstanceMethod() –&gt; 类的实例方法
-
-2. 类方法class_getClassMethod()
+          libffi：动态调用和定义 C 函数
+在 iOS 开发中，我们可以使用 Runtime 接口动态地调用 Objective-C 方法，但是却无法动态调用 C 的函数。那么，我们怎么才能动态地调用 C 语言函数呢？C 语言编译后，在可执行文件里会有原函数名信息，我们可以通过函数名字符串来找到函数的地址。现在，我们只要能够通过函数名找到函数地址，就能够实现动态地去调用C 语言函数。而在动态链接器中，
         </a>
       </p>
 
@@ -723,28 +540,12 @@ class_getMethodImplementation() –&gt; 获取 IMP
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-21 02:00" pubdate>
-              2020-09-21
+            <time datetime="2020-06-03 00:11" pubdate>
+              2020-06-03
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>

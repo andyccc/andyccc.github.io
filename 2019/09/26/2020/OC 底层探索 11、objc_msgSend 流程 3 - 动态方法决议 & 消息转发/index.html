@@ -1,0 +1,544 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>objc_msgSend 流程 3 - 动态方法决议 &amp; 消息转发 - andyccc</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>andyccc</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="objc_msgSend 流程 3 - 动态方法决议 & 消息转发">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-09-26 23:59" pubdate>
+        2019年9月26日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      24
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">objc_msgSend 流程 3 - 动态方法决议 &amp; 消息转发</h1>
+            
+            <div class="markdown-body">
+              <p>我们已经知道 objc_msgSend 的消息查找流程首先是 缓存 cache 查找，然后是去方法列表递归查找，若一直没有找到消息一般则会 crash 报错找不到该消息。</p>
+<p>但是直接 crash 太过不友好，下面就进行探究苹果给我们的 3 次机会。</p>
+<h3 id="消息处理的流程图："><a href="#消息处理的流程图：" class="headerlink" title="消息处理的流程图："></a>消息处理的流程图：</h3><p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927100448970-724564669.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="一、动态方法决议"><a href="#一、动态方法决议" class="headerlink" title="一、动态方法决议"></a>一、动态方法决议</h1><h2 id="1、通过简单代码切入"><a href="#1、通过简单代码切入" class="headerlink" title="1、通过简单代码切入"></a>1、通过简单代码切入</h2><p>简单运行下面代码</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200925134338069-806551772.png" srcset="/img/loading.gif" lazyload></p>
+<p>运行崩溃：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200925134407869-1251847689.png" srcset="/img/loading.gif" lazyload></p>
+<p>在 MyPerson.m 中添加 resolveInstanceMethod: 方法：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200925140110744-1859072581.png" srcset="/img/loading.gif" lazyload> </p>
+<p>再次 run：发现一个问题 1，为什么这里调用了 2 遍 resolveInstanceMethod() 呢？</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200925140158633-272472995.png" srcset="/img/loading.gif" lazyload> </p>
+<p>走到了 resolveInstanceMethod 中，我们在这里对找不到的方法进行处理，然后再次 run：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200925141402368-1093209299.png" srcset="/img/loading.gif" lazyload></p>
+<p>关于 v@: 方法签名具体可参考 <a href="">OC 底层探索 05</a> 。</p>
+<p>上面代码运行后，不再崩溃，我们手动给 helloObj7 补充添加了 imp.</p>
+<p>问题 2：这里处理后，为何 resolveInstanceMethod() 方法又只走了一次呢？</p>
+<p>针对这个 resolveInstanceMethod() 调用次数的问题文章后面继续进行探究。</p>
+<h2 id="2、resolveInstanceMethod-源码分析"><a href="#2、resolveInstanceMethod-源码分析" class="headerlink" title="2、resolveInstanceMethod 源码分析 "></a>2、resolveInstanceMethod 源码分析 </h2><h3 id="方法入口"><a href="#方法入口" class="headerlink" title="方法入口"></a>方法入口</h3><h4 id="1-lookUpImpOrForward-："><a href="#1-lookUpImpOrForward-：" class="headerlink" title="1. lookUpImpOrForward()："></a>1. lookUpImpOrForward()：</h4><p>这里的判断条件在 resolveInstanceMethod() 过程中，只会进入一次，原因参见下图中注释：</p>
+<p> <img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200925151750883-791963356.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="2-resolveMethod-locked"><a href="#2-resolveMethod-locked" class="headerlink" title="2. resolveMethod_locked():"></a>2. resolveMethod_locked():</h4><p>–&gt; resolveInstanceMethod() / resolveClassMethod()</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200925162114416-1825242574.png" srcset="/img/loading.gif" lazyload> </p>
+<p>上面代码中可以看到，在这里 resolveXXXMethod 后会再次执行 return loopUpImpAndForward(), 即:</p>
+<p>–&gt; 苹果给了一次机会 - 动态方法决议 - 无论是否处理都再查找一次 imp。</p>
+<h4 id="3-resolveInstanceMethod"><a href="#3-resolveInstanceMethod" class="headerlink" title="3. resolveInstanceMethod():"></a>3. resolveInstanceMethod():</h4><p>–&gt; lookUpImpOrNil() –&gt; lookUpImpOrForward()</p>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs xl"><span class="hljs-number">1</span> <span class="hljs-comment">/***********************************************************************</span><br><span class="hljs-comment"> 2 * resolveInstanceMethod</span><br><span class="hljs-comment"> 3 * Call +resolveInstanceMethod, looking for a method to be added to class cls.</span><br><span class="hljs-comment"> 4 * cls may be a metaclass or a non-meta class.</span><br><span class="hljs-comment"> 5 * Does not check if the method already exists.</span><br><span class="hljs-comment"> 6 **********************************************************************/</span><br> <span class="hljs-number">7</span> static void resolveInstanceMethod(id inst, SEL sel, Class cls)<br> <span class="hljs-number">8</span> &#123;<br> <span class="hljs-number">9</span>     runtimeLock.assertUnlocked();<br><span class="hljs-number">10</span>     ASSERT(<span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>isRealized());<br><span class="hljs-number">11</span>     SEL resolve_sel = @selector(resolveInstanceMethod:);<br><span class="hljs-number">13</span>     <span class="hljs-comment">// resolve_sel --&gt; lookUpImpOrNil() --&gt; lookUpImpOrForward()</span><br><span class="hljs-number">14</span>     <span class="hljs-function"><span class="hljs-title">if</span> (!lookUpImpOrNil(cls, resolve_sel, cls-&gt;</span>ISA())) &#123;<br><span class="hljs-number">15</span>         <span class="hljs-comment">// Resolver not implemented.</span><br><span class="hljs-number">16</span>         <span class="hljs-comment">// 查询没有 resolve_sel 这个 sel ，直接返回</span><br><span class="hljs-number">17</span>         return;<br><span class="hljs-number">18</span>     &#125;<br><span class="hljs-number">20</span>     BOOL (*msg)(Class, SEL, SEL) = (typeof(msg))objc_msgSend;<br><span class="hljs-number">21</span>     bool resolved = msg(cls, resolve_sel, sel);<span class="hljs-comment">// 发送消息，resolveInstanceMethod</span><br><span class="hljs-number">23</span>     <span class="hljs-comment">// Cache the result (good or bad) so the resolver doesn&#x27;t fire next time.</span><br><span class="hljs-number">24</span>     <span class="hljs-comment">// +resolveInstanceMethod adds to self a.k.a. cls</span><br><span class="hljs-number">25</span>     IMP imp = lookUpImpOrNil(inst, sel, cls);<span class="hljs-comment">// 再次去 lookUpImpOrForward 查询 imp，此imp是resolve补的</span><br><span class="hljs-number">26</span>     <span class="hljs-comment">// lookUpImpOrNil --&gt;lookUpImpOrForward(,,0|4|8=12)</span><br><span class="hljs-number">28</span>     <span class="hljs-keyword">if</span> (resolved  &amp;&amp;  PrintResolving) &#123;<br><span class="hljs-number">29</span>         <span class="hljs-keyword">if</span> (imp) &#123;<br><span class="hljs-number">30</span>             _objc_inform(<span class="hljs-string">&quot;RESOLVE: method %c[%s %s] &quot;</span><br><span class="hljs-number">31</span>                          <span class="hljs-string">&quot;dynamically resolved to %p&quot;</span>, <br><span class="hljs-number">32</span>                          <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>isMetaClass() ? <span class="hljs-string">&#x27;+&#x27;</span> : <span class="hljs-string">&#x27;-&#x27;</span>, <br><span class="hljs-number">33</span>                          <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>nameForLogging(), sel_getName(sel), imp);<br><span class="hljs-number">34</span>         &#125;<br><span class="hljs-number">35</span>         <span class="hljs-keyword">else</span> &#123;<br><span class="hljs-number">36</span>             <span class="hljs-comment">// Method resolver didn&#x27;t add anything?</span><br><span class="hljs-number">37</span>             _objc_inform(<span class="hljs-string">&quot;RESOLVE: +[%s resolveInstanceMethod:%s] returned YES&quot;</span><br><span class="hljs-number">38</span>                          <span class="hljs-string">&quot;, but no new implementation of %c[%s %s] was found&quot;</span>,<br><span class="hljs-number">39</span>                          <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>nameForLogging(), sel_getName(sel), <br><span class="hljs-number">40</span>                          <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>isMetaClass() ? <span class="hljs-string">&#x27;+&#x27;</span> : <span class="hljs-string">&#x27;-&#x27;</span>, <br><span class="hljs-number">41</span>                          <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>nameForLogging(), sel_getName(sel));<br><span class="hljs-number">42</span>         &#125;<br><span class="hljs-number">43</span>     &#125;<br><span class="hljs-number">44</span> &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>从上面源码，我们可以得知，动态决议所走流程是一个循环套：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200926154130341-836541216.png" srcset="/img/loading.gif" lazyload></p>
+<p>但是上面的 resolveInstanceMethod() 执行次数的问题我们还没有找到原因？下面进行细究。</p>
+<p>查看打印时的堆栈信息：</p>
+<h3 id="resolveInstanceMethod-调-2-次的原因探究"><a href="#resolveInstanceMethod-调-2-次的原因探究" class="headerlink" title="resolveInstanceMethod() 调 2 次的原因探究"></a>resolveInstanceMethod() 调 2 次的原因探究</h3><p>第一次打印：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200926151224856-2063255058.png" srcset="/img/loading.gif" lazyload></p>
+<p>第二次打印：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200926151450909-1244391957.png" srcset="/img/loading.gif" lazyload></p>
+<p>通过堆栈信息，我们可看到，</p>
+<p>第一次打印流程： objc_msgSend_uncached –&gt; lookUpImpOrForward –&gt; resolveInstanceMethod().</p>
+<p>第二次流程：CoreFoundation: forwarding –&gt; CF: -[NSObject(NSObject) methodSignatureForSelector:] –&gt; __methodDescriptionForSelector </p>
+<p>–&gt; class_getInstanceMethod() –&gt; lookUpImpOrForward –&gt; resolveInstanceMethod().</p>
+<p>通过查看堆栈信息我们可以知道 resolveInstanceMethod() 第二次是因系统的消息签名机制后被调起的，**<a href="#define_01">CoreFoundation 中做了什么呢</a>？**文章底部对其进行分析。</p>
+<p>tip：关于类方法动态方法决议有个点要注意下，我们直接把 resolveClassMethod() 给到当前类进行处理是不会生效的，这里涉及到 isa 走位和继承链关系，类方法是元类的实例方法根元类的父类是 NSObject。详见：<a href="">OC 底层探索 04</a>.</p>
+<h3 id="动态方法决议的存在有什么意义呢？"><a href="#动态方法决议的存在有什么意义呢？" class="headerlink" title="动态方法决议的存在有什么意义呢？"></a>动态方法决议的存在有什么意义呢？</h3><p>个人想法</p>
+<p>1、这里可以做一些埋点、问题统计等优化处理；</p>
+<p>2、我们或许可以用其进行 封装 切面？例如：封装 SDK，定义的方法全部以 XXX_ 为前缀，针对未实现方法崩溃的问题，进行处理并记录上报问题点。但是，我们知道方法调用优先级是 子 &gt; 父，如果出现在局部子类对 resolve 方法做了处理，那么封装其实便不会走，也浪费封装，所以在此处进行封装是不合适的。所以，这些类似操作应该在更具有可操作性的场景方法中使用，一般在 resolveInstanceMethod 这里不作处理。留下个小问题：什么场景适于使用切面呢？如何使用呢？</p>
+<h1 id="二、消息转发"><a href="#二、消息转发" class="headerlink" title="二、消息转发"></a>二、消息转发</h1><p>动态方法决议的机会不作处理，此后会走到消息转发的流程，以下代码均以 MyPerson.m 为示例操作。</p>
+<h2 id="1、快速转发"><a href="#1、快速转发" class="headerlink" title="1、快速转发"></a>1、快速转发</h2><p>forwardingTargetForSelector:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">-</span> (id)<span class="hljs-selector-tag">forwardingTargetForSelector</span>:(SEL)<span class="hljs-selector-tag">aSelector</span> &#123;<br>    <br>    <span class="hljs-selector-tag">NSLog</span>(@<span class="hljs-string">&quot;快速转发这里需要 sel == %@&quot;</span>,NSStringFromSelector(aSelector));<br><span class="hljs-comment">//    return [super forwardingTargetForSelector:aSelector];</span><br>    <span class="hljs-selector-tag">return</span> <span class="hljs-selector-attr">[MyChild alloc]</span>;<span class="hljs-comment">// 消息转给 MyChild</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在此方法中我们只需给 SEL - aSelector 一个 imp 即可。</p>
+<h2 id="2、签名转发"><a href="#2、签名转发" class="headerlink" title="2、签名转发"></a>2、签名转发</h2><p>methodSignatureForSelector:</p>
+<p>forwardInvocation:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-comment">///消息签名</span><br>- (<span class="hljs-built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector &#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;需要消息签名 sel == %@&quot;</span>,<span class="hljs-built_in">NSStringFromSelector</span>(aSelector));<br><span class="hljs-comment">//    return [super methodSignatureForSelector:aSelector];</span><br>    <span class="hljs-comment">// 给一个方法签名</span><br>    <span class="hljs-comment">// v@: --&gt; 返回类型void，参数类型id,SEL</span><br>    <span class="hljs-keyword">return</span> [<span class="hljs-built_in">NSMethodSignature</span> signatureWithObjCTypes:<span class="hljs-string">&quot;v@:&quot;</span>];<br>&#125;<br>- (<span class="hljs-keyword">void</span>)forwardInvocation:(<span class="hljs-built_in">NSInvocation</span> *)anInvocation &#123;<span class="hljs-comment">// Invocation 启用 调用</span><br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;签名过来了&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>如上代码，运行程序：</p>
+<p>当前 invocation 中包含了什么？</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200925191912860-1335910778.png" srcset="/img/loading.gif" lazyload></p>
+<p>我们签名中 return 了一个方法签名，invocation 是这个抛出来事务，但我们并未对 “helloObj7” 方法进行处理，它目前仍是没有 imp 的，系统为什么会不再崩溃呢？</p>
+<p><strong>消息签名的慢速转发机制</strong>相当于，系统允许，对于此签名的事务，可以处理，也可不处理。相当于抛出去就不必管它了，任其随意游离在哪里；我这里不处理了，爱谁处理谁处理。像飘在空中的云 大家都可以看见，同时也可以不看。</p>
+<p>但是这里<strong>不处理</strong>，我们<strong>就浪费掉了一个事务</strong>，你调用到了它，响应却不处理没利用它，<strong>耗费了性能，同样也是业务层面的一种浪费</strong>。</p>
+<p><strong>! 慢速转发相对快速转发更灵活，权限更大</strong>。</p>
+<p>对 invocation 进行处理，让它去处理任一方法 (我们可以根据实际业务需求对此方法做成统一处理某件事)：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200925193300765-294033375.png" srcset="/img/loading.gif" lazyload></p>
+<p>注意一点：</p>
+<p>如果在这里把 “helloObjc7” 这个 sel 给到 invocation，然后对 invocation 启动后，会造成无线循环调用，一直去找这个不存在的“helloObjc7” –&gt; crash.</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200925192854607-926054207.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200925193618324-453582650.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="三、信息找寻-流程验证"><a href="#三、信息找寻-流程验证" class="headerlink" title="三、信息找寻 - 流程验证"></a>三、信息找寻 - 流程验证</h1><h2 id="我们回到代码未做任何处理的初始状态-运行："><a href="#我们回到代码未做任何处理的初始状态-运行：" class="headerlink" title="我们回到代码未做任何处理的初始状态, 运行："></a>我们回到代码未做任何处理的初始状态, 运行：</h2><p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927102310794-208946553.png" srcset="/img/loading.gif" lazyload></p>
+<p>通过堆栈信息查看为什么会报错，我们可以发现在 main 函数后、报错前，还有 2 个方法，它们具体做了什么如何查看呢？它们都是属于 CoreFoundation 框架的，我们去找 foundation 的源码：<a target="_blank" rel="noopener" href="https://opensource.apple.com/source/CF/">CF 相关源码</a> 链接.</p>
+<p>将源码拖到 Visual Studio Code 中 (<a target="_blank" rel="noopener" href="https://code.visualstudio.com/">VSCode 下载</a>)，搜索__forwarding_pre_0___, 找不到！没有相应开源源码 –&gt; 反汇编。</p>
+<h2 id="反汇编"><a href="#反汇编" class="headerlink" title="反汇编 "></a>反汇编 </h2><p>Hopper 是一个可以将可执行文件反汇编成伪代码、控制流程图等，帮助我们可以进行文件可视性分析的反汇编工具。</p>
+<h3 id="1、通过-image-list-读取全部加载的镜像文件，找到-CoreFoundation-的位置："><a href="#1、通过-image-list-读取全部加载的镜像文件，找到-CoreFoundation-的位置：" class="headerlink" title="1、通过 image list 读取全部加载的镜像文件，找到 CoreFoundation 的位置："></a>1、通过 image list 读取全部加载的镜像文件，找到 CoreFoundation 的位置：</h3><p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927004545958-1585824807.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2、前往文件，找到-coreFoundation-可执行文件："><a href="#2、前往文件，找到-coreFoundation-可执行文件：" class="headerlink" title="2、前往文件，找到 coreFoundation 可执行文件："></a>2、前往文件，找到 coreFoundation 可执行文件：</h3><p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927004812195-254042418.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="3、开启-hopper-："><a href="#3、开启-hopper-：" class="headerlink" title="3、开启 hopper ："></a>3、开启 hopper ：</h3><p>1）Try the Demo</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927005043765-87561684.png" srcset="/img/loading.gif" lazyload></p>
+<p>2）将可执行文件拖入 hopper： </p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927005342407-159381277.png" srcset="/img/loading.gif" lazyload></p>
+<p>3）功能界面如下：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927005709388-1078719224.png" srcset="/img/loading.gif" lazyload> </p>
+<h3 id="4、开始找寻我们需要的信息"><a href="#4、开始找寻我们需要的信息" class="headerlink" title="4、开始找寻我们需要的信息"></a>4、开始找寻我们需要的信息</h3><p>**1）搜索 <strong>forwarding_prep_0_</strong>** –&gt; 进入 ___forwarding___的伪代码</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927010436689-1325551716.png" srcset="/img/loading.gif" lazyload></p>
+<p>___forwarding___：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927011220557-163528555.png" srcset="/img/loading.gif" lazyload></p>
+<p>消息快速转发 forwardingTargetForSelector 没有实现怎跳转到 loc_6459b 位置，走到消息签名方法：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927011838265-924280737.png" srcset="/img/loading.gif" lazyload> </p>
+<p>1.1）消息签名 methodSignatureForSelector 未实现，跳转 loc_6490b: 报错</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927012424416-111922867.png" srcset="/img/loading.gif" lazyload></p>
+<p>1.2）消息签名 methodSignatureForSelector 实现了则继续往下走：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927110047125-1578811468.png" srcset="/img/loading.gif" lazyload> </p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927110924497-1081109061.png" srcset="/img/loading.gif" lazyload></p>
+<p>判断 forwardingInvocation 响应则继续向下走 (loc_6476f)：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927112005835-1953432837.png" srcset="/img/loading.gif" lazyload></p>
+<p>invocation 不响应则报错:</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927113049698-1463561371.png" srcset="/img/loading.gif" lazyload>  </p>
+<p>从上面流程也验证了我们顶部的消息流程图。 </p>
+<p><strong>2）如法炮制，搜索 __methodDescriptionForSelector</strong></p>
+<p>–&gt; class_getInstanceMethod：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927013225720-405215138.png" srcset="/img/loading.gif" lazyload> </p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200927013315246-1830353422.png" srcset="/img/loading.gif" lazyload></p>
+<p>class_getInstanceMethod 源码如下，我们可以看到内部调用了 lookUpImpOrForwarding：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202009/842658-20200926233912276-1108756902.png" srcset="/img/loading.gif" lazyload></p>
+<p>这里，可验证为何上面 resolveInstanceMethod() 调用了 2 次。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/OC/">OC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/10/05/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2012%E3%80%81%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%8A%A0%E8%BD%BD/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">应用程序加载</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/09/25/2020/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2010%E3%80%81objc_msgSend%20%E6%B5%81%E7%A8%8B%202%20-%20%E6%85%A2%E9%80%9F%E6%9F%A5%E6%89%BE/">
+                        <span class="hidden-mobile">objc_msgSend 流程 2 - 慢速查找</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

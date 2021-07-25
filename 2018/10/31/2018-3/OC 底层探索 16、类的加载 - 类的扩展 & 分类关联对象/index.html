@@ -1,0 +1,534 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>类的加载 - 类的扩展 &amp; 分类关联对象 - andyccc</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>andyccc</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="类的加载 - 类的扩展 & 分类关联对象">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2018-10-31 12:01" pubdate>
+        2018年10月31日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      46
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">类的加载 - 类的扩展 &amp; 分类关联对象</h1>
+            
+            <div class="markdown-body">
+              <h1 id="一、类扩展"><a href="#一、类扩展" class="headerlink" title="一、类扩展"></a>一、类扩展</h1><h2 id="1、类扩展与分类"><a href="#1、类扩展与分类" class="headerlink" title="1、类扩展与分类"></a>1、类扩展与分类</h2><p><strong>category</strong>：</p>
+<ul>
+<li>  <strong>准用来给类添加新方法；</strong></li>
+<li>  <strong>不能添加成员变量，即使添加了也无法取到；</strong></li>
+<li>  <strong>属性可添加，但只会生成 setter/getter 的声明而没有相应的实现 –&gt; 可通过 runtime 进行关联实现。</strong></li>
+</ul>
+<p><strong>extension</strong>：</p>
+<ul>
+<li>  <strong>可看做匿名分类；</strong></li>
+<li>  <strong>可以给类添加成员属性，但是私有的；</strong></li>
+<li>  <strong>可以给类添加方法，也是私有的。</strong></li>
+</ul>
+<p><strong>类扩展</strong>：</p>
+<p><strong><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022154116155-1673271615.png" srcset="/img/loading.gif" lazyload></strong></p>
+<p><strong>类的扩展必须在实现前</strong>，如下图 error 信息：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022154519332-2098418301.png" srcset="/img/loading.gif" lazyload></p>
+<p>类扩展的本质是什么呢？  </p>
+<h2 id="2、类扩展-Extension-的本质"><a href="#2、类扩展-Extension-的本质" class="headerlink" title="2、类扩展 - Extension 的本质"></a>2、类扩展 - Extension 的本质</h2><p>1、cpp 文件的编译查看</p>
+<p>在 main.m 文件中添加如下简单代码，</p>
+<p><strong>clang -rewrite-objc main.m -o main.cpp</strong></p>
+<p>编译 main.m 文件成 .cpp:</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022161243063-1225785981.png" srcset="/img/loading.gif" lazyload></p>
+<p>编译后文件代码：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022161602054-1363066132.png" srcset="/img/loading.gif" lazyload></p>
+<p>setter/getter 的实现:</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022161835581-325800078.png" srcset="/img/loading.gif" lazyload></p>
+<p>由上可验证：通过类扩展添加的属性变量，在编译时生成了 成员变量 ivar 和 setter(objc_setProperty()) / getter 方法的声明与实现。</p>
+<p>方法列表 method_list 中，类扩展添加的方法和原本可重点二分法一样，编译时已经编译到 method_list 中了。</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022163209442-107477472.png" srcset="/img/loading.gif" lazyload></p>
+<p>我们使用之前类加载分析时的 <a target="_blank" rel="noopener" href="https://github.com/andyccc/objc">objc 源码工程</a> 进行验证，运行：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022164548906-1571427042.png" srcset="/img/loading.gif" lazyload></p>
+<p>方法们见下图：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022164906375-1627700664.png" srcset="/img/loading.gif" lazyload></p>
+<p>这里也可验证。更多操作：1、将添加的分类删除，重新运行，结果相同；2、将 MyPerson 类的 load 方法实现注释掉，依然相同：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022170559730-1961779562.png" srcset="/img/loading.gif" lazyload></p>
+<p>总结： <strong>类的扩展在编译时就会被加载到类中了</strong>，直接成为为类的一部分和类共存了 (自然类扩展添加的东西不存在脏内存问题，rwe 永远 NULL)。</p>
+<p>扩展和分类不同，分类更主要用于动态的添加。 </p>
+<h1 id="二、关联对象"><a href="#二、关联对象" class="headerlink" title="二、关联对象 "></a>二、关联对象 </h1><p>一直分类添加的属性是没有 setter/getter 方法的实现的，我们可通过 runtime 的关联方法进行动态添加。</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022173258761-551954328.png" srcset="/img/loading.gif" lazyload></p>
+<p>对 Myperson 的 cateMore_name 进行赋值，运行工程，断点在 setCateMore_name 处，进入源码：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022175430680-1425623491.png" srcset="/img/loading.gif" lazyload></p>
+<p>get() 点进去没有找到实现相关代码，进入 SetAssocHook: 发现是 _base_objc_setAssociatedObject 方法的调用，继续点进去，到了 _object_set_associative_reference。</p>
+<h2 id="1、源码分析"><a href="#1、源码分析" class="headerlink" title="1、源码分析"></a>1、源码分析</h2><h3 id="1）-object-set-associative-reference-源码-01："><a href="#1）-object-set-associative-reference-源码-01：" class="headerlink" title="1）_object_set_associative_reference() 源码 01："></a>1）_object_set_associative_reference() 源码 01：</h3><figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><code class="hljs tap">1 void<br> <span class="hljs-number"> 2 </span>_object_set_associative_reference(id object, const void *key, id value, uintptr_t policy)<br> <span class="hljs-number"> 3 </span>&#123;<br> <span class="hljs-number"> 4 </span>    // This code used to work when nil was passed for object and key. Some code<br> <span class="hljs-number"> 5 </span>    // probably relies on that to not crash. Check and handle it explicitly.<br> <span class="hljs-number"> 6 </span>    // rdar://problem/44094390<br> <span class="hljs-number"> 7 </span>    if (!object &amp;&amp; !value) return;<br> <span class="hljs-number"> 9 </span>    if (object-&gt;getIsa()-&gt;forbidsAssociatedObjects())<br><span class="hljs-number"> 10 </span>        _objc_fatal(&quot;objc_setAssociatedObject called on instance (%p) of class %s which does not allow associated objects&quot;, object, object_getClassName(object));<br><span class="hljs-number"> 11 </span>    // DisguisedPtr 相当于 包装了一下原来的对象<br><span class="hljs-number"> 12 </span>    DisguisedPtr&lt;objc_object&gt; disguised&#123;(objc_object *)object&#125;;<br><span class="hljs-number"> 13 </span>    // 包装一下 policy 和 value<br><span class="hljs-number"> 14 </span>    ObjcAssociation association&#123;policy, value&#125;;// 构造函数<br><span class="hljs-number"> 16 </span>    // retain the new value (if any) outside the lock.<br><span class="hljs-number"> 17 </span>    association.acquireValue();/**<br><span class="hljs-number"> 18 </span>                                inline void acquireValue() &#123; // 根据关联方法设置的类型 policy 处理 retain 和 copy，其他场景不处理<br><span class="hljs-number"> 19 </span>                                    if (_value) &#123;<br><span class="hljs-number"> 20 </span>                                        switch (_policy &amp; 0xFF) &#123;<br><span class="hljs-number"> 21 </span>                                        case OBJC_ASSOCIATION_SETTER_RETAIN:// retain<br><span class="hljs-number"> 22 </span>                                            _value = objc_retain(_value);<br><span class="hljs-number"> 23 </span>                                            break;<br><span class="hljs-number"> 24 </span>                                        case OBJC_ASSOCIATION_SETTER_COPY:// copy<br><span class="hljs-number"> 25 </span>                                            _value = ((id(*)(id, SEL))objc_msgSend)(_value, @selector(copy));<br><span class="hljs-number"> 26 </span>                                            break;<br><span class="hljs-number"> 27 </span>                                        &#125;<br><span class="hljs-number"> 28 </span>                                    &#125;<br><span class="hljs-number"> 29 </span>                                &#125;<br><span class="hljs-number"> 30 </span>                                */<br><span class="hljs-number"> 32 </span>    &#123;<br><span class="hljs-number"> 33 </span>        AssociationsManager manager;/**<br><span class="hljs-number"> 34 </span>                                     // class AssociationsManager manages a lock / hash table singleton pair.<br><span class="hljs-number"> 35 </span>                                     // Allocating an instance acquires the lock<br><span class="hljs-number"> 37 </span>                                     class AssociationsManager &#123;<br><span class="hljs-number"> 38 </span>                                         using Storage = ExplicitInitDenseMap&lt;DisguisedPtr&lt;objc_object&gt;, ObjectAssociationMap&gt;;<br><span class="hljs-number"> 39 </span>                                         static Storage _mapStorage; // 静态变量<br><span class="hljs-number"> 41 </span>                                     public:<br><span class="hljs-number"> 42 </span>                                         AssociationsManager()   &#123; AssociationsManagerLock.lock(); &#125; // 初始化, 加 lock 锁避免了多线程对其重复操作，但并非表明它不可多次操作<br><span class="hljs-number"> 43 </span>                                         ~AssociationsManager()  &#123; AssociationsManagerLock.unlock(); &#125; // 析构<br><span class="hljs-number"> 45 </span>                                         AssociationsHashMap &amp;get() &#123;<br><span class="hljs-number"> 46 </span>                                             return _mapStorage.get();<br><span class="hljs-number"> 47 </span>                                         &#125;<br><span class="hljs-number"> 49 </span>                                         static void init() &#123;<br><span class="hljs-number"> 50 </span>                                             _mapStorage.init();<br><span class="hljs-number"> 51 </span>                                         &#125;<br><span class="hljs-number"> 52 </span>                                     &#125;;<br><span class="hljs-number"> 53 </span>                                     */<br><span class="hljs-number"> 55 </span>        // AssociationsHashMap 关联对象的表 全部的关联对象都在此表中 此表示唯一的<br><span class="hljs-number"> 56 </span>        // _mapStorage.get() --&gt; static Storage _mapStorage;//静态变量 全场唯一<br><span class="hljs-number"> 57 </span>        AssociationsHashMap &amp;associations(manager.get());<br><span class="hljs-number"> 59 </span>        if (value) &#123;<br><span class="hljs-number"> 60 </span>            auto refs_result = associations.try_emplace(disguised, ObjectAssociationMap&#123;&#125;);<br><span class="hljs-number"> 61 </span>            /** refs_result:<br><span class="hljs-number"> 62 </span>             $0 = &#123;<br><span class="hljs-number"> 63 </span>               first = &#123;<br><span class="hljs-number"> 64 </span>                 Ptr = 0x00000001012000c0<br><span class="hljs-number"> 65 </span>                 End = 0x0000000101200100<br><span class="hljs-number"> 66 </span>               &#125;<br><span class="hljs-number"> 67 </span>               second = true<br><span class="hljs-number"> 68 </span>             &#125;<br><span class="hljs-number"> 69 </span>             */<br><span class="hljs-number"> 70 </span>            if (refs_result.second) &#123;// refs_result 的 second 是个 bool 值<br><span class="hljs-number"> 71 </span>                /* it&#x27;s the first association we make */<br><span class="hljs-number"> 72 </span>                object-&gt;setHasAssociatedObjects();<br><span class="hljs-number"> 73 </span>            &#125;<br><span class="hljs-number"> 75 </span>            /* establish or replace the association */ // 进行 建立或替换 association<br><span class="hljs-number"> 76 </span>            auto &amp;refs = refs_result.first-&gt;second; // 空的桶子<br><span class="hljs-number"> 77 </span>            auto result = refs.try_emplace(key, std::move(association));<br><span class="hljs-number"> 78 </span>            if (!result.second) &#123;<br><span class="hljs-number"> 79 </span>                association.swap(result.first-&gt;second);// swap 移动<br><span class="hljs-number"> 80 </span>            &#125;<br><span class="hljs-number"> 81 </span>        &#125; else &#123;// value 是空值 --&gt; 进行移除操作<br><span class="hljs-number"> 82 </span>            auto refs_it = associations.find(disguised);// 通过 disguised 找<br><span class="hljs-number"> 83 </span>            if (refs_it != associations.end()) &#123;<br><span class="hljs-number"> 84 </span>                auto &amp;refs = refs_it-&gt;second;<br><span class="hljs-number"> 85 </span>                auto it = refs.find(key);<br><span class="hljs-number"> 86 </span>                if (it != refs.end()) &#123;<br><span class="hljs-number"> 87 </span>                    association.swap(it-&gt;second);<br><span class="hljs-number"> 88 </span>                    refs.erase(it);// 消掉移除<br><span class="hljs-number"> 89 </span>                    if (refs.size() == 0) &#123;<br><span class="hljs-number"> 90 </span>                        associations.erase(refs_it);// 消掉移除<br><span class="hljs-number"> 92 </span>                    &#125;<br><span class="hljs-number"> 93 </span>                &#125;<br><span class="hljs-number"> 94 </span>            &#125;<br><span class="hljs-number"> 95 </span>        &#125;<br><span class="hljs-number"> 96 </span>    &#125;<br><span class="hljs-number"> 98 </span>    // release the old value (outside of the lock).<br><span class="hljs-number"> 99 </span>    association.releaseHeldValue();<br>100 &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="1、先运行一下工程，执行代码通过-lldb-先查看信息具体是什么："><a href="#1、先运行一下工程，执行代码通过-lldb-先查看信息具体是什么：" class="headerlink" title="1、先运行一下工程，执行代码通过 lldb 先查看信息具体是什么："></a>1、先运行一下工程，执行代码通过 lldb 先查看信息具体是什么：</h4><p>_object_set_associative_reference() –&gt; try_emplace()</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022191315429-707094415.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="2、try-emplace-代码-源码-02"><a href="#2、try-emplace-代码-源码-02" class="headerlink" title="2、try_emplace() 代码 - 源码 02"></a>2、try_emplace() 代码 - 源码 02</h4><figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs lasso"><span class="hljs-number">1</span>   <span class="hljs-comment">// Inserts key,value pair into the map if the key isn&#x27;t already in the map.</span><br> <span class="hljs-number">2</span>   <span class="hljs-comment">// The value is constructed in-place if the key is not in the map, otherwise</span><br> <span class="hljs-number">3</span>   <span class="hljs-comment">// it is not moved.</span><br> <span class="hljs-number">4</span>   template &lt;typename<span class="hljs-params">...</span> Ts&gt;<br> <span class="hljs-number">5</span>   std<span class="hljs-type">::pair</span>&lt;iterator, bool&gt; try_emplace(const KeyT &amp;Key, Ts &amp;&amp;<span class="hljs-params">...</span> Args) &#123;<br> <span class="hljs-number">6</span>     BucketT *TheBucket;<br> <span class="hljs-number">7</span>     <span class="hljs-keyword">if</span> (LookupBucketFor(Key, TheBucket))<span class="hljs-comment">// 关联的 key 在不在 bucket 中</span><br> <span class="hljs-number">8</span>       <span class="hljs-keyword">return</span> std<span class="hljs-type">::make_pair</span>(<br> <span class="hljs-number">9</span>                makeIterator(TheBucket, getBucketsEnd(), <span class="hljs-literal">true</span>),<br><span class="hljs-number">10</span>                <span class="hljs-literal">false</span>); <span class="hljs-comment">// Already in map.已经在了</span><br><span class="hljs-number">12</span>     <span class="hljs-comment">// Otherwise, insert the new element.</span><br><span class="hljs-number">13</span>     <span class="hljs-comment">// key 是新的，把 key 插入 bucket 中 </span><br><span class="hljs-number">14</span>     TheBucket = InsertIntoBucket(TheBucket, Key, std<span class="hljs-type">::forward</span>&lt;Ts&gt;(Args)<span class="hljs-params">...</span>);<br><span class="hljs-number">15</span>     <span class="hljs-keyword">return</span> std<span class="hljs-type">::make_pair</span>(<br><span class="hljs-number">16</span>              makeIterator(TheBucket, getBucketsEnd(), <span class="hljs-literal">true</span>),<br><span class="hljs-number">17</span>              <span class="hljs-literal">true</span>);<br><span class="hljs-number">18</span>   &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>3、LookupBucketFor()，有 2 个方法，外部进入下面的那个参数是非 const 的函数，但最终是会走到上面的函数中，并进行 while(){}：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022201457593-1044067715.png" srcset="/img/loading.gif" lazyload></p>
+<p>LookupBucketFor(const LookupKeyT &amp;Val, <strong>const</strong> BucketT *&amp;FoundBucket) 代码 - 源码 03：</p>
+<figure class="highlight zephir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs zephir"><span class="hljs-number">1</span> template&lt;typename LookupKeyT&gt;<br> <span class="hljs-number">2</span>   <span class="hljs-keyword">bool</span> LookupBucketFor(<span class="hljs-keyword">const</span> LookupKeyT &amp;Val,<br> <span class="hljs-number">3</span>                        <span class="hljs-keyword">const</span> BucketT *&amp;FoundBucket) <span class="hljs-keyword">const</span> &#123;<br> <span class="hljs-number">4</span>     <span class="hljs-keyword">const</span> BucketT *BucketsPtr = getBuckets();<br> <span class="hljs-number">5</span>     <span class="hljs-keyword">const</span> <span class="hljs-keyword">unsigned</span> NumBuckets = getNumBuckets();<br> <span class="hljs-number">7</span>     <span class="hljs-keyword">if</span> (NumBuckets == <span class="hljs-number">0</span>) &#123;<br> <span class="hljs-number">8</span>       FoundBucket = nullptr;<br> <span class="hljs-number">9</span>       <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;<br><span class="hljs-number">10</span>     &#125;<br><span class="hljs-number">12</span>     <span class="hljs-comment">// FoundTombstone - Keep track of whether we find a tombstone while probing.</span><br><span class="hljs-number">13</span>     <span class="hljs-keyword">const</span> BucketT *FoundTombstone = nullptr;<br><span class="hljs-number">14</span>     <span class="hljs-keyword">const</span> KeyT EmptyKey = getEmptyKey();<br><span class="hljs-number">15</span>     <span class="hljs-keyword">const</span> KeyT TombstoneKey = getTombstoneKey();<br><span class="hljs-number">16</span>     assert(!KeyInfoT::isEqual(Val, EmptyKey) &amp;&amp;<br><span class="hljs-number">17</span>            !KeyInfoT::isEqual(Val, TombstoneKey) &amp;&amp;<br><span class="hljs-number">18</span>            <span class="hljs-string">&quot;Empty/Tombstone value shouldn&#x27;t be inserted into map!&quot;</span>);<br><span class="hljs-number">20</span>     <span class="hljs-keyword">unsigned</span> BucketNo = getHashValue(Val) &amp; (NumBuckets<span class="hljs-number">-1</span>);<span class="hljs-comment">// 哈希函数 算下标</span><br><span class="hljs-number">21</span>     <span class="hljs-keyword">unsigned</span> ProbeAmt = <span class="hljs-number">1</span>;<br><span class="hljs-number">22</span>     <span class="hljs-comment">// 开始 while</span><br><span class="hljs-number">23</span>     <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) &#123;<br><span class="hljs-number">24</span>       <span class="hljs-keyword">const</span> BucketT *ThisBucket = BucketsPtr + BucketNo;<span class="hljs-comment">// 指针位置移动</span><br><span class="hljs-number">25</span>       <span class="hljs-comment">// Found Val&#x27;s bucket?  If so, return it.</span><br><span class="hljs-number">26</span>       <span class="hljs-comment">// 找到了 value 的 bucket 则返回 bucket 赋给外部的值-&gt;FoundBucket，然后return寻找的结果为true</span><br><span class="hljs-number">27</span>       <span class="hljs-keyword">if</span> (LLVM_LIKELY(KeyInfoT::isEqual(Val, ThisBucket-&gt;getFirst()))) &#123;<br><span class="hljs-number">28</span>         FoundBucket = ThisBucket;<br><span class="hljs-number">29</span>         <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;<br><span class="hljs-number">30</span>       &#125;<br><span class="hljs-number">32</span>       <span class="hljs-comment">// If we found an empty bucket, the key doesn&#x27;t exist in the set.</span><br><span class="hljs-number">33</span>       <span class="hljs-comment">// Insert it and return the default value.</span><br><span class="hljs-number">34</span>       <span class="hljs-comment">// 找到了一个空的 bucket --&gt; 插入一个空的 bucket 并赋给 FoundBucket，然后return查找结果为false</span><br><span class="hljs-number">35</span>       <span class="hljs-keyword">if</span> (LLVM_LIKELY(KeyInfoT::isEqual(ThisBucket-&gt;getFirst(), EmptyKey))) &#123;<br><span class="hljs-number">36</span>         <span class="hljs-comment">// If we&#x27;ve already seen a tombstone while probing, fill it in instead</span><br><span class="hljs-number">37</span>         <span class="hljs-comment">// of the empty bucket we eventually probed to.</span><br><span class="hljs-number">38</span>         FoundBucket = FoundTombstone ? FoundTombstone : ThisBucket;<br><span class="hljs-number">39</span>         <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;<br><span class="hljs-number">40</span>       &#125;<br><span class="hljs-number">42</span>       <span class="hljs-comment">// 处理 然后进行继续 while 循环操作</span><br><span class="hljs-number">43</span>       <span class="hljs-comment">// If this is a tombstone, remember it.  If Val ends up not in the map, we</span><br><span class="hljs-number">44</span>       <span class="hljs-comment">// prefer to return it than something that would require more probing.</span><br><span class="hljs-number">45</span>       <span class="hljs-comment">// Ditto for zero values.</span><br><span class="hljs-number">46</span>       <span class="hljs-keyword">if</span> (KeyInfoT::isEqual(ThisBucket-&gt;getFirst(), TombstoneKey) &amp;&amp;<br><span class="hljs-number">47</span>           !FoundTombstone)<br><span class="hljs-number">48</span>         FoundTombstone = ThisBucket;  <span class="hljs-comment">// Remember the first tombstone found.</span><br><span class="hljs-number">49</span>       <span class="hljs-keyword">if</span> (ValueInfoT::isPurgeable(ThisBucket-&gt;getSecond())  &amp;&amp;  !FoundTombstone)<br><span class="hljs-number">50</span>         FoundTombstone = ThisBucket;<br><span class="hljs-number">52</span>       <span class="hljs-comment">// Otherwise, it&#x27;s a hash collision or a tombstone, continue quadratic</span><br><span class="hljs-number">53</span>       <span class="hljs-comment">// probing.</span><br><span class="hljs-number">54</span>       <span class="hljs-keyword">if</span> (ProbeAmt &gt; NumBuckets) &#123;<br><span class="hljs-number">55</span>         FatalCorruptHashTables(BucketsPtr, NumBuckets);<br><span class="hljs-number">56</span>       &#125;<br><span class="hljs-number">57</span>       BucketNo += ProbeAmt++;<br><span class="hljs-number">58</span>       BucketNo &amp;= (NumBuckets<span class="hljs-number">-1</span>);<br><span class="hljs-number">59</span>     &#125;<br><span class="hljs-number">60</span>   &#125; <br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="4、InsertIntoBucket-代码："><a href="#4、InsertIntoBucket-代码：" class="headerlink" title="4、InsertIntoBucket() 代码："></a>4、InsertIntoBucket() 代码：</h4><figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>template &lt;typename KeyArg, typename... ValueArgs&gt;<br><span class="hljs-symbol">2 </span>  BucketT *InsertIntoBucket(BucketT *TheBucket, KeyArg &amp;&amp;<span class="hljs-keyword">Key</span>,<br><span class="hljs-symbol">3 </span>                            ValueArgs &amp;&amp;... Values) &#123;<br><span class="hljs-symbol">4 </span>    TheBucket = InsertIntoBucketImpl(<span class="hljs-keyword">Key</span>, <span class="hljs-keyword">Key</span>, TheBucket);<br><span class="hljs-symbol">6 </span>    TheBucket-&gt;getFirst() = std::forward&lt;KeyArg&gt;(<span class="hljs-keyword">Key</span>);<br><span class="hljs-symbol">7 </span>    ::<span class="hljs-keyword">new</span> (&amp;TheBucket-&gt;getSecond()) ValueT(std::forward&lt;ValueArgs&gt;(Values)...);<br><span class="hljs-symbol">8 </span>    <span class="hljs-keyword">return</span> TheBucket;<br><span class="hljs-symbol">9 </span>  &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>InsertIntoBucketImpl() 代码：</p>
+<figure class="highlight zephir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs zephir"><span class="hljs-number">1</span> template &lt;typename LookupKeyT&gt;<br> <span class="hljs-number">2</span>   BucketT *InsertIntoBucketImpl(<span class="hljs-keyword">const</span> KeyT &amp;Key, <span class="hljs-keyword">const</span> LookupKeyT &amp;Lookup,<br> <span class="hljs-number">3</span>                                 BucketT *TheBucket) &#123;<br> <span class="hljs-number">4</span>     <span class="hljs-comment">// If the load of the hash table is more than 3/4, or if fewer than 1/8 of</span><br> <span class="hljs-number">5</span>     <span class="hljs-comment">// the buckets are empty (meaning that many are filled with tombstones),</span><br> <span class="hljs-number">6</span>     <span class="hljs-comment">// grow the table.</span><br> <span class="hljs-number">7</span>     <span class="hljs-comment">//</span><br> <span class="hljs-number">8</span>     <span class="hljs-comment">// The later case is tricky.  For example, if we had one empty bucket with</span><br> <span class="hljs-number">9</span>     <span class="hljs-comment">// tons of tombstones, failing lookups (e.g. for insertion) would have to</span><br><span class="hljs-number">10</span>     <span class="hljs-comment">// probe almost the entire table until it found the empty bucket.  If the</span><br><span class="hljs-number">11</span>     <span class="hljs-comment">// table completely filled with tombstones, no lookup would ever succeed,</span><br><span class="hljs-number">12</span>     <span class="hljs-comment">// causing infinite loops in lookup.</span><br><span class="hljs-number">13</span>     <span class="hljs-keyword">unsigned</span> NewNumEntries = getNumEntries() + <span class="hljs-number">1</span>;<br><span class="hljs-number">14</span>     <span class="hljs-keyword">unsigned</span> NumBuckets = getNumBuckets();<br><span class="hljs-number">15</span>     <span class="hljs-keyword">if</span> (LLVM_UNLIKELY(NewNumEntries * <span class="hljs-number">4</span> &gt;= NumBuckets * <span class="hljs-number">3</span>)) &#123;<br><span class="hljs-number">16</span>       this-&gt;grow(NumBuckets * <span class="hljs-number">2</span>);<br><span class="hljs-number">17</span>  LookupBucketFor(Lookup, TheBucket);<br><span class="hljs-number">18</span>       NumBuckets = getNumBuckets();<br><span class="hljs-number">19</span>     &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (LLVM_UNLIKELY(NumBuckets-(NewNumEntries+getNumTombstones()) &lt;=<br><span class="hljs-number">20</span>                              NumBuckets/<span class="hljs-number">8</span>)) &#123;<br><span class="hljs-number">21</span>       this-&gt;grow(NumBuckets);<br><span class="hljs-number">22</span>       LookupBucketFor(Lookup, TheBucket);<br><span class="hljs-number">23</span>     &#125;<br><span class="hljs-number">24</span>     ASSERT(TheBucket);<br><span class="hljs-number">26</span>     <span class="hljs-comment">// Only update the state after we&#x27;ve grown our bucket space appropriately</span><br><span class="hljs-number">27</span>     <span class="hljs-comment">// so that when growing buckets we have self-consistent entry count.</span><br><span class="hljs-number">28</span>     <span class="hljs-comment">// If we are writing over a tombstone or zero value, remember this.</span><br><span class="hljs-number">29</span>     <span class="hljs-keyword">if</span> (KeyInfoT::isEqual(TheBucket-&gt;getFirst(), getEmptyKey())) &#123;<br><span class="hljs-number">30</span>       <span class="hljs-comment">// Replacing an empty bucket.</span><br><span class="hljs-number">31</span>       incrementNumEntries();<br><span class="hljs-number">32</span>     &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (KeyInfoT::isEqual(TheBucket-&gt;getFirst(), getTombstoneKey())) &#123;<br><span class="hljs-number">33</span>       <span class="hljs-comment">// Replacing a tombstone.</span><br><span class="hljs-number">34</span>       incrementNumEntries();<br><span class="hljs-number">35</span>       decrementNumTombstones();<br><span class="hljs-number">36</span>     &#125; <span class="hljs-keyword">else</span> &#123;<br><span class="hljs-number">37</span>       <span class="hljs-comment">// we should be purging a zero. No accounting changes.</span><br><span class="hljs-number">38</span>       ASSERT(ValueInfoT::isPurgeable(TheBucket-&gt;getSecond()));<br><span class="hljs-number">39</span>       TheBucket-&gt;getSecond().~ValueT();<br><span class="hljs-number">40</span>     &#125;<br><span class="hljs-number">42</span>     <span class="hljs-keyword">return</span> TheBucket;<br><span class="hljs-number">43</span>   &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="5、setHasAssociatedObjects-源码见下面代码"><a href="#5、setHasAssociatedObjects-源码见下面代码" class="headerlink" title="5、setHasAssociatedObjects() 源码见下面代码:"></a>5、setHasAssociatedObjects() 源码见下面代码:</h4><p>执行到‘源码 01’ 处，<a href="#bookmark0100">second 值的判断</a> (try_emplace() 的返回值)，是第一次插入则为 true</p>
+<p>–&gt; setHasAssociatedObjects(), nopointer isa –&gt; isa.has_assoc 关联标志位设为了 true。 isa 结构见《<a href="">OC 底层探索 03</a> 中 isa 结构》。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-number">1</span> inline void<br> <span class="hljs-number">2</span> objc_object::set<span class="hljs-constructor">HasAssociatedObjects()</span><br> <span class="hljs-number">3</span> &#123;<br> <span class="hljs-number">4</span>     <span class="hljs-keyword">if</span> (is<span class="hljs-constructor">TaggedPointer()</span>) return;<br> <span class="hljs-number">6</span>  retry:<br> <span class="hljs-number">7</span>     isa_t oldisa = <span class="hljs-constructor">LoadExclusive(&amp;<span class="hljs-params">isa</span>.<span class="hljs-params">bits</span>)</span>;<br> <span class="hljs-number">8</span>     isa_t newisa = oldisa;<br> <span class="hljs-number">9</span>     <span class="hljs-keyword">if</span> (!newisa.nonpointer<span class="hljs-operator">  ||  </span>newisa.has_assoc) &#123;<br><span class="hljs-number">10</span>         <span class="hljs-constructor">ClearExclusive(&amp;<span class="hljs-params">isa</span>.<span class="hljs-params">bits</span>)</span>;<br><span class="hljs-number">11</span>         return;<br><span class="hljs-number">12</span>     &#125;<br><span class="hljs-number">13</span>     newisa.has_assoc = <span class="hljs-literal">true</span>;<span class="hljs-comment">// isa 的关联标志位</span><br><span class="hljs-number">14</span>     <span class="hljs-keyword">if</span> (!<span class="hljs-constructor">StoreExclusive(&amp;<span class="hljs-params">isa</span>.<span class="hljs-params">bits</span>, <span class="hljs-params">oldisa</span>.<span class="hljs-params">bits</span>, <span class="hljs-params">newisa</span>.<span class="hljs-params">bits</span>)</span>) goto retry;<br><span class="hljs-number">15</span> &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="2、执行流程"><a href="#2、执行流程" class="headerlink" title="2、执行流程"></a>2、执行流程</h2><h3 id="1）断点调试执行流程"><a href="#1）断点调试执行流程" class="headerlink" title="1）断点调试执行流程"></a>1）断点调试执行流程</h3><p>1、处理第一此关联：</p>
+<p>走进 try_emplace() 第一次执行 de 流程：</p>
+<p><strong>_object_set_associative_reference() -</strong> 开始 set 关联</p>
+<p> <strong>–&gt; try_emplace()</strong> - refs_result</p>
+<p> <strong>–&gt;</strong> <strong>LookupBucketFor()</strong> - 找 bucket <strong>: return false –&gt; InsertIntoBucket()</strong> - 插入一个空的 bucket <strong>:</strong></p>
+<p>　　　　　　<strong>–&gt;</strong> <strong>InsertIntoBucketImpl() –&gt; <strong>LookupBucketFor()</strong></strong> - 得到一个空的 bucket</p>
+<p> <strong>–&gt;</strong> <strong>setHasAssociatedObjects()</strong> - isa.hsa_assoc 设为 true</p>
+<p><strong>–&gt; 再次 执行到 try_emplace()</strong> - refs_result.first-&gt;second</p>
+<p>继续执行工程，第二次走进入 <a href="#bookmark02"><strong>try_emplace()</strong></a> ，bucket 不为空：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022221640809-1807104375.png" srcset="/img/loading.gif" lazyload></p>
+<p>2、添加第 2 个关联时执行：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201023000752849-658229295.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>对象关联流程图</strong>：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201023005132101-1085086872.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2）关联类的-map-的结构分析"><a href="#2）关联类的-map-的结构分析" class="headerlink" title="2）关联类的 map 的结构分析"></a>2）关联类的 map 的结构分析</h3><p>1、lldb 数据分析：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022232042678-367896563.png" srcset="/img/loading.gif" lazyload></p>
+<p>2、类型 de 结构分析：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022232602191-855632919.png" srcset="/img/loading.gif" lazyload> </p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201022232140796-1207847037.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>首次 try_emplace() 数据</strong>:</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201023122552677-381581726.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>第 2 次 try_emplace() 数据</strong>: </p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201023122457696-977323491.png" srcset="/img/loading.gif" lazyload> </p>
+<p><strong>总结</strong> (套娃，buckets 中装了 buckets 又装了 bucket)：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201023154602700-738553537.png" srcset="/img/loading.gif" lazyload></p>
+<p>tips：关联对象移除吗？需要！–&gt; <strong>dealloc 流程</strong> 如下：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201024102350732-696587031.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201024102444641-1535503124.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201024102558450-1561989906.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201024102729205-1686428676.png" srcset="/img/loading.gif" lazyload></p>
+<p>源码： </p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><code class="hljs tap">1 // rootDealloc <br> <span class="hljs-number"> 2 </span>inline void<br> <span class="hljs-number"> 3 </span>objc_object::rootDealloc()<br> <span class="hljs-number"> 4 </span>&#123;<br> <span class="hljs-number"> 5 </span>    if (isTaggedPointer()) return;  // fixme necessary?<br> <span class="hljs-number"> 7 </span>    if (fastpath(isa.nonpointer  &amp;&amp;  <br> <span class="hljs-number"> 8 </span>                 !isa.weakly_referenced  &amp;&amp;  <br> <span class="hljs-number"> 9 </span>                 !isa.has_assoc  &amp;&amp;  <br><span class="hljs-number"> 10 </span>                 !isa.has_cxx_dtor  &amp;&amp;  <br><span class="hljs-number"> 11 </span>                 !isa.has_sidetable_rc))<br><span class="hljs-number"> 12 </span>    &#123;<br><span class="hljs-number"> 13 </span>        assert(!sidetable_present());<br><span class="hljs-number"> 14 </span>        free(this);<br><span class="hljs-number"> 15 </span>    &#125; <br><span class="hljs-number"> 16 </span>    else &#123;// isa.has_assoc = true - 有关联对象<br><span class="hljs-number"> 17 </span>        object_dispose((id)this);<br><span class="hljs-number"> 18 </span>    &#125;<br><span class="hljs-number"> 19 </span>&#125;<br><span class="hljs-number"> 21 </span>/***********************************************************************<br><span class="hljs-number"> 22 </span>* object_dispose<br><span class="hljs-number"> 23 </span>* fixme<br><span class="hljs-number"> 24 </span>* Locking: none<br><span class="hljs-number"> 25 </span>**********************************************************************/<br><span class="hljs-number"> 26 </span>id <br><span class="hljs-number"> 27 </span>object_dispose(id obj)<br><span class="hljs-number"> 28 </span>&#123;<br><span class="hljs-number"> 29 </span>    if (!obj) return nil;<br><span class="hljs-number"> 31 </span>    objc_destructInstance(obj);    <br><span class="hljs-number"> 32 </span>    free(obj);<br><span class="hljs-number"> 34 </span>    return nil;<br><span class="hljs-number"> 35 </span>&#125;<br><span class="hljs-number"> 37 </span>/***********************************************************************<br><span class="hljs-number"> 38 </span>* objc_destructInstance<br><span class="hljs-number"> 39 </span>* Destroys an instance without freeing memory. <br><span class="hljs-number"> 40 </span>* Calls C++ destructors.<br><span class="hljs-number"> 41 </span>* Calls ARC ivar cleanup.<br><span class="hljs-number"> 42 </span>* Removes associative references.<br><span class="hljs-number"> 43 </span>* Returns `obj`. Does nothing if `obj` is nil.<br><span class="hljs-number"> 44 </span>**********************************************************************/<br><span class="hljs-number"> 45 </span>void *objc_destructInstance(id obj) <br><span class="hljs-number"> 46 </span>&#123;<br><span class="hljs-number"> 47 </span>    if (obj) &#123;<br><span class="hljs-number"> 48 </span>        // Read all of the flags at once for performance.<br><span class="hljs-number"> 49 </span>        bool cxx = obj-&gt;hasCxxDtor();<br><span class="hljs-number"> 50 </span>        bool assoc = obj-&gt;hasAssociatedObjects();<br><span class="hljs-number"> 52 </span>        // This order is important.<br><span class="hljs-number"> 53 </span>        if (cxx) object_cxxDestruct(obj);<br><span class="hljs-number"> 54 </span>        if (assoc) _object_remove_assocations(obj);<br><span class="hljs-number"> 55 </span>        obj-&gt;clearDeallocating();<br><span class="hljs-number"> 56 </span>    &#125;<br><span class="hljs-number"> 58 </span>    return obj;<br><span class="hljs-number"> 59 </span>&#125;<br><span class="hljs-number"> 61 </span>// Unlike setting/getting an associated reference,<br><span class="hljs-number"> 62 </span>// this function is performance sensitive because of<br><span class="hljs-number"> 63 </span>// raw isa objects (such as OS Objects) that can&#x27;t track<br><span class="hljs-number"> 64 </span>// whether they have associated objects.<br><span class="hljs-number"> 65 </span>void<br><span class="hljs-number"> 66 </span>_object_remove_assocations(id object)<br><span class="hljs-number"> 67 </span>&#123;<br><span class="hljs-number"> 68 </span>    ObjectAssociationMap refs&#123;&#125;;<br><span class="hljs-number"> 70 </span>    &#123;<br><span class="hljs-number"> 71 </span>        AssociationsManager manager;<br><span class="hljs-number"> 72 </span>        AssociationsHashMap &amp;associations(manager.get());<br><span class="hljs-number"> 73 </span>        AssociationsHashMap::iterator i = associations.find((objc_object *)object);<br><span class="hljs-number"> 74 </span>        if (i != associations.end()) &#123;<br><span class="hljs-number"> 75 </span>            refs.swap(i-&gt;second);<br><span class="hljs-number"> 76 </span>            associations.erase(i);// 擦除抹掉<br><span class="hljs-number"> 77 </span>        &#125;<br><span class="hljs-number"> 78 </span>    &#125;<br><span class="hljs-number"> 80 </span>    // release everything (outside of the lock).释放所有<br><span class="hljs-number"> 81 </span>    for (auto &amp;i: refs) &#123;<br><span class="hljs-number"> 82 </span>        i.second.releaseHeldValue();<br><span class="hljs-number"> 83 </span>        /**<br><span class="hljs-number"> 84 </span>            inline void releaseHeldValue() &#123;<br><span class="hljs-number"> 85 </span>                if (_value &amp;&amp; (_policy &amp; OBJC_ASSOCIATION_SETTER_RETAIN)) &#123;<br><span class="hljs-number"> 86 </span>                    objc_release(_value);<br><span class="hljs-number"> 87 </span>                &#125;<br><span class="hljs-number"> 88 </span>        &#125;<br><span class="hljs-number"> 89 </span>        */<br><span class="hljs-number"> 90 </span>    &#125;<br><span class="hljs-number"> 91 </span>&#125;<br><span class="hljs-number"> 93 </span>// clearDeallocating<br><span class="hljs-number"> 94 </span>inline void <br><span class="hljs-number"> 95 </span>objc_object::clearDeallocating()<br><span class="hljs-number"> 96 </span>&#123;<br><span class="hljs-number"> 97 </span>    if (slowpath(!isa.nonpointer)) &#123;<br><span class="hljs-number"> 98 </span>        // Slow path for raw pointer isa.<br><span class="hljs-number"> 99 </span>        sidetable_clearDeallocating();<br>100     &#125;<br>101     else if (slowpath(isa.weakly_referenced  ||  isa.has_sidetable_rc)) &#123;<br>102         // Slow path for non-pointer isa with weak refs and/or side table data.<br>103         clearDeallocating_slow();<br>104     &#125;<br>106     assert(!sidetable_present());<br>107 &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>以上。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/02/2019/0.Flutter%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%BB%A5%E5%8F%8A%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Flutter学习笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/10/26/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2015%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%203%20-%20%E5%88%86%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD/">
+                        <span class="hidden-mobile">类的加载 3 - 分类的加载</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

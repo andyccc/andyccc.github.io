@@ -1,0 +1,499 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>类的加载 2 - 类的 data_ - andyccc</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>andyccc</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="类的加载 2 - 类的 data_">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2018-10-23 23:07" pubdate>
+        2018年10月23日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      47
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">类的加载 2 - 类的 data_</h1>
+            
+            <div class="markdown-body">
+              <p>本文衔接 <a href="">OC 底层探索 13</a> 继续探索类的加载，我们已知通过 readClass() 读取了编译器写的类 (or 元类)，同时给 cls 赋了 name 和把 cls 插入到了类 / 元类的表中，此时 cls 不仅有了地址还有了 name。此时的类是什么样子的呢？我们读取一下 cls 的内存情况，见下图：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021100045659-128412542.png" srcset="/img/loading.gif" lazyload></p>
+<p>通过上面 lldb 调试，我们发现 cls 的 bits 是 0000，并无数据. 继续执行到 realizeClassWithoutSwift() 中：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021101018821-2048548088.png" srcset="/img/loading.gif" lazyload> </p>
+<p>此时其实 cls 的内存还没有分配完毕，初始化和赋值还未处理好，内存还没有完善。</p>
+<p>那么 auto ro = (const class_ro_t *)cls-&gt;data(); 进行了 data 的读取，这里的 data 是读的什么呢？</p>
+<p>–&gt; cls 的内存情况虽未完备，但是它现在已经从编译器读出来了，是有其唯一地址的，我们试着读取下 cls 指针的内容：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021102208748-1796822046.png" srcset="/img/loading.gif" lazyload></p>
+<p>显然，bits 是有值的。 即我们可通过 cls 的地址指针进行识别数据的。</p>
+<p>问题：cls 是什么时候 bits 有值的呢？</p>
+<p>下面继续 _read_images() 的源码分析。</p>
+<p>Fix up remapped classes 未进入跳过，协议和分类我们这里暂时不对其进行具体的分析；</p>
+<h2 id="一点点扩展："><a href="#一点点扩展：" class="headerlink" title="一点点扩展："></a>一点点扩展：</h2><p><strong>非懒加载</strong>的类才会走进下面 3637 行代码，直接跑工程并未进去，我们如何走进去呢 –&gt; 给 MyPerson 类添加 +load() 方法：</p>
+<p><strong>load 方法的实现为何就会使 MyPerson 的方法提前加载呢？ –&gt; load 方法是在 load_images 时就会调用的 –&gt; 若类都没有实现如何 load_images 呢 –&gt; so 方法都提前了</strong></p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201020174415301-1747860200.png" srcset="/img/loading.gif" lazyload></p>
+<p>realizeClassWithoutSwift(cls, nil);// 在此之前，cls 还只是一个地址和名字，但是 data 数据信息还是 macho 中，还并未加载读取到 cls 的内存中。通过 realizeClassWithoutSwift() 实现，下面对此函数源码进行探究。</p>
+<p>tip: _我们之前已知，在消息的转发中 lookUpIMPAndForward 流程中，类必须是已经实现的，若没有实现则必须 realizeClassWithoutSwift() 实现。这里就可知了原因，类必须是已经存在完备的，若是类没有实现，我们无法调其中任何方法的，alloc init 自然也是无法操作实例化出来_。</p>
+<p>那么 <strong>懒加载</strong>呢？我们注释掉 +load{} 方法，run，打印堆栈信息：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201020211127839-57398436.png" srcset="/img/loading.gif" lazyload></p>
+<p>我们在 main.m 中调用了 MyPerson *objc2 = [MyPerson alloc]; // 懒加载 - 敌不动我不动，敌动我动。</p>
+<p>懒加载的意义：若没有懒加载，那么我们所有的类的实现 全部处理 (代码实现、方法排序、临时变量等) 有大量的工作要做，这些都要在 main 函数前处理完，那么会造成 main 函数的启动很慢；懒加载使我们不调用的类不先加载，节省了内存，提高了性能。&lt;– 这里也验证了为何 load 方法能不写就不写的原因。</p>
+<p>下面进行进入 realizeClassWithoutSwift() 流程分析。</p>
+<h1 id="一、类的加载"><a href="#一、类的加载" class="headerlink" title="一、类的加载"></a>一、类的加载</h1><h2 id="realizeClassWithoutSwift-源码分析："><a href="#realizeClassWithoutSwift-源码分析：" class="headerlink" title="realizeClassWithoutSwift() 源码分析："></a>realizeClassWithoutSwift() 源码分析：</h2><p>源码 1：</p>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><code class="hljs xl"><span class="hljs-number">1</span> <span class="hljs-comment">/***********************************************************************</span><br><span class="hljs-comment">  2 * realizeClassWithoutSwift</span><br><span class="hljs-comment">  3 * Performs first-time initialization on class cls, </span><br><span class="hljs-comment">  4 * including allocating its read-write data.</span><br><span class="hljs-comment">  5 * Does not perform any Swift-side initialization.</span><br><span class="hljs-comment">  6 * Returns the real class structure for the class. </span><br><span class="hljs-comment">  7 * Locking: runtimeLock must be write-locked by the caller</span><br><span class="hljs-comment">  8 **********************************************************************/</span><br>  <span class="hljs-number">9</span> static Class realizeClassWithoutSwift(Class cls, Class previously)<br> <span class="hljs-number">10</span> &#123;<br> <span class="hljs-number">11</span>     runtimeLock.assertLocked();<br> <span class="hljs-number">13</span>     class_rw_t *rw;<br> <span class="hljs-number">14</span>     Class supercls;<br> <span class="hljs-number">15</span>     Class metacls;<br> <span class="hljs-number">17</span>     <span class="hljs-keyword">if</span> (!cls) return <span class="hljs-literal">nil</span>;<br> <span class="hljs-number">18</span>     <span class="hljs-function"><span class="hljs-title">if</span> (cls-&gt;</span>isRealized()) return cls;<br> <span class="hljs-number">19</span>     ASSERT(cls == remapClass(cls));<br> <span class="hljs-number">21</span>     <span class="hljs-comment">// fixme verify class is not in an un-dlopened part of the shared cache?</span><br> <span class="hljs-number">23</span>     <span class="hljs-function"><span class="hljs-title">auto</span> ro = (const class_ro_t *)cls-&gt;</span><span class="hljs-function"><span class="hljs-title">data</span>();  24     auto isMeta = ro-&gt;</span>flags &amp; RO_META;<span class="hljs-comment">// 元类判断</span><br> <span class="hljs-number">25</span>     <span class="hljs-function"><span class="hljs-title">if</span> (ro-&gt;</span>flags &amp; RO_FUTURE) &#123;<br> <span class="hljs-number">26</span>         <span class="hljs-comment">// This was a future class. rw data is already allocated.</span><br> <span class="hljs-number">27</span>         <span class="hljs-function"><span class="hljs-title">rw</span> = cls-&gt;</span><span class="hljs-keyword">data</span>();<br> <span class="hljs-number">28</span>         <span class="hljs-function"><span class="hljs-title">ro</span> = cls-&gt;</span><span class="hljs-function"><span class="hljs-title">data</span>()-&gt;</span>ro();<br> <span class="hljs-number">29</span>         ASSERT(!isMeta);<br> <span class="hljs-number">30</span>         <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>changeInfo(RW_REALIZED|RW_REALIZING, RW_FUTURE);<br> <span class="hljs-number">31</span>     &#125; <span class="hljs-keyword">else</span> &#123;<br> <span class="hljs-number">32</span>         <span class="hljs-comment">// Normal class. Allocate writeable class data.</span><br> <span class="hljs-number">33</span>         rw = objc::zalloc&lt;class_rw_t&gt;();<span class="hljs-comment">// 开辟空间</span><br> <span class="hljs-number">34</span>         <span class="hljs-function"><span class="hljs-title">rw</span>-&gt;</span>set_ro(ro);<span class="hljs-comment">// ro 数据赋值给 rw</span><br> <span class="hljs-number">35</span>         <span class="hljs-function"><span class="hljs-title">rw</span>-&gt;</span>flags = RW_REALIZED|RW_REALIZING|isMeta;<br> <span class="hljs-number">36</span>         <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>setData(rw);<span class="hljs-comment">// cls 重新将 rw 作为其 data 赋值</span><br> <span class="hljs-number">37</span>     &#125;<br> <span class="hljs-number">39</span> #<span class="hljs-keyword">if</span> FAST_CACHE_META<br> <span class="hljs-number">40</span>     <span class="hljs-function"><span class="hljs-title">if</span> (isMeta) cls-&gt;</span>cache.setBit(FAST_CACHE_META);<br> <span class="hljs-number">41</span> #endif<br> <span class="hljs-number">43</span>     <span class="hljs-comment">// Choose an index for this class.</span><br> <span class="hljs-number">44</span>     <span class="hljs-comment">// Sets cls-&gt;instancesRequireRawIsa if indexes no more indexes are available</span><br> <span class="hljs-number">45</span>     <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>chooseClassArrayIndex();<br> <span class="hljs-number">47</span>     <span class="hljs-keyword">if</span> (PrintConnecting) &#123;<br> <span class="hljs-number">48</span>         _objc_inform(<span class="hljs-string">&quot;CLASS: realizing class &#x27;%s&#x27;%s %p %p #%u %s%s&quot;</span>,<br> <span class="hljs-number">49</span>                      <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>nameForLogging(), isMeta ? <span class="hljs-string">&quot; (meta)&quot;</span> : <span class="hljs-string">&quot;&quot;</span>, <br> <span class="hljs-number">50</span>                      (<span class="hljs-function"><span class="hljs-title">void</span>*)cls, ro, cls-&gt;</span>classArrayIndex(),<br> <span class="hljs-number">51</span>                      <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>isSwiftStable() ? <span class="hljs-string">&quot;(swift)&quot;</span> : <span class="hljs-string">&quot;&quot;</span>,<br> <span class="hljs-number">52</span>                      <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>isSwiftLegacy() ? <span class="hljs-string">&quot;(pre-stable swift)&quot;</span> : <span class="hljs-string">&quot;&quot;</span>);<br> <span class="hljs-number">53</span>     &#125;<br> <span class="hljs-number">55</span>     <span class="hljs-comment">// Realize superclass and metaclass, if they aren&#x27;t already.</span><br> <span class="hljs-number">56</span>     <span class="hljs-comment">// This needs to be done after RW_REALIZED is set above, for root classes.</span><br> <span class="hljs-number">57</span>     <span class="hljs-comment">// This needs to be done after class index is chosen, for root metaclasses.</span><br> <span class="hljs-number">58</span>     <span class="hljs-comment">// This assumes that none of those classes have Swift contents,</span><br> <span class="hljs-number">59</span>     <span class="hljs-comment">//   or that Swift&#x27;s initializers have already been called.</span><br> <span class="hljs-number">60</span>     <span class="hljs-comment">//   fixme that assumption will be wrong if we add support</span><br> <span class="hljs-number">61</span>     <span class="hljs-comment">//   for ObjC subclasses of Swift classes.// cls 的所有的父类 元类 全部实现、确定 --&gt; 继承链确定下来</span><br> <span class="hljs-number">62</span>     <span class="hljs-function"><span class="hljs-title">supercls</span> = realizeClassWithoutSwift(remapClass(cls-&gt;</span>superclass), <span class="hljs-literal">nil</span>);<span class="hljs-comment">// 父类 递归</span><br> <span class="hljs-number">63</span> <span class="hljs-function"><span class="hljs-title">metacls</span> = realizeClassWithoutSwift(remapClass(cls-&gt;</span>ISA()), <span class="hljs-literal">nil</span>);<span class="hljs-comment">// 元类 递归</span><br> <span class="hljs-number">65</span> #<span class="hljs-keyword">if</span> SUPPORT_NONPOINTER_ISA <span class="hljs-comment">// isa 的设置</span><br> <span class="hljs-number">66</span>     <span class="hljs-keyword">if</span> (isMeta) &#123;<br> <span class="hljs-number">67</span>         <span class="hljs-comment">// Metaclasses do not need any features from non pointer ISA</span><br> <span class="hljs-number">68</span>         <span class="hljs-comment">// This allows for a faspath for classes in objc_retain/objc_release.</span><br> <span class="hljs-number">69</span>         <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>setInstancesRequireRawIsa();<br> <span class="hljs-number">70</span>     &#125; <span class="hljs-keyword">else</span> &#123;<br> <span class="hljs-number">71</span>         <span class="hljs-comment">// Disable non-pointer isa for some classes and/or platforms.</span><br> <span class="hljs-number">72</span>         <span class="hljs-comment">// Set instancesRequireRawIsa.</span><br> <span class="hljs-number">73</span>         <span class="hljs-function"><span class="hljs-title">bool</span> instancesRequireRawIsa = cls-&gt;</span>instancesRequireRawIsa();<br> <span class="hljs-number">74</span>         bool rawIsaIsInherited = <span class="hljs-literal">false</span>;<br> <span class="hljs-number">75</span>         static bool hackedDispatch = <span class="hljs-literal">false</span>;<br> <span class="hljs-number">77</span>         <span class="hljs-keyword">if</span> (DisableNonpointerIsa) &#123;<br> <span class="hljs-number">78</span>             <span class="hljs-comment">// Non-pointer isa disabled by environment or app SDK version</span><br> <span class="hljs-number">79</span>             instancesRequireRawIsa = <span class="hljs-literal">true</span>;<br> <span class="hljs-number">80</span>         &#125;<br> <span class="hljs-number">81</span>         <span class="hljs-function"><span class="hljs-title">else</span> <span class="hljs-keyword">if</span> (!hackedDispatch  &amp;&amp;  0 == strcmp(ro-&gt;</span><span class="hljs-keyword">name</span>, <span class="hljs-string">&quot;OS_object&quot;</span>))<br> <span class="hljs-number">82</span>         &#123;<br> <span class="hljs-number">83</span>             <span class="hljs-comment">// hack for libdispatch et al - isa also acts as vtable pointer</span><br> <span class="hljs-number">84</span>             hackedDispatch = <span class="hljs-literal">true</span>;<br> <span class="hljs-number">85</span>             instancesRequireRawIsa = <span class="hljs-literal">true</span>;<br> <span class="hljs-number">86</span>         &#125;<br> <span class="hljs-number">87</span>         <span class="hljs-function"><span class="hljs-title">else</span> <span class="hljs-keyword">if</span> (supercls  &amp;&amp;  supercls-&gt;</span>superclass  &amp;&amp;<br> <span class="hljs-number">88</span>                  <span class="hljs-function"><span class="hljs-title">supercls</span>-&gt;</span>instancesRequireRawIsa())<br> <span class="hljs-number">89</span>         &#123;<br> <span class="hljs-number">90</span>             <span class="hljs-comment">// This is also propagated by addSubclass()</span><br> <span class="hljs-number">91</span>             <span class="hljs-comment">// but nonpointer isa setup needs it earlier.</span><br> <span class="hljs-number">92</span>             <span class="hljs-comment">// Special case: instancesRequireRawIsa does not propagate</span><br> <span class="hljs-number">93</span>             <span class="hljs-comment">// from root class to root metaclass</span><br> <span class="hljs-number">94</span>             instancesRequireRawIsa = <span class="hljs-literal">true</span>;<br> <span class="hljs-number">95</span>             rawIsaIsInherited = <span class="hljs-literal">true</span>;<br> <span class="hljs-number">96</span>         &#125;<br> <span class="hljs-number">98</span>         <span class="hljs-keyword">if</span> (instancesRequireRawIsa) &#123;<br> <span class="hljs-number">99</span>             <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>setInstancesRequireRawIsaRecursively(rawIsaIsInherited);<br><span class="hljs-number">100</span>         &#125;<br><span class="hljs-number">101</span>     &#125;<br><span class="hljs-number">102</span> <span class="hljs-comment">// SUPPORT_NONPOINTER_ISA</span><br><span class="hljs-number">103</span> #endif<br><span class="hljs-number">104</span> 　　 <span class="hljs-comment">// 更新父类和元类</span><br><span class="hljs-number">105</span>     <span class="hljs-comment">// Update superclass and metaclass in case of remapping</span><br><span class="hljs-number">106</span>     <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>superclass = supercls;<br><span class="hljs-number">107</span>     <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>initClassIsa(metacls);<br><span class="hljs-number">109</span>     <span class="hljs-comment">// Reconcile instance variable offsets / layout.</span><br><span class="hljs-number">110</span>     <span class="hljs-comment">// This may reallocate class_ro_t, updating our ro variable.</span><br><span class="hljs-number">111</span>     <span class="hljs-keyword">if</span> (supercls  &amp;&amp;  !isMeta) reconcileInstanceVariables(cls, supercls, ro);<br><span class="hljs-number">113</span>     <span class="hljs-comment">// Set fastInstanceSize if it wasn&#x27;t set already.</span><br><span class="hljs-number">114</span>     <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span><span class="hljs-function"><span class="hljs-title">setInstanceSize</span>(ro-&gt;</span>instanceSize);<br><span class="hljs-number">116</span>     <span class="hljs-comment">// Copy some flags from ro to rw</span><br><span class="hljs-number">117</span>     <span class="hljs-function"><span class="hljs-title">if</span> (ro-&gt;</span>flags &amp; RO_HAS_CXX_STRUCTORS) &#123;<br><span class="hljs-number">118</span>         <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>setHasCxxDtor();<br><span class="hljs-number">119</span>         <span class="hljs-function"><span class="hljs-title">if</span> (! (ro-&gt;</span>flags &amp; RO_HAS_CXX_DTOR_ONLY)) &#123;<br><span class="hljs-number">120</span>             <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>setHasCxxCtor();<br><span class="hljs-number">121</span>         &#125;<br><span class="hljs-number">122</span>     &#125;<br><span class="hljs-number">124</span>     <span class="hljs-comment">// Propagate the associated objects forbidden flag from ro or from</span><br><span class="hljs-number">125</span>     <span class="hljs-comment">// the superclass.</span><br><span class="hljs-number">126</span>     <span class="hljs-function"><span class="hljs-title">if</span> ((ro-&gt;</span>flags &amp; RO_FORBIDS_ASSOCIATED_OBJECTS) ||<br><span class="hljs-number">127</span>         (<span class="hljs-function"><span class="hljs-title">supercls</span> &amp;&amp; supercls-&gt;</span>forbidsAssociatedObjects()))<br><span class="hljs-number">128</span>     &#123;<br><span class="hljs-number">129</span>         <span class="hljs-function"><span class="hljs-title">rw</span>-&gt;</span>flags |= RW_FORBIDS_ASSOCIATED_OBJECTS;<br><span class="hljs-number">130</span>     &#125;<br><span class="hljs-number">132</span>     <span class="hljs-comment">// Connect this class to its superclass&#x27;s subclass lists</span><br><span class="hljs-number">133</span>     <span class="hljs-keyword">if</span> (supercls) &#123;<br><span class="hljs-number">134</span>         addSubclass(supercls, cls);<br><span class="hljs-number">135</span>     &#125; <span class="hljs-keyword">else</span> &#123;<br><span class="hljs-number">136</span>         addRootClass(cls);<br><span class="hljs-number">137</span>     &#125;<br><span class="hljs-number">139</span>     <span class="hljs-comment">// Attach categories</span><br><span class="hljs-number">140</span>     methodizeClass(cls, previously);<br><span class="hljs-number">142</span>     return cls;<br><span class="hljs-number">143</span> &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>我们仍然是通过自己的类 MyPerson 进行分析 (系统类毕竟看不见其具体操作，自己写的类更易分析)。</p>
+<h3 id="1、源码分析"><a href="#1、源码分析" class="headerlink" title="1、源码分析"></a>1、源码分析</h3><p>如下图 2500 行 (上面源码 23 行) 读取 cls 对应的地址中的 data 信息，并对其进行格式强转， ro 中具体数据信息见下图：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201020182432045-1261869520.png" srcset="/img/loading.gif" lazyload> </p>
+<p><a href="#define01">源码</a> 23 行起，所做操作：<strong>取 macho 格式中的 data 数据：ro(原始，只读的 干净内存)</strong> 进行 class_ro_t 格式强转 <strong>–&gt; 开辟 rw(可读写的 脏内存) 空间 –&gt; rw 赋值为 ro –&gt; cls 重新赋值 rw 为 data</strong>.</p>
+<p>问题：1、为何要在开辟出一份 rw 呢? –&gt; 因为 iOS 的运行时，内存会被不断插入添加删除操作，防止对我们的原始数据的修改，所以 copy 一份干净内存 ro 到 rw 里面；</p>
+<p>　　2、为何有了一个 rw 了 还要有一个 rwe 呢？–&gt; <strong>因为并非每个类都会进行动态的操作，为避免内存的大量操作，我们只对进行了动态操作的类进行 rwe</strong>。rw 是从 ro 读取拷贝的。</p>
+<p>关于 干净 / 脏内存 可以看下 WWDC 的视频介绍: **<a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2020/10163/">Advancements in the Objective-C runtime</a>**。</p>
+<p>get_ro 代码:</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201020184928655-2017217265.png" srcset="/img/loading.gif" lazyload></p>
+<p>1）36 行 setData(rw) ：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201020191938097-1055772376.png" srcset="/img/loading.gif" lazyload></p>
+<p>2）我们继续向下执行 (上面源码的 62 行)：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201020192118202-936489445.png" srcset="/img/loading.gif" lazyload> </p>
+<p>realizeClassWithoutSwift() 方法递归：cls 的所有 父类 元类 全部实现确定下来 –&gt; 继承链的确定 (这里是 MyPerson 的继承链)</p>
+<p>3）继续读代码 (上面源码 65 行起)，isa 的设置，继续执行，cls 如下 (地址: MyPerson 的元类信息)：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201020200327211-979731947.png" srcset="/img/loading.gif" lazyload></p>
+<p>此时 bits 仍是无值的，继续执行。</p>
+<p>4）setInstanceSize() 执行后 bits 开始有值了，然后继续对 Cxx 信息处理，见下图：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021105431347-1316381919.png" srcset="/img/loading.gif" lazyload></p>
+<p>读取一下地址中的数据，各信息都是存在的 (见下图)。而我们的内存 bits 目前是 0x00000034。 </p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021114501233-850937476.png" srcset="/img/loading.gif" lazyload></p>
+<p>放开内部断点直接运行到 main 函数中：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201021115514106-2066191203.png" srcset="/img/loading.gif" lazyload></p>
+<p>可看到 bits 的内存地址是 0x000280340000003 除了 ‘34’ 其他的值是何时赋的呢？后面再进行探究。</p>
+<p><strong>5）</strong>我们继续源码的流程，在 Cxx 的处理之后走到 methodizeClass(cls, previously)，cls 的方法的处理。 </p>
+<h3 id="2、methodizeClass-方法的处理"><a href="#2、methodizeClass-方法的处理" class="headerlink" title="2、methodizeClass() 方法的处理"></a>2、methodizeClass() 方法的处理</h3><p>源码 2：</p>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs xl"><span class="hljs-number">1</span> 源码<span class="hljs-number">2</span><br> <span class="hljs-number">2</span> <span class="hljs-comment">/***********************************************************************</span><br><span class="hljs-comment"> 3 * methodizeClass</span><br><span class="hljs-comment"> 4 * Fixes up cls&#x27;s method list, protocol list, and property list.</span><br><span class="hljs-comment"> 5 * Attaches any outstanding categories.</span><br><span class="hljs-comment"> 6 * Locking: runtimeLock must be held by the caller</span><br><span class="hljs-comment"> 7 **********************************************************************/</span><br> <span class="hljs-number">8</span> static void methodizeClass(Class cls, Class previously)<br> <span class="hljs-number">9</span> &#123;<br><span class="hljs-number">10</span>     runtimeLock.assertLocked();<br><span class="hljs-number">12</span>     <span class="hljs-function"><span class="hljs-title">bool</span> isMeta = cls-&gt;</span>isMetaClass();<br><span class="hljs-number">13</span>     <span class="hljs-function"><span class="hljs-title">auto</span> rw = cls-&gt;</span><span class="hljs-keyword">data</span>();<br><span class="hljs-number">14</span>     <span class="hljs-function"><span class="hljs-title">auto</span> ro = rw-&gt;</span>ro();<br><span class="hljs-number">15</span>     <span class="hljs-function"><span class="hljs-title">auto</span> rwe = rw-&gt;</span>ext();<br><span class="hljs-number">17</span>     <span class="hljs-comment">// Methodizing for the first time</span><br><span class="hljs-number">18</span>     <span class="hljs-keyword">if</span> (PrintConnecting) &#123;<br><span class="hljs-number">19</span>         _objc_inform(<span class="hljs-string">&quot;CLASS: methodizing class &#x27;%s&#x27; %s&quot;</span>, <br><span class="hljs-number">20</span>                      <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>nameForLogging(), isMeta ? <span class="hljs-string">&quot;(meta)&quot;</span> : <span class="hljs-string">&quot;&quot;</span>);<br><span class="hljs-number">21</span>     &#125;<br><span class="hljs-number">23</span>     <span class="hljs-comment">// Install methods and properties that the class implements itself.</span><br><span class="hljs-number">24</span>     <span class="hljs-function"><span class="hljs-title">method_list_t</span> *list = ro-&gt;</span>baseMethods();<br><span class="hljs-number">25</span>     <span class="hljs-keyword">if</span> (list) &#123;<span class="hljs-comment">// 方法 list</span><br><span class="hljs-number">26</span>         prepareMethodLists(cls, &amp;list, <span class="hljs-number">1</span>, YES, isBundleClass(cls));<br><span class="hljs-number">27</span>         <span class="hljs-function"><span class="hljs-title">if</span> (rwe) rwe-&gt;</span>methods.attachLists(&amp;list, <span class="hljs-number">1</span>);<br><span class="hljs-number">28</span>     &#125;<br><span class="hljs-number">30</span>     <span class="hljs-function"><span class="hljs-title">property_list_t</span> *proplist = ro-&gt;</span>baseProperties;<br><span class="hljs-number">31</span>     <span class="hljs-keyword">if</span> (rwe &amp;&amp; proplist) &#123;<span class="hljs-comment">// 属性 list</span><br><span class="hljs-number">32</span>         <span class="hljs-function"><span class="hljs-title">rwe</span>-&gt;</span>properties.attachLists(&amp;proplist, <span class="hljs-number">1</span>);<br><span class="hljs-number">33</span>     &#125;<br><span class="hljs-number">35</span>     <span class="hljs-function"><span class="hljs-title">protocol_list_t</span> *protolist = ro-&gt;</span>baseProtocols;<br><span class="hljs-number">36</span>     <span class="hljs-keyword">if</span> (rwe &amp;&amp; protolist) &#123;<span class="hljs-comment">// 协议 list</span><br><span class="hljs-number">37</span>         <span class="hljs-function"><span class="hljs-title">rwe</span>-&gt;</span>protocols.attachLists(&amp;protolist, <span class="hljs-number">1</span>);<br><span class="hljs-number">38</span>     &#125;<br><span class="hljs-number">40</span>     <span class="hljs-comment">// Root classes get bonus method implementations if they don&#x27;t have </span><br><span class="hljs-number">41</span>     <span class="hljs-comment">// them already. These apply before category replacements.</span><br><span class="hljs-number">42</span>     <span class="hljs-function"><span class="hljs-title">if</span> (cls-&gt;</span>isRootMetaclass()) &#123;<br><span class="hljs-number">43</span>         <span class="hljs-comment">// root metaclass</span><br><span class="hljs-number">44</span>         addMethod(cls, @selector(initialize), (IMP)&amp;objc_noop_imp, <span class="hljs-string">&quot;&quot;</span>, NO);<br><span class="hljs-number">45</span>     &#125;<br><span class="hljs-number">47</span>     <span class="hljs-comment">// Attach categories. 附着关联分类</span><br><span class="hljs-number">48</span>     <span class="hljs-keyword">if</span> (previously) &#123;<br><span class="hljs-number">49</span>         <span class="hljs-keyword">if</span> (isMeta) &#123;<br><span class="hljs-number">50</span>             objc::unattachedCategories.attachToClass(cls, previously,<br><span class="hljs-number">51</span>                                                      ATTACH_METACLASS);<br><span class="hljs-number">52</span>         &#125; <span class="hljs-keyword">else</span> &#123;<br><span class="hljs-number">53</span>             <span class="hljs-comment">// When a class relocates, categories with class methods</span><br><span class="hljs-number">54</span>             <span class="hljs-comment">// may be registered on the class itself rather than on</span><br><span class="hljs-number">55</span>             <span class="hljs-comment">// the metaclass. Tell attachToClass to look for those.</span><br><span class="hljs-number">56</span>             objc::unattachedCategories.attachToClass(cls, previously,<br><span class="hljs-number">57</span>                                                      ATTACH_CLASS_AND_METACLASS);<br><span class="hljs-number">58</span>         &#125;<br><span class="hljs-number">59</span>     &#125;<br><span class="hljs-number">60</span>     objc::unattachedCategories.attachToClass(cls, cls,<br><span class="hljs-number">61</span>                                              isMeta ? ATTACH_METACLASS : ATTACH_CLASS);<br><span class="hljs-number">63</span> #<span class="hljs-keyword">if</span> DEBUG<br><span class="hljs-number">64</span>     <span class="hljs-comment">// Debug: sanity-check all SELs; log method list contents</span><br><span class="hljs-number">65</span>     <span class="hljs-function"><span class="hljs-title">for</span> (const auto&amp; meth : rw-&gt;</span>methods()) &#123;<br><span class="hljs-number">66</span>         <span class="hljs-keyword">if</span> (PrintConnecting) &#123;<br><span class="hljs-number">67</span>             _objc_inform(<span class="hljs-string">&quot;METHOD %c[%s %s]&quot;</span>, isMeta ? <span class="hljs-string">&#x27;+&#x27;</span> : <span class="hljs-string">&#x27;-&#x27;</span>, <br><span class="hljs-number">68</span>                          <span class="hljs-function"><span class="hljs-title">cls</span>-&gt;</span>nameForLogging(), sel_getName(meth.<span class="hljs-keyword">name</span>));<br><span class="hljs-number">69</span>         &#125;<br><span class="hljs-number">70</span>         ASSERT(sel_registerName(sel_getName(meth.<span class="hljs-keyword">name</span>)) == meth.<span class="hljs-keyword">name</span>); <br><span class="hljs-number">71</span>     &#125;<br><span class="hljs-number">72</span> #endif<br><span class="hljs-number">73</span> &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>方法列表的准备，prepareMethodLists(); 。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-number">1</span> <span class="hljs-built_in">static</span> <span class="hljs-keyword">void</span> <br> <span class="hljs-number">2</span> prepareMethodLists(<span class="hljs-class"><span class="hljs-keyword">Class</span> <span class="hljs-title">cls</span>, <span class="hljs-title">method_list_t</span> **<span class="hljs-title">addedLists</span>, <span class="hljs-title">int</span> <span class="hljs-title">addedCount</span>,</span><br><span class="hljs-class"> 3                    <span class="hljs-title">bool</span> <span class="hljs-title">baseMethods</span>, <span class="hljs-title">bool</span> <span class="hljs-title">methodsFromBundle</span>)</span><br><span class="hljs-class"> 4 </span>&#123;<br> <span class="hljs-number">5</span>     runtimeLock.assertLocked();<br> <span class="hljs-number">7</span>     <span class="hljs-keyword">if</span> (addedCount == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;<br> <span class="hljs-number">9</span>     <span class="hljs-comment">// There exist RR/AWZ/Core special cases for some class&#x27;s base methods.</span><br><span class="hljs-number">10</span>     <span class="hljs-comment">// But this code should never need to scan base methods for RR/AWZ/Core:</span><br><span class="hljs-number">11</span>     <span class="hljs-comment">// default RR/AWZ/Core cannot be set before setInitialized().</span><br><span class="hljs-number">12</span>     <span class="hljs-comment">// Therefore we need not handle any special cases here.</span><br><span class="hljs-number">13</span>     <span class="hljs-keyword">if</span> (baseMethods) &#123;<br><span class="hljs-number">14</span>         ASSERT(cls-&gt;hasCustomAWZ() &amp;&amp; cls-&gt;hasCustomRR() &amp;&amp; cls-&gt;hasCustomCore());<br><span class="hljs-number">15</span>     &#125;<br><span class="hljs-number">17</span>     <span class="hljs-comment">// Add method lists to array.</span><br><span class="hljs-number">18</span>     <span class="hljs-comment">// Reallocate un-fixed method lists.</span><br><span class="hljs-number">19</span>     <span class="hljs-comment">// The new methods are PREPENDED to the method list array.</span><br><span class="hljs-number">21</span>     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; addedCount; i++) &#123;<br><span class="hljs-number">22</span>         method_list_t *mlist = addedLists[i];<br><span class="hljs-number">23</span>         ASSERT(mlist);<br><span class="hljs-number">25</span>         <span class="hljs-comment">// Fixup selectors if necessary</span><br><span class="hljs-number">26</span>         <span class="hljs-keyword">if</span> (!mlist-&gt;isFixedUp()) &#123;<br><span class="hljs-number">27</span>             <span class="hljs-comment">// 方法排序</span><br><span class="hljs-number">28</span>             fixupMethodList(mlist, methodsFromBundle, <span class="hljs-literal">true</span><span class="hljs-comment">/*sort*/</span>);<br><span class="hljs-number">29</span>         &#125;<br><span class="hljs-number">30</span>     &#125;<br><span class="hljs-number">32</span>     <span class="hljs-comment">// If the class is initialized, then scan for method implementations</span><br><span class="hljs-number">33</span>     <span class="hljs-comment">// tracked by the class&#x27;s flags. If it&#x27;s not initialized yet,</span><br><span class="hljs-number">34</span>     <span class="hljs-comment">// then objc_class::setInitialized() will take care of it.</span><br><span class="hljs-number">35</span>     <span class="hljs-keyword">if</span> (cls-&gt;isInitialized()) &#123;<br><span class="hljs-number">36</span>         objc::AWZScanner::scanAddedMethodLists(cls, addedLists, addedCount);<br><span class="hljs-number">37</span>         objc::RRScanner::scanAddedMethodLists(cls, addedLists, addedCount);<br><span class="hljs-number">38</span>         objc::CoreScanner::scanAddedMethodLists(cls, addedLists, addedCount);<br><span class="hljs-number">39</span>     &#125;<br><span class="hljs-number">40</span> &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>方法排序 fixupMethodList() :</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-number">1</span> static void <br> <span class="hljs-number">2</span> fixup<span class="hljs-constructor">MethodList(<span class="hljs-params">method_list_t</span> <span class="hljs-operator">*</span><span class="hljs-params">mlist</span>, <span class="hljs-params">bool</span> <span class="hljs-params">bundleCopy</span>, <span class="hljs-params">bool</span> <span class="hljs-params">sort</span>)</span><br> <span class="hljs-number">3</span> &#123;<br> <span class="hljs-number">4</span>     runtimeLock.<span class="hljs-keyword">assert</span><span class="hljs-constructor">Locked()</span>;<br> <span class="hljs-number">5</span>     <span class="hljs-constructor">ASSERT(!<span class="hljs-params">mlist</span>-&gt;<span class="hljs-params">isFixedUp</span>()</span>);<br> <span class="hljs-number">7</span>     <span class="hljs-comment">// fixme lock less in attachMethodLists ?</span><br> <span class="hljs-number">8</span>     <span class="hljs-comment">// dyld3 may have already uniqued, but not sorted, the list</span><br> <span class="hljs-number">9</span>     <span class="hljs-keyword">if</span> (!mlist-&gt;is<span class="hljs-constructor">Uniqued()</span>) &#123;<br><span class="hljs-number">10</span>         mutex_locker_t lock(selLock);<br><span class="hljs-number">12</span>         <span class="hljs-comment">// Unique selectors in list.</span><br><span class="hljs-number">13</span>         <span class="hljs-keyword">for</span> (auto&amp; meth : *mlist) &#123;<br><span class="hljs-number">14</span>             const <span class="hljs-built_in">char</span> *name = sel<span class="hljs-constructor">_cname(<span class="hljs-params">meth</span>.<span class="hljs-params">name</span>)</span>;<br><span class="hljs-number">15</span>             meth.name = sel<span class="hljs-constructor">_registerNameNoLock(<span class="hljs-params">name</span>, <span class="hljs-params">bundleCopy</span>)</span>;<br><span class="hljs-number">16</span>         &#125;<br><span class="hljs-number">17</span>     &#125;<br><span class="hljs-number">19</span>     <span class="hljs-comment">// Sort by selector address.</span><br><span class="hljs-number">20</span>     <span class="hljs-comment">// 根据 方法的地址 进行排序</span><br><span class="hljs-number">21</span>     <span class="hljs-comment">/**</span><br><span class="hljs-comment">22      若方法重名则根据 sel 排序：</span><br><span class="hljs-comment">23      1、sel 混乱则进行 fixedUp  2、sel 没有混乱则根据 imp 排序</span><br><span class="hljs-comment">24      */</span><br><span class="hljs-number">26</span>     <span class="hljs-keyword">if</span> (sort) &#123;<br><span class="hljs-number">27</span>         method_t::SortBySELAddress sorter;<br><span class="hljs-number">28</span>        <span class="hljs-comment">/**</span><br><span class="hljs-comment">29         struct method_t &#123;</span><br><span class="hljs-comment">30             SEL name;</span><br><span class="hljs-comment">31             const char *types;</span><br><span class="hljs-comment">32             MethodListIMP imp;</span><br><span class="hljs-comment">34             struct SortBySELAddress :</span><br><span class="hljs-comment">35                 public std::binary_function&lt;const method_t&amp;,</span><br><span class="hljs-comment">36                                             const method_t&amp;, bool&gt;</span><br><span class="hljs-comment">37             &#123;</span><br><span class="hljs-comment">38                 bool operator() (const method_t&amp; lhs,</span><br><span class="hljs-comment">39                                  const method_t&amp; rhs)</span><br><span class="hljs-comment">40                 &#123; return lhs.name &lt; rhs.name; &#125;// 根据名字进行排序</span><br><span class="hljs-comment">41             &#125;;</span><br><span class="hljs-comment">42         &#125;;</span><br><span class="hljs-comment">43         */</span><br><span class="hljs-number">44</span>         std::stable<span class="hljs-constructor">_sort(<span class="hljs-params">mlist</span>-&gt;<span class="hljs-params">begin</span>()</span>, mlist-&gt;<span class="hljs-keyword">end</span><span class="hljs-literal">()</span>, sorter);<br><span class="hljs-number">45</span>     &#125;<br><span class="hljs-number">47</span>     <span class="hljs-comment">// Mark method list as uniqued and sorted</span><br><span class="hljs-number">48</span>     mlist-&gt;set<span class="hljs-constructor">FixedUp()</span>;<br><span class="hljs-number">49</span> &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>方法排序前 ro-&gt;baseMethods() 的 list：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201020204311612-545713348.png" srcset="/img/loading.gif" lazyload></p>
+<p>方法排序后 fixupMethodList() 的 list：</p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201020204419176-1075012150.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>类加载流程的执行总结：</strong></p>
+<p><img src="https://img2020.cnblogs.com/blog/842658/202010/842658-20201020213016192-2031721699.png" srcset="/img/loading.gif" lazyload></p>
+<p>以上我们探究的是本类的加载，我们给本类添加分类后是如何加载的呢？</p>
+<p><a href="">OC 底层探索 15</a> 继续探究。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/10/26/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2015%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%203%20-%20%E5%88%86%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">类的加载 3 - 分类的加载</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/10/18/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2013%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%201%20-%20dyld%20%E5%92%8C%20objc%20%E7%9A%84%E5%85%B3%E8%81%94/">
+                        <span class="hidden-mobile">类的加载 1 - dyld 和 objc 的关联</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
