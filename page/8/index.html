@@ -182,23 +182,27 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2018/09/17/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2005%E3%80%81%E5%B1%9E%E6%80%A7%E3%80%81%E6%88%90%E5%91%98%E3%80%81%E5%AE%9E%E4%BE%8B%E5%8F%98%E9%87%8F%E7%AE%80%E6%9E%90/" target="_self">
-          属性、成员、实例变量简析
+        <a href="/2019/03/21/2019/11.%E8%A1%A8%E5%8D%95%E8%BE%93%E5%85%A5%E4%B8%8E%E5%AF%8C%E6%96%87%E6%9C%AC/" target="_self">
+          Flutter 表单输入与富文本
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2018/09/17/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2005%E3%80%81%E5%B1%9E%E6%80%A7%E3%80%81%E6%88%90%E5%91%98%E3%80%81%E5%AE%9E%E4%BE%8B%E5%8F%98%E9%87%8F%E7%AE%80%E6%9E%90/" target="_self">
+        <a href="/2019/03/21/2019/11.%E8%A1%A8%E5%8D%95%E8%BE%93%E5%85%A5%E4%B8%8E%E5%AF%8C%E6%96%87%E6%9C%AC/" target="_self">
           
           
             
           
-          本文探索属性、成员、实例变量。
-一、简介1、属性变量1@property (nonatomic, copy) NSString *propName;
+          表单输入与富文本声明：Flutter专栏文档均来自慕课网https://coding.imooc.com/class/321.html
+Android、iOS开发者快速上手Flutter-表单输入与富文本
+如何获取用户输入？
+如何设置输入框的提示文字？
+如何显示验证错误信息？  ​   image
 
-@property：做了什么事？文章后面探索。
-为 propName 生成了 set/get 方法的声明和实现，同时为其生成了私有的 ivar 成员变量  _propName；
-2、成员变量1234@interface MyPerson : NSO
+如何获取用户输入？我们知道：
+
+  在Android中可以通过EditText获取用户输入；
+  
         </a>
       </p>
 
@@ -206,286 +210,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2018-09-17 23:16" pubdate>
-              2018-09-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2018/09/14/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2004%E3%80%81%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%20&%20isa%20&%20bits/" target="_self">
-          类的结构分析 &amp; isa &amp; bits
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2018/09/14/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2004%E3%80%81%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%20&%20isa%20&%20bits/" target="_self">
-          
-          
-            
-          
-          本文内容主要对 isa 指向流程 和 类的结构以及类中 bits 进行探索。
-一、类与 isa运行 objc 源码工程，main.m 文件中断点打在 objc2，读取对象 objc2 的内存如下：
-
-图中，我们发现两个不同的 地址，他们的值都是 MyPerson。这是为何呢？–&gt; 元类
-我们继续读取内存，如下图：
-
-结合以上内容，我们可以得出 objc2 –&gt; MyPerson –&g
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2018-09-14 00:01" pubdate>
-              2018-09-14
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2018/09/12/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2003%E3%80%81%E5%AF%B9%E8%B1%A1%E6%9C%AC%E8%B4%A8%20&%20isa%20%E7%BB%93%E6%9E%84/" target="_self">
-          对象本质 &amp; isa 结构
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2018/09/12/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2003%E3%80%81%E5%AF%B9%E8%B1%A1%E6%9C%AC%E8%B4%A8%20&%20isa%20%E7%BB%93%E6%9E%84/" target="_self">
-          
-          
-            
-          
-          本文开始探索 OC 对象的本质是什么？
-一、对象 
-对象的本质 - 结构体1、编译后的对象1、我们在 main.m 文件中做简单代码如下：
-1234567891011121314151617#import &lt;Foundation/Foundation.h&gt;#import &lt;objc/runtime.h&gt;@interface MyPerson : NSObject@prope
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2018-09-12 23:59" pubdate>
-              2018-09-12
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2018/09/07/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2002%E3%80%81%E5%BC%80%E8%BE%9F%E7%A9%BA%E9%97%B4%20-%20%E5%AD%97%E8%8A%82%E5%AF%B9%E9%BD%90%20+%20%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/" target="_self">
-          开辟空间 - 字节对齐 + 内存对齐
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2018/09/07/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2002%E3%80%81%E5%BC%80%E8%BE%9F%E7%A9%BA%E9%97%B4%20-%20%E5%AD%97%E8%8A%82%E5%AF%B9%E9%BD%90%20+%20%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/" target="_self">
-          
-          
-            
-          
-          一、字节对齐
-1、为什么要进行字节对齐处理呢？
-性能，快，以空间换取时间。
-可以想象 2 个场景，场景 1：当我们的 CPU 去读取内存时，每次读取的大小如果是不确定的 (8、7、3、9… …)，那么除非每次读取都要重新改变自己的读取方式否则读取的数据就会读错到其他数据上去。
-场景 2，如果我们所存储的对象以固定的大小存储时，8/16，那么读取数据时，只需要按部就班去取 不必反复改变读取方式。
-场
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2018-09-07 21:13" pubdate>
-              2018-09-07
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2018/09/05/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2001%E3%80%81%E5%A6%82%E4%BD%95%E6%8E%A2%E7%B4%A2%E5%BA%95%E5%B1%82%20+%20alloc%20%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/" target="_self">
-          如何探索底层 + alloc 做了什么
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2018/09/05/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2001%E3%80%81%E5%A6%82%E4%BD%95%E6%8E%A2%E7%B4%A2%E5%BA%95%E5%B1%82%20+%20alloc%20%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/" target="_self">
-          
-          
-            
-          
-          本文介绍 如何探索 alloc 和 alloc 做了什么？
-objc 可编译源码 
-从最简单的代码开始：
-1234567MyPerson *p1 = [MyPerson alloc];    MyPerson *p2 = [p1 init];    MyPerson *p3 = [p1 init];        NSLog(@&quot;%@ - %p - %p&quot;,p1,p1,&amp
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2018-09-05 10:11" pubdate>
-              2018-09-05
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2018/07/21/2018-2/%E4%BC%98%E5%8C%96APP%E7%9A%84%E6%98%BE%E7%A4%BA%E6%80%A7%E8%83%BD/" target="_self">
-          优化APP的显示性能
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2018/07/21/2018-2/%E4%BC%98%E5%8C%96APP%E7%9A%84%E6%98%BE%E7%A4%BA%E6%80%A7%E8%83%BD/" target="_self">
-          
-          
-            
-          
-          APP 的显示性能问题一直以来都是一个经久不衰的话题，特别是滚动视图、表视图的滚动流畅性等等问题。那么从我们 new 一个 UIKit 开始到它在屏幕上显示的过程，CPU 和 GPU 以及显示设备是如何协同工作的呢？APP 的显示性能、帧率到底应该从哪些方面入手去优化？还是说忽略理论分析，而强行优化性能？下面我们就来讨论一下这个问题。
-一、几个概念1、像素和分辨率像素，通俗的来讲就是构成图像的最小
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2018-07-21 16:16" pubdate>
-              2018-07-21
+            <time datetime="2019-03-21 22:55" pubdate>
+              2019-03-21
             </time>
           </div>
         
@@ -501,18 +227,25 @@ objc 可编译源码
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2018/07/13/2018-2/runtime%E7%AE%A1%E7%90%86weak%E5%BC%95%E7%94%A8%E7%9A%84%E6%96%B9%E5%BC%8F/" target="_self">
-          runtime管理weak引用的方式
+        <a href="/2019/03/20/2019/10.%E4%B8%BB%E9%A2%98%E5%92%8C%E6%96%87%E5%AD%97%E5%A4%84%E7%90%86/" target="_self">
+          Flutter 主题和文字处理
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2018/07/13/2018-2/runtime%E7%AE%A1%E7%90%86weak%E5%BC%95%E7%94%A8%E7%9A%84%E6%96%B9%E5%BC%8F/" target="_self">
+        <a href="/2019/03/20/2019/10.%E4%B8%BB%E9%A2%98%E5%92%8C%E6%96%87%E5%AD%97%E5%A4%84%E7%90%86/" target="_self">
           
           
             
           
-          前言提及 weak 引用，大多数人都知道在什么时候要用它，如果不知道的话：ARC内存管理以及循环引用，其实对于手动管理堆内存来说，比如 C 语言，并不存在所谓的强引用和弱引用，ARC 这种自动引用计数管理内存的方式，导致了两个对象循环引用，从而产生内存泄漏。循环引用就像是双向链表的两个结点的 next 指针互相指向，当我们用 C 语言实现循环链表的时候，即使没有 weak，也能很好的管理每个结点的
+          3-19【文档讲解】主题和文字处理声明：Flutter专栏文档均来自慕课网https://coding.imooc.com/class/321.html
+主题和文字处理
+  如何在 Text widget上设置自定义字体？
+  如何在Text上定义样式？
+  如何给 App 设置主题？
+
+如何在 Text widget上设置自定义字体？
+  在 iOS 中，你在项目中引入任意的 ttf 文件，并在
         </a>
       </p>
 
@@ -520,19 +253,12 @@ objc 可编译源码
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2018-07-13 16:47" pubdate>
-              2018-07-13
+            <time datetime="2019-03-20 23:44" pubdate>
+              2019-03-20
             </time>
           </div>
         
         
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
-            
-          </div>
         
       </div>
     </article>
@@ -544,18 +270,25 @@ objc 可编译源码
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2018/07/07/2018-2/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E4%B8%8E-GCD/" target="_self">
-          多线程编程与 GCD
+        <a href="/2019/03/18/2019/9.%E7%BA%BF%E7%A8%8B%E5%92%8C%E5%BC%82%E6%AD%A5UI/" target="_self">
+          Flutter 线程和异步UI
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2018/07/07/2018-2/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E4%B8%8E-GCD/" target="_self">
+        <a href="/2019/03/18/2019/9.%E7%BA%BF%E7%A8%8B%E5%92%8C%E5%BC%82%E6%AD%A5UI/" target="_self">
           
           
             
           
-          如果你还不了解进程的话，请参考：并发编程之进程，进程是由完整的逻辑控制流和独立的地址空间构成的，一个线程就是进程中一个单一顺序的逻辑控制流，由进程调度的线程被称为用户级线程，由内核调度的被称为内核线程（轻量级进程），这里仅讨论用户级线程。多个进程可以被操作系统调度而组成多进程程序，同样的，多个线程也可以被进程调度而组成多线程编程，同一进程的多个线程共享该进程的地址空间，也就是整个进程的虚拟内存都是
+          线程和异步UI声明：Flutter专栏文档均来自慕课网https://coding.imooc.com/class/321.html
+线程和异步UI
+  怎么编写异步的代码？
+  怎么把工作放到后台线程执行？
+  如何进行网络请求？
+  如何为长时间运行的任务添加一个进度指示器？
+
+怎么编写异步的代码？Dart有一个单线程执行模型，支持Isolate（一种在另一个线程上运行Dart代码的方法），一
         </a>
       </p>
 
@@ -563,19 +296,12 @@ objc 可编译源码
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2018-07-07 12:16" pubdate>
-              2018-07-07
+            <time datetime="2019-03-18 23:55" pubdate>
+              2019-03-18
             </time>
           </div>
         
         
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a>
-            
-          </div>
         
       </div>
     </article>
@@ -587,19 +313,24 @@ objc 可编译源码
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2018/07/01/2018-2/dyld-%E5%92%8C%E9%93%BE%E6%8E%A5/" target="_self">
-          dyld 和链接
+        <a href="/2019/03/16/2019/9.%E6%89%8B%E5%8A%BF%E6%A3%80%E6%B5%8B%E5%8F%8A%E8%A7%A6%E6%91%B8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86/" target="_self">
+          Flutter 路由与导航
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2018/07/01/2018-2/dyld-%E5%92%8C%E9%93%BE%E6%8E%A5/" target="_self">
+        <a href="/2019/03/16/2019/9.%E6%89%8B%E5%8A%BF%E6%A3%80%E6%B5%8B%E5%8F%8A%E8%A7%A6%E6%91%B8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86/" target="_self">
           
           
             
           
-          代码从写完到编译到运行之间发生了什么？我们的程序是如何在设备上执行的？为什么我们代码中没有的库函数也能执行？在工作中我们可能常常会疑惑这样的问题，下面我们来探究一下这些问题。在阅读本文之前，需要充分了解进程的概念：并发编程之进程。
-一、编译编译是一个很复杂的过程，往往也是检验我们代码正确与否的第一步，编译器会帮助我们做很多很多很多事，比如，语法分析、词法分析、类型检查、预处理、生成中间代码等等，本
+          手势检测及触摸事件处理声明：Flutter专栏文档均来自慕课网https://coding.imooc.com/class/321.html
+手势检测及触摸事件处理
+  如何给 Flutter 的 widget 添加一个点击事件的监听？
+  如何处理 widget 上的其他手势？
+
+如何给 Flutter 的 widget 添加一个点击事件的监听？
+  在 iOS 中，你给一个 view 添加 G
         </a>
       </p>
 
@@ -607,19 +338,12 @@ objc 可编译源码
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2018-07-01 17:46" pubdate>
-              2018-07-01
+            <time datetime="2019-03-16 23:33" pubdate>
+              2019-03-16
             </time>
           </div>
         
         
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5/">编译和链接</a>
-            
-          </div>
         
       </div>
     </article>
@@ -631,21 +355,24 @@ objc 可编译源码
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2018/06/26/2018-2/isa%E6%8C%87%E9%92%88%E4%B8%AD%E9%9A%90%E8%97%8F%E7%9A%84%E9%BB%91%E9%AD%94%E6%B3%95/" target="_self">
-          isa指针中隐藏的黑魔法
+        <a href="/2019/03/14/2019/8.%E8%B7%AF%E7%94%B1%E4%B8%8E%E5%AF%BC%E8%88%AA/" target="_self">
+          Flutter 路由与导航
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2018/06/26/2018-2/isa%E6%8C%87%E9%92%88%E4%B8%AD%E9%9A%90%E8%97%8F%E7%9A%84%E9%BB%91%E9%AD%94%E6%B3%95/" target="_self">
+        <a href="/2019/03/14/2019/8.%E8%B7%AF%E7%94%B1%E4%B8%8E%E5%AF%BC%E8%88%AA/" target="_self">
           
           
             
           
-          前言在 objc 的对象系统中，isa 指针是一个非常重要的角色，每个对象都有一个 isa 指针，它的含义用中文可以解释为是一个，例如：
-1id xiaoming = [Person new];
-
-可以解释为，xiaoming is a person（小明是一个人）。我们知道在 32 位架构下，指针变量的存储空间是 4 字节，在 64 位架构下，指针变量的存储空间是 8 字节，从 iPhone 5
+          路由与导航声明：Flutter专栏文档均来自慕课网https://coding.imooc.com/class/321.html
+路由与导航
+  Flutter中Intent等价于什么？(Android)
+  在Flutter中如何实现不同页面跳转（导航）？
+  如何获取路由跳转返回的结果？
+  如何在Flutter中处理来自外部应用程序传入的Intents？(Android)
+  怎么跳转到其他
         </a>
       </p>
 
@@ -653,19 +380,225 @@ objc 可编译源码
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2018-06-26 14:46" pubdate>
-              2018-06-26
+            <time datetime="2019-03-14 23:11" pubdate>
+              2019-03-14
             </time>
           </div>
         
         
         
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/03/12/2019/7.%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" target="_self">
+          Flutter 状态管理
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/03/12/2019/7.%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" target="_self">
+          
+          
             
-              <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
-            
+          
+          状态管理声明：Flutter专栏文档均来自慕课网https://coding.imooc.com/class/321.html
+状态管理
+  什么是StatelessWidget？
+  什么是StatefulWidget？
+  什么是StatefulWidget和StatelessWidget最佳实践？
+
+状态是在构建widget时可以同步读取的信息，或者在widget的生命周期中可能更改的信息，
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-03-12 00:22" pubdate>
+              2019-03-12
+            </time>
           </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/03/10/2019/6.%E5%B8%83%E5%B1%80%E4%B8%8E%E5%88%97%E8%A1%A8/" target="_self">
+          Flutter 布局与列表
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/03/10/2019/6.%E5%B8%83%E5%B1%80%E4%B8%8E%E5%88%97%E8%A1%A8/" target="_self">
+          
+          
+            
+          
+          布局与列表声明：Flutter专栏文档均来自慕课网https://coding.imooc.com/class/321.html
+布局与列表
+  LinearLayout 在Flutter中等价于什么(Android)？
+  RelativeLayout 在Flutter中等价于什么(Android)？
+  如何使用widget定义布局属性?
+  如何分层布局？
+  如何设置布局样式？
+  Scr
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-03-10 00:01" pubdate>
+              2019-03-10
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/03/08/2019/4.%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E3%80%81%E8%B5%84%E6%BA%90%E3%80%81%E4%BE%9D%E8%B5%96%E5%92%8C%E6%9C%AC%E5%9C%B0%E5%8C%96/" target="_self">
+          Flutter 项目结构、资源、依赖和本地化
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/03/08/2019/4.%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E3%80%81%E8%B5%84%E6%BA%90%E3%80%81%E4%BE%9D%E8%B5%96%E5%92%8C%E6%9C%AC%E5%9C%B0%E5%8C%96/" target="_self">
+          
+          
+            
+          
+          项目结构、资源、依赖和本地化声明：Flutter专栏文档均来自慕课网https://coding.imooc.com/class/321.html
+【文档讲解】项目结构、资源、依赖和本地化
+  项目文件结构是怎样子的？
+  在哪里归档图片资源以及如何处理不同分辨率？
+  如何归档strings资源，以及如何处理不同语言？
+  如何添加Flutter项目所需的依赖？
+
+项目文件结构是怎样子的？一个F
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-03-08 23:55" pubdate>
+              2019-03-08
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/03/06/2019/3.Flutter%E5%85%A5%E9%97%A8%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" target="_self">
+          Flutter入门基础知识
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/03/06/2019/3.Flutter%E5%85%A5%E9%97%A8%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" target="_self">
+          
+          
+            
+          
+          Flutter入门基础知识声明：Flutter专栏文档均来自慕课网https://coding.imooc.com/class/321.html
+Flutter入门基础知识
+  如何创建Flutter 项目?
+  如何运行Flutter 项目?
+  如何导入Widget?
+  如何写一个Hello world?
+  如何使用Widget并将其嵌套以形成Widget树?
+  如何创建可重用Widge
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-03-06 23:30" pubdate>
+              2019-03-06
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/03/05/2019/2.%E4%BB%80%E4%B9%88%E6%98%AF%E5%A3%B0%E6%98%8E%E5%BC%8FUI/" target="_self">
+          Flutter 什么是声明式**UI**？
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/03/05/2019/2.%E4%BB%80%E4%B9%88%E6%98%AF%E5%A3%B0%E6%98%8E%E5%BC%8FUI/" target="_self">
+          
+          
+            
+          
+          什么是声明式UI？声明：Flutter专栏文档均来自慕课网https://coding.imooc.com/class/321.html
+什么是声明式UI
+  为什么是声明式UI？
+  如何在声明性框架中更改UI?
+
+Flutter采用了声明性UI布局方式，为了帮助大家快熟上手，本节我们来学习什么是声明式UI，以及它和我们常用的命令式UI的异同。
+为什么是声明式UI？从Win32到Web在到And
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-03-05 22:19" pubdate>
+              2019-03-05
+            </time>
+          </div>
+        
+        
         
       </div>
     </article>
@@ -675,7 +608,7 @@ objc 可编译源码
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/7/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/#board">6</a><a class="page-number" href="/page/7/#board">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/#board">9</a><a class="page-number" href="/page/10/#board">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#board">12</a><a class="extend next" rel="next" href="/page/9/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/7/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/#board">6</a><a class="page-number" href="/page/7/#board">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/#board">9</a><a class="page-number" href="/page/10/#board">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/#board">14</a><a class="extend next" rel="next" href="/page/9/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

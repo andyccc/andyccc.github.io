@@ -182,32 +182,19 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2018/10/31/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2016%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%20-%20%E7%B1%BB%E7%9A%84%E6%89%A9%E5%B1%95%20&%20%E5%88%86%E7%B1%BB%E5%85%B3%E8%81%94%E5%AF%B9%E8%B1%A1/" target="_self">
-          类的加载 - 类的扩展 &amp; 分类关联对象
+        <a href="/2019/07/16/2020-2/5.App%20%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E6%B3%A8%E5%85%A5%E5%8A%A8%E6%80%81%E5%BA%93%E7%9A%84%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E6%9E%81%E9%80%9F%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95/" target="_self">
+          App 如何通过注入动态库的方式实现极速编译调试
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2018/10/31/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2016%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%20-%20%E7%B1%BB%E7%9A%84%E6%89%A9%E5%B1%95%20&%20%E5%88%86%E7%B1%BB%E5%85%B3%E8%81%94%E5%AF%B9%E8%B1%A1/" target="_self">
+        <a href="/2019/07/16/2020-2/5.App%20%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%E6%B3%A8%E5%85%A5%E5%8A%A8%E6%80%81%E5%BA%93%E7%9A%84%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E6%9E%81%E9%80%9F%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95/" target="_self">
           
           
             
           
-          一、类扩展1、类扩展与分类category：
-
-  准用来给类添加新方法；
-  不能添加成员变量，即使添加了也无法取到；
-  属性可添加，但只会生成 setter/getter 的声明而没有相应的实现 –&gt; 可通过 runtime 进行关联实现。
-
-extension：
-
-  可看做匿名分类；
-  可以给类添加成员属性，但是私有的；
-  可以给类添加方法，也是私有的。
-
-类扩展：
-
-类的扩展
+          App 如何通过注入动态库的方式实现极速编译调试
+今天我们再继续聊聊，动态库链接器的实际应用，也就是编译调试的提速问题。iOS 原生代码的编译调试，都是通过一遍又一遍地编译重启 App 来进行的。所以，项目代码量越大，编译时间就越长。虽然我们可以通过将部分代码先编译成二进制集成到工程里，来避免每次都全量编译来加快编译速度，但即使这样，每次编译都还是需要重启 App，需要再走一遍调试流程。对于开发者
         </a>
       </p>
 
@@ -215,28 +202,12 @@ extension：
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2018-10-31 12:01" pubdate>
-              2018-10-31
+            <time datetime="2019-07-16 23:02" pubdate>
+              2019-07-16
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -248,23 +219,19 @@ extension：
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2018/10/26/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2015%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%203%20-%20%E5%88%86%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD/" target="_self">
-          类的加载 3 - 分类的加载
+        <a href="/2019/07/12/2020-2/4.%E9%93%BE%E6%8E%A5%E5%99%A8%EF%BC%9A%E7%AC%A6%E5%8F%B7%E6%98%AF%E6%80%8E%E4%B9%88%E7%BB%91%E5%AE%9A%E5%88%B0%E5%9C%B0%E5%9D%80%E4%B8%8A%E7%9A%84/" target="_self">
+          链接器：符号是怎么绑定到地址上的
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2018/10/26/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2015%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%203%20-%20%E5%88%86%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD/" target="_self">
+        <a href="/2019/07/12/2020-2/4.%E9%93%BE%E6%8E%A5%E5%99%A8%EF%BC%9A%E7%AC%A6%E5%8F%B7%E6%98%AF%E6%80%8E%E4%B9%88%E7%BB%91%E5%AE%9A%E5%88%B0%E5%9C%B0%E5%9D%80%E4%B8%8A%E7%9A%84/" target="_self">
           
           
             
           
-          本文继续衔接 [OC 底层探索 14、类的加载 2]探索分类的加载。调试源码
-一、分类的本质分类的结构查看方法1）.cpp 文件在 main.m 中任意添加一个分类信息的 .h .m 文件信息，编译生成 cpp 文件 clang -rewrite-objc main.m -o main.cpp  
-如下 tu：
-
-category_t 结构:
-123456781 struct _category_
+          链接器：符号是怎么绑定到地址上的
+你是不是经常会好奇自己参与的这么些项目，为什么有的编译起来很快，有的却很慢；编译完成后，有的启动得很快，有的却很慢。其实，在理解了编译和启动时链接器所做的事儿之后，你就可以从根儿上找到这些问题的答案了。所以，在今天这篇文章中，我就重点和你讲解一下链接器相关的知识。简单地说，链接器最主要的作用，就是将符号绑定到地址上。理解了这其中的原理后，你就可以有针对性地去调整和
         </a>
       </p>
 
@@ -272,28 +239,12 @@ category_t 结构:
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2018-10-26 00:27" pubdate>
-              2018-10-26
+            <time datetime="2019-07-12 23:12" pubdate>
+              2019-07-12
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -305,20 +256,19 @@ category_t 结构:
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2018/10/23/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2014%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%202%20-%20%E7%B1%BB%E7%9A%84%20data_%20/" target="_self">
-          类的加载 2 - 类的 data_
+        <a href="/2019/06/22/2020-2/3.%E5%A4%9A%E4%BA%BA%E7%9A%84%E5%A4%A7%E9%A1%B9%E7%9B%AE%EF%BC%8C%E6%9E%B6%E6%9E%84%E6%80%8E%E4%B9%88%E8%AE%BE%E8%AE%A1%E6%9B%B4%E5%90%88%E7%90%86/" target="_self">
+          多人的大项目，架构怎么设计更合理
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2018/10/23/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2014%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%202%20-%20%E7%B1%BB%E7%9A%84%20data_%20/" target="_self">
+        <a href="/2019/06/22/2020-2/3.%E5%A4%9A%E4%BA%BA%E7%9A%84%E5%A4%A7%E9%A1%B9%E7%9B%AE%EF%BC%8C%E6%9E%B6%E6%9E%84%E6%80%8E%E4%B9%88%E8%AE%BE%E8%AE%A1%E6%9B%B4%E5%90%88%E7%90%86/" target="_self">
           
           
             
           
-          本文衔接 OC 底层探索 13 继续探索类的加载，我们已知通过 readClass() 读取了编译器写的类 (or 元类)，同时给 cls 赋了 name 和把 cls 插入到了类 / 元类的表中，此时 cls 不仅有了地址还有了 name。此时的类是什么样子的呢？我们读取一下 cls 的内存情况，见下图：
-
-通过上面 lldb 调试，我们发现 cls 的 bits 是 0000，并无数据. 继续
+          多人的大项目，架构怎么设计更合理
+今天说说怎么设计一个能够支持大型 iOS 工程的架构。记得以前所在的团队，规模大了以后，客户端团队也被按照不同业务拆分到了不同的地方。当时，所有的代码都集中在一个仓库，团队里面一百多号人，只要有一个人提交错了，那么所有要更新代码的人都得等到修复后提交。这样一天下来，整个团队的沟通和互相等待都浪费了大量时间。同时，开发完成要进行测试时，由于代码相互耦合、归属不清，也
         </a>
       </p>
 
@@ -326,28 +276,12 @@ category_t 结构:
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2018-10-23 23:07" pubdate>
-              2018-10-23
+            <time datetime="2019-06-22 22:10" pubdate>
+              2019-06-22
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -359,20 +293,19 @@ category_t 结构:
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2018/10/18/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2013%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%201%20-%20dyld%20%E5%92%8C%20objc%20%E7%9A%84%E5%85%B3%E8%81%94/" target="_self">
-          类的加载 1 - dyld 和 objc 的关联
+        <a href="/2019/05/25/2020-2/2.Auto%20Layout%20%E6%98%AF%E6%80%8E%E4%B9%88%E8%BF%9B%E8%A1%8C%E8%87%AA%E5%8A%A8%E5%B8%83%E5%B1%80%E7%9A%84%E6%80%A7%E8%83%BD%E5%A6%82%E4%BD%95/" target="_self">
+          Auto Layout 是怎么进行自动布局的性能如何
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2018/10/18/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2013%E3%80%81%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%201%20-%20dyld%20%E5%92%8C%20objc%20%E7%9A%84%E5%85%B3%E8%81%94/" target="_self">
+        <a href="/2019/05/25/2020-2/2.Auto%20Layout%20%E6%98%AF%E6%80%8E%E4%B9%88%E8%BF%9B%E8%A1%8C%E8%87%AA%E5%8A%A8%E5%B8%83%E5%B1%80%E7%9A%84%E6%80%A7%E8%83%BD%E5%A6%82%E4%BD%95/" target="_self">
           
           
             
           
-          本文开始探索类的加载。调试源码 objc 源码工程
-_objc_init 函数：
-12345678910111213141516171819202122231 /*********************************************************************** 2 * _objc_init 3 * Bootstrap initialization. Re
+          Auto Layout 是怎么进行自动布局的性能如何
+Auto Layout ，是苹果公司提供的一个基于约束布局，动态计算视图大小和位置的库，并且已经集成到了 Xcode 开发环境里。在引入 Auto Layout 这种自动布局方式之前，iOS 开发都是采用手动布局的方式。而手动布局的方式，原始落后、界面开发维护效率低，对从事过前端开发的人来说更是难以适应。所以，苹果需要提供更好的界面引擎来提升开
         </a>
       </p>
 
@@ -380,28 +313,12 @@ _objc_init 函数：
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2018-10-18 23:07" pubdate>
-              2018-10-18
+            <time datetime="2019-05-25 23:11" pubdate>
+              2019-05-25
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -413,23 +330,19 @@ _objc_init 函数：
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2018/10/12/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2012%E3%80%81%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%8A%A0%E8%BD%BD/" target="_self">
-          应用程序加载
+        <a href="/2019/04/28/2020-2/1.App%20%E5%90%AF%E5%8A%A8%E9%80%9F%E5%BA%A6%E7%9A%84%E4%BC%98%E5%8C%96%E4%B8%8E%E7%9B%91%E6%8E%A7/" target="_self">
+          App 启动速度的优化与监控
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2018/10/12/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2012%E3%80%81%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%8A%A0%E8%BD%BD/" target="_self">
+        <a href="/2019/04/28/2020-2/1.App%20%E5%90%AF%E5%8A%A8%E9%80%9F%E5%BA%A6%E7%9A%84%E4%BC%98%E5%8C%96%E4%B8%8E%E7%9B%91%E6%8E%A7/" target="_self">
           
           
             
           
-          方法等是如何加载到内存中的呢，或者说类的加载都做了什么？在此之前，我们先探索 APP 从响应用户点击到完全启动的过程 即 应用程序加载 都做了什么事情。
-首先我们准备一个 iOS 的 APP 工程，ViewController.m 中添加 load 方法，main.m 中添加一个 C++ 的 方法，代码如下图：
-
-执行流程： load –&gt; C++ –&gt;  main() .
-
-为何 l
+          App 启动速度的优化与监控
+设想这么一个场景：假设你在排队结账时，掏出手机打开App甲准备扫码支付，结果半天进不去，后面排队的人给你压力够大吧。然后，你又打开App乙，秒进，支付完成。试想一下，以后再支付时你会选择哪个App呢。不难想象，在提供的功能和服务相似的情况下，一款App的启动速度，不单单是用户体验的事情，往往还决定了它能否获取更多的用户。这就好像陌生人第一次碰面，第一感觉往往决定了他们
         </a>
       </p>
 
@@ -437,28 +350,12 @@ _objc_init 函数：
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2018-10-12 14:57" pubdate>
-              2018-10-12
+            <time datetime="2019-04-28 22:11" pubdate>
+              2019-04-28
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -470,25 +367,36 @@ _objc_init 函数：
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2018/10/09/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2011%E3%80%81objc_msgSend%20%E6%B5%81%E7%A8%8B%203%20-%20%E5%8A%A8%E6%80%81%E6%96%B9%E6%B3%95%E5%86%B3%E8%AE%AE%20&%20%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91/" target="_self">
-          objc_msgSend 流程 3 - 动态方法决议 &amp; 消息转发
+        <a href="/2019/03/30/2019/16.APP%E9%A6%96%E9%A1%B5%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA-Scaffold%E4%B8%8EPageView/" target="_self">
+          Flutter APP首页框架搭建-Scaffold与PageView
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2018/10/09/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2011%E3%80%81objc_msgSend%20%E6%B5%81%E7%A8%8B%203%20-%20%E5%8A%A8%E6%80%81%E6%96%B9%E6%B3%95%E5%86%B3%E8%AE%AE%20&%20%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91/" target="_self">
+        <a href="/2019/03/30/2019/16.APP%E9%A6%96%E9%A1%B5%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA-Scaffold%E4%B8%8EPageView/" target="_self">
           
           
             
           
-          我们已经知道 objc_msgSend 的消息查找流程首先是 缓存 cache 查找，然后是去方法列表递归查找，若一直没有找到消息一般则会 crash 报错找不到该消息。
-但是直接 crash 太过不友好，下面就进行探究苹果给我们的 3 次机会。
-消息处理的流程图：
-一、动态方法决议1、通过简单代码切入简单运行下面代码
+          16.APP首页框架搭建-Scaffold与PageViewAPP首页框架搭建
+  实现首页导航需要哪些材料？
+  什么是Scaffold widget？
+  什么是PageView？
+  实现首页导航
 
-运行崩溃：
+实现首页导航需要哪些材料**?**
+Scaffold
 
-在 MyPerson.m 中添加 resolveInstanc
+  BottomNavigationBar
+
+
+PageView
+
+  PageController
+
+
+
+什么是Scaffold wid
         </a>
       </p>
 
@@ -496,28 +404,12 @@ _objc_init 函数：
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2018-10-09 23:59" pubdate>
-              2018-10-09
+            <time datetime="2019-03-30 00:33" pubdate>
+              2019-03-30
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -529,20 +421,33 @@ _objc_init 函数：
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2018/09/28/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2010%E3%80%81objc_msgSend%20%E6%B5%81%E7%A8%8B%202%20-%20%E6%85%A2%E9%80%9F%E6%9F%A5%E6%89%BE/" target="_self">
-          objc_msgSend 流程 2 - 慢速查找
+        <a href="/2019/03/28/2019/15.%E5%BC%82%E6%AD%A5%EF%BC%9AFuture%E4%B8%8EFutureBuilder%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" target="_self">
+          Future与FutureBuilder实用技巧
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2018/09/28/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2010%E3%80%81objc_msgSend%20%E6%B5%81%E7%A8%8B%202%20-%20%E6%85%A2%E9%80%9F%E6%9F%A5%E6%89%BE/" target="_self">
+        <a href="/2019/03/28/2019/15.%E5%BC%82%E6%AD%A5%EF%BC%9AFuture%E4%B8%8EFutureBuilder%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" target="_self">
           
           
             
           
-          我们已经知道消息发送流程首先会走到缓存 cache 里面，那么当缓存中没有查询到消息时 __objc_msgSend_uncached，后续怎么继续执行呢？
-一、切入口__objc_msgSend_uncached –&gt; MethodTableLookup –&gt; _lookUpImpOrForward.
-我们通过源码可以看到缓存中找不到会进入 _lookUpImpOrForward 的
+          异步：Future与FutureBuilder实用技巧
+什么是Future？
+Future的常见用法？
+
+  获取Future的结果？
+  捕获Future的异常？
+  结合async，await？
+  future.whenComplete？
+  future.timeout？
+
+
+什么是FutureBuilder？
+FutureBuilder常见的用法？
+
+什么是Future？
+Future表
         </a>
       </p>
 
@@ -550,28 +455,12 @@ _objc_init 函数：
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2018-09-28 22:38" pubdate>
-              2018-09-28
+            <time datetime="2019-03-28 00:12" pubdate>
+              2019-03-28
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -583,22 +472,31 @@ _objc_init 函数：
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2018/09/26/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2009%E3%80%81objc_msgSend%20%E6%B5%81%E7%A8%8B%201%20-%20%E7%BC%93%E5%AD%98%E6%9F%A5%E6%89%BE/" target="_self">
-          objc_msgSend 流程 1 - 缓存查找
+        <a href="/2019/03/27/2019/14.%E5%9B%BE%E7%89%87%E6%8E%A7%E4%BB%B6%E5%BC%80%E5%8F%91%E8%AF%A6%E8%A7%A3/" target="_self">
+          Flutter 图片控件开发详解
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2018/09/26/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2009%E3%80%81objc_msgSend%20%E6%B5%81%E7%A8%8B%201%20-%20%E7%BC%93%E5%AD%98%E6%9F%A5%E6%89%BE/" target="_self">
+        <a href="/2019/03/27/2019/14.%E5%9B%BE%E7%89%87%E6%8E%A7%E4%BB%B6%E5%BC%80%E5%8F%91%E8%AF%A6%E8%A7%A3/" target="_self">
           
           
             
           
-          本文对 Runtime 进行简单介绍 和对 objc_msgSend 的发消息流程中的缓存查找进行探索。
-更新 (流程图概览)：缓存查找流程图
+          图片控件开发详解
+  Image widget
+  如何加载网络图片？
+  如何加载静态图片？
+  如何加载本地图片？
+  如何设置Placeholder?
+  如何配置图片缓存？
+  如何加载Icon？
 
-我们知道类结构中包含了很多信息：isa superclass cache bits，cache 中缓存了我们调用的方法，具体流程见 OC 底层探索 07. 但是方法具体时间什么时候缓存的，需要继续探究。
-源码 objc_cache.mm 文件，Metho
+Image widgetFlutter中一个用来展示图片的widget。
+Image支持如下几种类型的构造函数：
+
+  new Image - 用于从ImageProvider获取图像；
+  
         </a>
       </p>
 
@@ -606,28 +504,12 @@ _objc_init 函数：
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2018-09-26 23:56" pubdate>
-              2018-09-26
+            <time datetime="2019-03-27 01:00" pubdate>
+              2019-03-27
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -639,24 +521,26 @@ _objc_init 函数：
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2018/09/22/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2007%E3%80%81%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%202%20-%20cache_t/" target="_self">
-          类的结构分析 2 - cache_t
+        <a href="/2019/03/25/2019/13.%E5%9F%BA%E4%BA%8EHttp%E5%AE%9E%E7%8E%B0%E7%BD%91%E7%BB%9C%E6%93%8D%E4%BD%9C/" target="_self">
+          Flutter 基于**Http**实现网络操作
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2018/09/22/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2007%E3%80%81%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%202%20-%20cache_t/" target="_self">
+        <a href="/2019/03/25/2019/13.%E5%9F%BA%E4%BA%8EHttp%E5%AE%9E%E7%8E%B0%E7%BD%91%E7%BB%9C%E6%93%8D%E4%BD%9C/" target="_self">
           
           
             
           
-          本文来探索类结构中 cache_t. 之前的文章 OC 底层探索 04 中，已知如何找到类信息。本文我们对类信息中的 cache_t 进行探索。
-objc_class 结构 :
+          基于Http实现网络操作
+  如何用Http库做get请求？
+  如何用Http库做post请求？
+  如何将Response转换成Dart object？
+  如何将请求结果展示在界面上？
 
-从 OC 底层探索 04 中的指针和内存偏移，我们已知可通过指针平移获取相应位置信息，cache_t 的位置 = 8 + 8 =16
-一、cache_t 简析cache_t 的源码分析：
+网络请求是开发APP必不可少的一部分，比如获取用户订单数据，获取商品列表，提交表单等等都离不了网络请求，那么在Flutter中如何进行网络请求呢？
 
-CACHE_MASK_STOR
+Flutter官方推荐我们在Flutter中用Http进
         </a>
       </p>
 
@@ -664,28 +548,12 @@ CACHE_MASK_STOR
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2018-09-22 21:26" pubdate>
-              2018-09-22
+            <time datetime="2019-03-25 23:56" pubdate>
+              2019-03-25
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -697,25 +565,23 @@ CACHE_MASK_STOR
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2018/09/19/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2006%E3%80%81%20isa%202%20%E4%B8%AA%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" target="_self">
-          isa 2 个经典问题分析
+        <a href="/2019/03/23/2019/12.%E8%B0%83%E7%94%A8%E7%A1%AC%E4%BB%B6%E3%80%81%E7%AC%AC%E4%B8%89%E6%96%B9%E6%9C%8D%E5%8A%A1%E4%BB%A5%E5%8F%8A%E5%B9%B3%E5%8F%B0%E4%BA%A4%E4%BA%92%E3%80%81%E9%80%9A%E7%9F%A5/" target="_self">
+          Flutter 调用硬件、第三方服务以及平台交互、通知
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2018/09/19/2018-3/OC%20%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2%2006%E3%80%81%20isa%202%20%E4%B8%AA%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" target="_self">
+        <a href="/2019/03/23/2019/12.%E8%B0%83%E7%94%A8%E7%A1%AC%E4%BB%B6%E3%80%81%E7%AC%AC%E4%B8%89%E6%96%B9%E6%9C%8D%E5%8A%A1%E4%BB%A5%E5%8F%8A%E5%B9%B3%E5%8F%B0%E4%BA%A4%E4%BA%92%E3%80%81%E9%80%9A%E7%9F%A5/" target="_self">
           
           
             
           
-          isa 2 个经典问题分析
-一、类的归属问题1、2 个 API objc_getMetaClass() –&gt; 获取元类
+          调用硬件、第三方服务以及平台交互、通知声明：Flutter专栏文档均来自慕课网https://coding.imooc.com/class/321.html
+调用硬件、第三方服务以及平台交互、通知
+  如何调用硬件与第三方服务？
+如何构建与集成Native SDK/模块？   image
 
-class_getMethodImplementation() –&gt; 获取 IMP
-
-2、实例方法 和 类方法 分析1. 实例方法class_getInstanceMethod() –&gt; 类的实例方法
-
-2. 类方法class_getClassMethod()
+如何调用硬件与第三方服务？在Flutter中调用硬件与第三方服务都可以通过集成对应的插件来完成，在这里分享几
         </a>
       </p>
 
@@ -723,28 +589,12 @@ class_getMethodImplementation() –&gt; 获取 IMP
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2018-09-19 02:00" pubdate>
-              2018-09-19
+            <time datetime="2019-03-23 23:30" pubdate>
+              2019-03-23
             </time>
           </div>
         
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OC%E5%BA%95%E5%B1%82%E6%8E%A2%E7%B4%A2/">OC底层探索</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OC/">OC</a>
-            
-              <a href="/tags/%E5%BA%95%E5%B1%82/">底层</a>
-            
-          </div>
         
       </div>
     </article>
@@ -754,7 +604,7 @@ class_getMethodImplementation() –&gt; 获取 IMP
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/6/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#board">5</a><a class="page-number" href="/page/6/#board">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/#board">8</a><a class="page-number" href="/page/9/#board">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#board">12</a><a class="extend next" rel="next" href="/page/8/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/6/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#board">5</a><a class="page-number" href="/page/6/#board">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/#board">8</a><a class="page-number" href="/page/9/#board">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/#board">14</a><a class="extend next" rel="next" href="/page/8/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

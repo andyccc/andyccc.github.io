@@ -1,0 +1,520 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="andyccc">
+  <meta name="keywords" content="">
+  
+  <title>Node.js 缓存与应用：多级缓存策略介绍与应用要点 - andyccc</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>andyccc</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Node.js 缓存与应用：多级缓存策略介绍与应用要点">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-08-25 23:55" pubdate>
+        2021年8月25日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      39
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Node.js 缓存与应用：多级缓存策略介绍与应用要点</h1>
+            
+            <div class="markdown-body">
+              <p>在上一回中我们介绍了网络 I/O 的优化方案，也就是应用缓存来减少网络 I/O 或者用高性能网络 I/O 替换性能较低的网络 I/O。将缓存应用好，也并非一件简单的事情，需要详细地学习和掌握缓存的基础知识。其次在本讲中我会应用 Node.js 来实践开发一个多级缓存的库，让你进一步掌握缓存的应用要点。</p>
+<h3 id="缓存概念"><a href="#缓存概念" class="headerlink" title="缓存概念"></a>缓存概念</h3><p>从我的理解上来介绍，<strong>缓存是临时的一块存储空间</strong>，用于存放<strong>访问频次较高的数据</strong>，用空间换响应速度，核心是减少用户对<strong>数据库的查询压力</strong>。</p>
+<p>从以上概念介绍中，我们需要整理出以下几个关键词：</p>
+<ul>
+<li><strong>临时</strong>，为了避免存储空间的浪费，我们应该尽量设置数据缓存的时间，当过期时自动销毁；</li>
+<li><strong>存储空间</strong>，一般选择读写性能较高的内存（本地内存或者共享内存），有些会应用 SSD 进一步提升性能；</li>
+<li><strong>访问频次较高的数据</strong>，为了避免存储空间的浪费，应该尽量选择访问频次较高的数据，切莫将任何数据放入缓存；</li>
+<li><strong>数据库的查询压力</strong>，我们需要将一些复杂的数据库查询进行缓存，减少数据库访问压力，从而提升用户的响应速度。</li>
+</ul>
+<p>在了解了基础概念后，我们再来看下缓存中常见的几个问题，这也是面试过程中常被问及的问题。</p>
+<h3 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h3><p>如果没有应用好缓存，将会<strong>导致一些不可见或者说很难定位的现网事故</strong>，主要是三点：缓存雪崩、缓存击穿和缓存穿透。</p>
+<h4 id="1-缓存雪崩"><a href="#1-缓存雪崩" class="headerlink" title="1.缓存雪崩"></a>1.缓存雪崩</h4><p>在上面概念中，提到了一个关键词叫作临时，因此大部分数据都有一个过期时间的概念，假设我们有一批数据是通过定时服务从数据库写入缓存中，然后我们统一设置了过期时间。当这个时间节点到了，但是由于某种原因数据又没有从数据库写入缓存，导致这时候所有的数据都会前往数据库查询数据，从而引起数据库查询压力，导致数据库并发过大而瘫痪无法正常服务。</p>
+<p>那么应该如何应对呢？</p>
+<p>（1）<strong>避免所有数据都设置同一个过期时间节点</strong>，应该按数据类型、数据更新时效性来设置。</p>
+<p>（2）<strong>数据过期时间应大于数据更新节点时间</strong>，并考虑更新时长，同时增加更新失败异常告警提示。</p>
+<p>（3）对于一些相对较高频次或者数据库查询压力较大的数据，<strong>可不设置过期时间</strong>，主动从程序上来控制该数据的移除或者更替。</p>
+<h4 id="2-缓存穿透"><a href="#2-缓存穿透" class="headerlink" title="2.缓存穿透"></a>2.缓存穿透</h4><p>在上面概念中，提到了一个关键句叫作访问频繁较高的数据，这里就会出现一种情况，比如说查询信息一直是<strong>空数据</strong>，空数据按理不属于访问频繁较高的数据，所以经过了缓存，但是并没有缓存该空数据，而是直接穿透进入了数据库，虽然数据库查询也是空数据，但是还是需要经过数据库的查询，这种现象就是击穿了缓存直接前往了数据库查询。</p>
+<p>那么应该如何应对呢？</p>
+<p>（1）<strong>过滤非正常请求数据</strong>，比如一些从参数就可以知道为空的数据，可以直接从程序上处理。</p>
+<p>（2）<strong>缓存空的结果</strong>，为了提升性能，可以将一些查询为空的结果也缓存起来，这样下次用户再进行访问时，可以直接从缓存中判断返回。</p>
+<p>（3）由于第 2 种方案在空数据较多时会浪费内存空间，我们可以将这些空数据的键名，使用<strong>布隆过滤器</strong>来缓存到缓存，这样可以尽可能地减少内存占用，并且更加高效。</p>
+<h4 id="3-缓存击穿"><a href="#3-缓存击穿" class="headerlink" title="3.缓存击穿"></a>3.缓存击穿</h4><p>这个概念和缓存雪崩有点类似，但不是大面积的缓存过期失效，而是某个访问频次较高的数据失效了，从而导致这一刻高并发的请求全部穿透到了数据库，从而数据库并发压力较高，响应较慢，也进一步导致数据库异常，影响其他业务。</p>
+<p>那么应该如何应对呢？</p>
+<p>（1）高频数据、查询较为复杂的数据，可以不设置过期时间，但是需要程序去维护数据的更替删除。</p>
+<p>（2）如果需要缓存过期时间，要大于缓存更新时间，避免过期无法找到键。</p>
+<p>（3）使用原子操作方案，当多个数据都需要前往数据库查询同一个数据时，告知程序缓存正在生成中，并且告知其他程序可以读取上一次缓存数据，避免同时读取同一份数据。</p>
+<h3 id="实现多级缓存"><a href="#实现多级缓存" class="headerlink" title="实现多级缓存"></a>实现多级缓存</h3><p>在上一讲中我们已经介绍了两种缓存方案：</p>
+<ul>
+<li><strong>本地缓存</strong></li>
+<li><strong>共享内存</strong></li>
+</ul>
+<p>接下来我们主要基于这两个缓存来实现一个 Node.js 缓存库，以方便后续在项目中应用。</p>
+<h4 id="1-代码实现"><a href="#1-代码实现" class="headerlink" title="1.代码实现"></a>1.代码实现</h4><p>关于本地缓存，我们可以借助一个第三方库 <a target="_blank" rel="noopener" href="https://github.com/node-cache/node-cache?fileGuid=3HCRkDrgCrR8h6rY">node-cache</a>，redis 的话则使用 <a target="_blank" rel="noopener" href="https://github.com/NodeRedis/node-redis?fileGuid=3HCRkDrgCrR8h6rY">node-redis</a> 第三方库，为了实现方便，这里就不详细地介绍 redis 安装和配置了，而是借助 <a target="_blank" rel="noopener" href="https://app.redislabs.com/?fileGuid=3HCRkDrgCrR8h6rY">redis 云服务</a>。这里我已经申请了一个，具体信息如下，使用以下云服务配置，由于是免费的，也可以自行去申请试用。</p>
+<p>复制代码</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-number">1</span>.  hos<span class="hljs-variable">t:</span> <span class="hljs-string">&#x27;test.cloud.redislabs.com&#x27;</span>,<br>    <br><span class="hljs-number">2</span>.  por<span class="hljs-variable">t:</span> <span class="hljs-number">17353</span>,<br>    <br><span class="hljs-number">3</span>.  password: <span class="hljs-string">&#x27;nodejs@2021&#x27;</span>,<br>    <br><span class="hljs-number">4</span>.  d<span class="hljs-variable">b:</span> <span class="hljs-number">0</span> <br></code></pre></td></tr></table></figure>
+
+<p>接下来我们在项目的 lib 中新增一个 cache.js ，在 cache.js 中来实现多级缓存的代码。</p>
+<p>还需要提供三种方案，一种是直接<strong>使用本地缓存</strong>，一种是<strong>使用 redis 缓存</strong>，还有一种就是<strong>都使用</strong>，因此我们需要为 Cache 这个类设置 2 个参数，构造函数实现如下：</p>
+<p>复制代码</p>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs oxygene"> <span class="hljs-number">1</span>.    <span class="hljs-function"><span class="hljs-keyword">constructor</span><span class="hljs-params">(localCacheEnable=<span class="hljs-keyword">true</span>, redisEnable=<span class="hljs-keyword">true</span>)</span> <span class="hljs-comment">&#123;</span></span><br><span class="hljs-comment"><span class="hljs-function">    </span></span><br><span class="hljs-comment"><span class="hljs-function">2.          this.localCacheEnable = localCacheEnable;</span></span><br><span class="hljs-comment"><span class="hljs-function">    </span></span><br><span class="hljs-comment"><span class="hljs-function">3.          this.redisEnable = redisEnable;</span></span><br><span class="hljs-comment"><span class="hljs-function">    </span></span><br><span class="hljs-comment"><span class="hljs-function">4.          if(localCacheEnable)&#123;</span></span><br><span class="hljs-comment"><span class="hljs-function">    </span></span><br><span class="hljs-comment"><span class="hljs-function">5.              this.myCache = new NodeCache();</span></span><br><span class="hljs-comment"><span class="hljs-function">    </span></span><br><span class="hljs-comment"><span class="hljs-function">6.          &#125;</span></span><br><span class="hljs-function">    </span><br><span class="hljs-function">7.          <span class="hljs-title">if</span><span class="hljs-params">(redisEnable)</span> <span class="hljs-comment">&#123;</span></span><br><span class="hljs-comment"><span class="hljs-function">    </span></span><br><span class="hljs-comment"><span class="hljs-function">8.              this.client = redis.createClient(&#123;</span></span><br><span class="hljs-comment"><span class="hljs-function">    </span></span><br><span class="hljs-comment"><span class="hljs-function">9.                  host: &#x27;test.cloud.redislabs.com&#x27;,</span></span><br><span class="hljs-comment"><span class="hljs-function">    </span></span><br><span class="hljs-comment"><span class="hljs-function">10.                  port: 17353,</span></span><br><span class="hljs-comment"><span class="hljs-function">    </span></span><br><span class="hljs-comment"><span class="hljs-function">11.                  password: &#x27;nodejs@2021&#x27;,</span></span><br><span class="hljs-comment"><span class="hljs-function">    </span></span><br><span class="hljs-comment"><span class="hljs-function">12.                  db: 0</span></span><br><span class="hljs-comment"><span class="hljs-function">    </span></span><br><span class="hljs-comment"><span class="hljs-function">13.              &#125;</span>);</span><br>    <br><span class="hljs-number">14</span>.          &#125;<br>    <br><span class="hljs-number">15</span>.      &#125; <br></code></pre></td></tr></table></figure>
+
+<p>在本地缓存 localCacheEnable 为 true 时，才会本地缓存初始化；在 redis 缓存 redisEnable 为 true 的时候，我们才会初始化 redis 缓存。</p>
+<p>接下来我们主要看 2 个核心方法的实现，一个是 get 获取缓存内容，一个是 set 设置缓存内容。</p>
+<p>get 获取缓存内容的实现代码如下：</p>
+<p>复制代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs javascript"> <span class="hljs-number">1.</span>      <span class="hljs-comment">/**</span><br><span class="hljs-comment">    </span><br><span class="hljs-comment">2.       * </span><br><span class="hljs-comment">    </span><br><span class="hljs-comment">3.       * <span class="hljs-doctag">@description </span>获取缓存信息</span><br><span class="hljs-comment">    </span><br><span class="hljs-comment">4.       * <span class="hljs-doctag">@param <span class="hljs-type">&#123;string&#125;</span> </span>key </span><br><span class="hljs-comment">    </span><br><span class="hljs-comment">5.       */</span><br>    <br><span class="hljs-number">6.</span>      <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-title">get</span>(<span class="hljs-params">key</span>)</span> &#123;<br>    <br><span class="hljs-number">7.</span>          <span class="hljs-keyword">let</span> value;<br>    <br><span class="hljs-number">8.</span>          <span class="hljs-keyword">if</span>(<span class="hljs-built_in">this</span>.localCacheEnable) &#123;<br>    <br><span class="hljs-number">9.</span>              value = <span class="hljs-built_in">this</span>.myCache.get(key);<br>    <br><span class="hljs-number">10.</span>              <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`local value is <span class="hljs-subst">$&#123;value&#125;</span>`</span>);<br>    <br><span class="hljs-number">11.</span>          &#125;<br>    <br><span class="hljs-number">12.</span>          <span class="hljs-keyword">if</span>(!value &amp;&amp; <span class="hljs-built_in">this</span>.redisEnable) &#123;<br>    <br><span class="hljs-number">13.</span>              <span class="hljs-keyword">try</span> &#123;<br>    <br><span class="hljs-number">14.</span>                  value = <span class="hljs-keyword">await</span> promisify(<span class="hljs-built_in">this</span>.client.get).bind(<span class="hljs-built_in">this</span>.client)(key);<br>    <br><span class="hljs-number">15.</span>                  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`redis value is <span class="hljs-subst">$&#123;value&#125;</span>`</span>)<br>    <br><span class="hljs-number">16.</span>              &#125; <span class="hljs-keyword">catch</span> (err)&#123;<br>    <br><span class="hljs-number">17.</span>                  <span class="hljs-built_in">console</span>.log(err);<br>    <br><span class="hljs-number">18.</span>              &#125;<br>    <br><span class="hljs-number">19.</span>          &#125;<br>    <br><span class="hljs-number">20.</span>          <span class="hljs-keyword">return</span> value;<br>    <br><span class="hljs-number">21.</span>      &#125; <br></code></pre></td></tr></table></figure>
+
+<p>代码逻辑比较清晰，首先判断是否打开了本地缓存，如果有则先从本地缓存中获取，如果没有则查看 redis 缓存是否打开，并且是否存在缓存数据。上面这段代码中，需要将 redis 的 get 方法转化为 promise，所以应用到了 util 工具中的 promisify。</p>
+<p>set 方法的实现代码如下：</p>
+<p>复制代码</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"> <span class="hljs-number">1.</span>     <span class="hljs-comment">/**</span><br><span class="hljs-comment">    </span><br><span class="hljs-comment">2.       * </span><br><span class="hljs-comment">    </span><br><span class="hljs-comment">3.       * <span class="hljs-doctag">@description</span> 保存缓存信息</span><br><span class="hljs-comment">    </span><br><span class="hljs-comment">4.       * <span class="hljs-doctag">@param</span> &#123;string&#125; key 缓存key</span><br><span class="hljs-comment">    </span><br><span class="hljs-comment">5.       * <span class="hljs-doctag">@param</span> &#123;string&#125; value 缓存值</span><br><span class="hljs-comment">    </span><br><span class="hljs-comment">6.       * <span class="hljs-doctag">@param</span> &#123;int&#125; expire 过期时间/秒</span><br><span class="hljs-comment">    </span><br><span class="hljs-comment">7.       * <span class="hljs-doctag">@param</span> &#123;boolean&#125; cacheLocal 是否本地缓存</span><br><span class="hljs-comment">    </span><br><span class="hljs-comment">8.       */</span><br>    <br><span class="hljs-number">9.</span>      async <span class="hljs-keyword">set</span>(key, value, expire=<span class="hljs-number">10</span>, cacheLocal=<span class="hljs-literal">false</span>) &#123;<br>    <br><span class="hljs-number">10.</span>          let localCacheRet, redisRet;<br>    <br><span class="hljs-number">11.</span>          <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.localCacheEnable &amp;&amp; cacheLocal) &#123;<br>    <br><span class="hljs-number">12.</span>              localCacheRet = <span class="hljs-keyword">this</span>.myCache.<span class="hljs-keyword">set</span>(key, value, expire);<br>    <br><span class="hljs-number">13.</span>          &#125;<br>    <br><span class="hljs-number">14.</span>          <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.redisEnable) &#123; <br>    <br><span class="hljs-number">15.</span>              <span class="hljs-keyword">try</span> &#123;<br>    <br><span class="hljs-number">16.</span>                  redisRet = await promisify(<span class="hljs-keyword">this</span>.client.<span class="hljs-keyword">set</span>).bind(<span class="hljs-keyword">this</span>.client)(key, value, <span class="hljs-string">&#x27;EX&#x27;</span>, expire);<br>    <br><span class="hljs-number">17.</span>              &#125; <span class="hljs-keyword">catch</span> (err)&#123;<br>    <br><span class="hljs-number">18.</span>                  console.log(err);<br>    <br><span class="hljs-number">19.</span>              &#125;<br>    <br><span class="hljs-number">20.</span>          &#125;<br>    <br><span class="hljs-number">21.</span>          <span class="hljs-keyword">return</span> localCacheRet || redisRet;<br>    <br><span class="hljs-number">22.</span>      &#125; <br></code></pre></td></tr></table></figure>
+
+<p>首先还是判断是否启用了本地缓存，同时判断该数据参数是否需要进行本地数据缓存操作，如果都需要则会调用 node-cache 的 set 方法缓存到本地内存中。接下来就判断是否需要进行 redis 缓存，如果需要则调用 node-redis 的 set 方法进行缓存。</p>
+<p>以上就是 2 个核心方法的实现，其他方法比如说 delete 方法可以参照去实现。接下来我们主要看下业务侧的应用以及演示效果。</p>
+<h4 id="2-效果演示"><a href="#2-效果演示" class="headerlink" title="2.效果演示"></a>2.效果演示</h4><p>我们在 controller 中新增一个 cache.js，并且新增 3 个方法，分别是 local、 redis 和 both，然后在中间件 router 中新增相应的路由配置。</p>
+<p>在 cache.js 中，我们首先需要创建 3 个类型的缓存对象，如下所示：</p>
+<p>复制代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-number">1.</span>  <span class="hljs-keyword">const</span> cache = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;../lib/cache&#x27;</span>)(<span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>); <span class="hljs-comment">// 本地缓存</span><br>    <br><span class="hljs-number">2.</span>  <span class="hljs-keyword">const</span> redisCache = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;../lib/cache&#x27;</span>)(<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>); <span class="hljs-comment">// redis 缓存</span><br>    <br><span class="hljs-number">3.</span>  <span class="hljs-keyword">const</span> bothCache = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;../lib/cache&#x27;</span>)(<span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>); <span class="hljs-comment">// 本地+redis </span><br></code></pre></td></tr></table></figure>
+
+<p>我们先来看下本地缓存的应用实现，如下所示：</p>
+<p>复制代码</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-number">1.</span>  <span class="hljs-function"><span class="hljs-keyword">async</span> <span class="hljs-title">local</span>(<span class="hljs-params"></span>)</span> &#123;<br>    <br><span class="hljs-number">2.</span>          <span class="hljs-keyword">const</span> cacheKey = <span class="hljs-string">&#x27;sum_result&#x27;</span>;<br>    <br><span class="hljs-number">3.</span>          <span class="hljs-keyword">let</span> result = <span class="hljs-keyword">await</span> cache.<span class="hljs-keyword">get</span>(cacheKey);<br>    <br><span class="hljs-number">4.</span>          <span class="hljs-keyword">if</span>(!result)&#123;<br>    <br><span class="hljs-number">5.</span>              result = <span class="hljs-number">0</span>;<br>    <br><span class="hljs-number">6.</span>              <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">1000000000</span>; i++)&#123;<br>    <br><span class="hljs-number">7.</span>                  result = result + i;<br>    <br><span class="hljs-number">8.</span>              &#125;<br>    <br><span class="hljs-number">9.</span>              cache.<span class="hljs-keyword">set</span>(cacheKey, result, <span class="hljs-number">10</span>, <span class="hljs-literal">true</span>).then();<br>    <br><span class="hljs-number">10.</span>          &#125;<br>    <br><span class="hljs-number">11.</span>          <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.resApi(<span class="hljs-literal">true</span>, <span class="hljs-string">&#x27;success&#x27;</span>, `sum <span class="hljs-number">0</span> - <span class="hljs-number">1000000000</span> <span class="hljs-keyword">is</span> $&#123;result&#125;`);<br>    <br><span class="hljs-number">12.</span>      &#125; <br></code></pre></td></tr></table></figure>
+
+<p>这块代码的逻辑还是与<a href="">《08 | 优化设计：在 I/O 方面应该注意哪些要点？》</a>的类似，都是一个耗 CPU 的计算，首先我们获取缓存内容，如果没有则去计算，计算完成后再缓存到本地内存中。与上一讲不同的是，我们将本地缓存的操作交给了 cache 库。</p>
+<p>redis 和 both 两个方法的实现基本是一样的，只是应用的 cache 实例不一样，不过在 both 中缓存时间也设置得不一样，为了更容易演示，我们只看 both 就可以了，如下所示：</p>
+<p>复制代码</p>
+<figure class="highlight nim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs nim"> <span class="hljs-number">1</span>.   async both() &#123;<br>    <br><span class="hljs-number">2</span>.          <span class="hljs-keyword">const</span> cacheKey = &#x27;sum_result&#x27;;<br>    <br><span class="hljs-number">3</span>.          <span class="hljs-keyword">let</span> <span class="hljs-literal">result</span> = await bothCache.get(cacheKey);<br>    <br><span class="hljs-number">4</span>.          <span class="hljs-keyword">if</span>(!<span class="hljs-literal">result</span>)&#123; // <span class="hljs-literal">result</span> 为函数本地内存缓存<br>    <br><span class="hljs-number">5</span>.              <span class="hljs-literal">result</span> = <span class="hljs-number">0</span>;<br>    <br><span class="hljs-number">6</span>.              <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">1000000000</span>; i++)&#123;<br>    <br><span class="hljs-number">7</span>.                  <span class="hljs-literal">result</span> = <span class="hljs-literal">result</span> + i;<br>    <br><span class="hljs-number">8</span>.              &#125;<br>    <br><span class="hljs-number">9</span>.              bothCache.<span class="hljs-built_in">set</span>(cacheKey, <span class="hljs-literal">result</span>, <span class="hljs-number">600</span>, <span class="hljs-literal">true</span>).then();<br>    <br><span class="hljs-number">10</span>.          &#125;<br>    <br><span class="hljs-number">11</span>.          //bothCache.<span class="hljs-built_in">set</span>(cacheKey, <span class="hljs-literal">result</span>, <span class="hljs-number">600</span>, <span class="hljs-literal">true</span>).then();<br>    <br><span class="hljs-number">12</span>.          <span class="hljs-keyword">return</span> this.resApi(<span class="hljs-literal">true</span>, &#x27;success&#x27;, `sum <span class="hljs-number">0</span> - <span class="hljs-number">1000000000</span> <span class="hljs-keyword">is</span> $&#123;<span class="hljs-literal">result</span>&#125;`);<br>    <br><span class="hljs-number">13</span>.      &#125; <br></code></pre></td></tr></table></figure>
+
+<p>接下来我们用以下命令启动该服务：</p>
+<p>复制代码</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">1</span>.  pm<span class="hljs-number">2</span> start pm<span class="hljs-number">2</span>.config.js --env development <br></code></pre></td></tr></table></figure>
+
+<p>启动成功后，我们先访问如下地址：</p>
+<p>复制代码</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-number">1</span>.  http:<span class="hljs-regexp">//</span><span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">3000</span><span class="hljs-regexp">/v1/</span>local-cache <br></code></pre></td></tr></table></figure>
+
+<p>你会发现第一次访问较慢，而接下来的 10 秒内访问响应都非常快，这就是本地缓存的作用。同样的方式，我们去访问以下地址：</p>
+<p>复制代码</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-number">1</span>.  http:<span class="hljs-regexp">//</span><span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">3000</span><span class="hljs-regexp">/v1/</span>redis-cache <br></code></pre></td></tr></table></figure>
+
+<p>也是得出一样的结论。虽然两者效果上是一致的，但是在性能上是有一定差距的，这点在之前的<a href="">《08 | 优化设计：在 I/O 方面应该注意哪些要点？》</a>中已经详细说明过。</p>
+<p>接下来我们访问如下地址：</p>
+<p>复制代码</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-number">1</span>.  http:<span class="hljs-regexp">//</span><span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">3000</span><span class="hljs-regexp">/v1/</span>both-cache <br></code></pre></td></tr></table></figure>
+
+<p>然后打开 PM2 中的日志路径，由于 <a target="_blank" rel="noopener" href="https://github.com/andyccc/nodejs-tutorial">GitHub 代码</a>中默认的是 /data/nodejs-tutorial/info.log 路径（注意如果没有该路径 PM2 会启动失败，需要先创建路径，也可以放在其他路径下），我们打开日志文件目录。</p>
+<p>在访问 both-cache 地址后，你会看到缓存会优先从本地缓存中获取，接下来我们重启下服务，使用如下命令：</p>
+<p>复制代码</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">1</span>.  pm<span class="hljs-number">2</span> restart nodejs-tutorial <br></code></pre></td></tr></table></figure>
+
+<p>然后我们再次访问时，你会发现缓存信息只能从 redis 中获取了，<strong>因为本地重启，内存被释放，所以没有数据了</strong>，因此在应用过程中，建议本地和 redis 缓存同时使用，避免因为现网版本发版或者异常重启导致的缓存穿透击穿现象，从而可能引发服务异常问题。</p>
+<p>复制代码</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">1</span>.  <span class="hljs-number">2021</span>-<span class="hljs-number">02</span>-<span class="hljs-number">27</span> <span class="hljs-number">11</span>:<span class="hljs-number">25</span> +<span class="hljs-number">08</span>:<span class="hljs-number">00</span>: local value is undefined<br>    <br><span class="hljs-attribute">2</span>.  <span class="hljs-number">2021</span>-<span class="hljs-number">02</span>-<span class="hljs-number">27</span> <span class="hljs-number">11</span>:<span class="hljs-number">25</span> +<span class="hljs-number">08</span>:<span class="hljs-number">00</span>: redis value is <span class="hljs-number">499999999067109000</span> <br></code></pre></td></tr></table></figure>
+
+<p>以上就是多级缓存的实现方案，该库的其他方法自行去补充实现，作为一个小作业，原理基本上是一致的，有任何问题都欢迎在评论区留言。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>介绍了缓存的一些基础知识，着重要掌握的是缓存的三个问题：雪崩、穿透和击穿，这也是面试中常考的点，接下来就是应用 Node.js 实践开发了一个多级缓存的库，可以简单快速地应用本地缓存和 redis 缓存，需要掌握其实现以及后续扩展的实现方法。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/08/27/2021-nodejs/10%20%7C%20%E7%B3%BB%E7%BB%9F%E7%A8%B3%E5%AE%9A%EF%BC%9A%E5%A6%82%E4%BD%95%E7%9B%91%E6%8E%A7%E5%92%8C%E4%BF%9D%E6%8A%A4%E8%BF%9B%E7%A8%8B%E5%AE%89%E5%85%A8%EF%BC%9F/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Node.js 系统稳定：如何监控和保护进程安全</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/08/24/2021-nodejs/08%20%7C%20%E4%BC%98%E5%8C%96%E8%AE%BE%E8%AE%A1%EF%BC%9A%E5%9C%A8%20I:O%20%E6%96%B9%E9%9D%A2%E5%BA%94%E8%AF%A5%E6%B3%A8%E6%84%8F%E5%93%AA%E4%BA%9B%E8%A6%81%E7%82%B9%EF%BC%9F/">
+                        <span class="hidden-mobile">Node.js 优化设计：在 I/O 方面应该注意哪些要点</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
